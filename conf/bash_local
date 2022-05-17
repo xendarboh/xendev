@@ -1,0 +1,53 @@
+export GOPATH=~/go
+export PATH=~/.yarn/bin:~/.go/bin:${GOPATH}:${PATH}
+
+export TERM=screen-256color
+
+export EDITOR=/usr/bin/vim
+export VISUAL=/usr/bin/vim
+
+# enable vi key bindings
+# set -o vi
+
+# ~20170710 fix neovim black and white bug
+# https://github.com/neovim/neovim/issues/6982#issuecomment-313879899
+export COLORTERM=truecolor
+
+if [ -f ~/.bash_prompt  ]; then
+    . ~/.bash_prompt
+fi
+
+# http://docs.platformio.org/en/stable/faq.html#bash-completion
+eval "$(_PLATFORMIO_COMPLETE=source platformio)"
+eval "$(_PIO_COMPLETE=source pio)"
+
+# https://spacevim.org/layers/gtags/
+export GTAGSLABEL=pygments
+
+source ~/.bash/*.sh
+
+####################################
+# bash-git-prompt
+# https://github.com/magicmonty/bash-git-prompt#all-configs-for-bashrc
+####################################
+# Set config variables first
+GIT_PROMPT_ONLY_IN_REPO=1
+
+GIT_PROMPT_FETCH_REMOTE_STATUS=0   # uncomment to avoid fetching remote status
+# GIT_PROMPT_IGNORE_SUBMODULES=1 # uncomment to avoid searching for changed files in submodules
+
+GIT_PROMPT_SHOW_UPSTREAM=1 # uncomment to show upstream tracking branch
+GIT_PROMPT_SHOW_UNTRACKED_FILES=normal # can be no, normal or all; determines counting of untracked files
+
+# GIT_PROMPT_SHOW_CHANGED_FILES_COUNT=0 # uncomment to avoid printing the number of changed files
+
+# GIT_PROMPT_STATUS_COMMAND=gitstatus_pre-1.7.10.sh # uncomment to support Git older than 1.7.10
+
+# GIT_PROMPT_START=...    # uncomment for custom prompt start sequence
+# GIT_PROMPT_END=...      # uncomment for custom prompt end sequence
+
+# as last entry source the gitprompt script
+# GIT_PROMPT_THEME=Custom # use custom theme specified in file GIT_PROMPT_THEME_FILE (default ~/.git-prompt-colors.sh)
+# GIT_PROMPT_THEME_FILE=~/.git-prompt-colors.sh
+GIT_PROMPT_THEME=Solarized # use theme optimized for solarized color scheme
+source ~/.bash-git-prompt/gitprompt.sh

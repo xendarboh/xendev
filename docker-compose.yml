@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  xendev:
+    build:
+      context: ./
+      args:
+        - XENDEV_LLVM_INSTALL=${XENDEV_LLVM_INSTALL}
+    image: xen/dev
+    container_name: xendev
+    hostname: xendev
+    tty: true
+    volumes:
+      - .:/src/xendev
