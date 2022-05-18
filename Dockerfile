@@ -1,4 +1,4 @@
-FROM ubuntu:21.04
+FROM ubuntu:rolling
 
 # configuration
 ARG _KPCLI_VERSION=3.6
