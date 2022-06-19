@@ -155,16 +155,30 @@ RUN export F="node-${_NODE_VERSION}-linux-x64.tar.xz" \
     -C /usr/local --strip-components 1 -xf ${F} \
   && rm -f ${F}
 
-# install yarn
-# https://yarnpkg.com/en/docs/install#linux-tab
-RUN (curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg \
-    | apt-key add -) \
-  && (echo "deb https://dl.yarnpkg.com/debian/ stable main" \
-    | tee /etc/apt/sources.list.d/yarn.list) \
-  && apt-get update \
-  && apt-get install --no-install-recommends -y -q \
-    yarn \
-  && rm -rf /var/lib/apt/lists/*
+# install yarn and pnpm
+RUN npm install --location=global \
+    corepack
+
+# install node things
+RUN npm install --location=global \
+  bash-language-server \
+  diff-so-fancy \
+  dockerfile-language-server-nodejs \
+  eslint-cli \
+  import-js \
+  javascript-typescript-langserver \
+  neovim \
+  prettier \
+  prettier-plugin-solidity \
+  pretty-xl-formula \
+  solc \
+  taskbook \
+  tern \
+  typescript \
+  typescript-language-server \
+  vscode-langservers-extracted \
+  # for spacevim layer lang#typescript:
+  lehre
 
 # install neovim tag'd release from source
 # reference: https://github.com/neovim/neovim/wiki/Building-Neovim
@@ -301,29 +315,9 @@ RUN mkdir ~/.bash \
   && wget -O ~/.bash/forgit.plugin.sh \
     https://raw.githubusercontent.com/wfxr/forgit/master/forgit.plugin.zsh
 
-# install things with yarn:
-RUN yarn global add \
-  bash-language-server \
-  diff-so-fancy \
-  dockerfile-language-server-nodejs \
-  eslint-cli \
-  import-js \
-  javascript-typescript-langserver \
-  neovim \
-  prettier \
-  prettier-plugin-solidity \
-  pretty-xl-formula \
-  solc \
-  taskbook \
-  tern \
-  typescript \
-  typescript-language-server \
-  vscode-langservers-extracted \
-  # for spacevim layer lang#typescript:
-  lehre
-
 # 2020-12-15: fix b0rking line endings on pxlf
-RUN dos2unix ~/.config/yarn/global/node_modules/pretty-xl-formula/cli.js
+# 2022-06-18: location changed; install with npm, not yarn
+# RUN dos2unix ~/.config/yarn/global/node_modules/pretty-xl-formula/cli.js
 
 # copy configuration files so that links to them work during docker build
 RUN mkdir -p ${XENDEV_DIR}
@@ -398,6 +392,10 @@ RUN nvim --headless \
     coc-yaml \
   ' \
   +qall
+
+# update yarn to the latest version
+# 2022-06-18: do this last as other installations depend on yarn v1
+RUN yarn set version stable
 
 ########################################################################
 CMD ["/bin/bash", "-l"]
