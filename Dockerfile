@@ -52,6 +52,7 @@ RUN apt update \
   rake \
   rsync \
   silversearcher-ag \
+  sqlite3 \
   sshfs \
   sudo \
   tmux \
