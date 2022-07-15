@@ -21,7 +21,7 @@ ENV XENDEV_DIR /home/${_USER}/src/xendev
 ENV DEBIAN_FRONTEND noninteractive
 
 # use bash for RUN commands
-SHELL ["/bin/bash", "-c"]
+SHELL ["/bin/bash", "--login", "-c"]
 
 # install things
 RUN apt update \
@@ -267,6 +267,20 @@ RUN curl -LO https://get.golang.org/$(uname)/go_installer \
   && ./go_installer \
   && rm go_installer \
   && rm ~/.bash_profile
+
+# install rust
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
+# install latest circom
+# https://docs.circom.io/getting-started/installation/#installing-dependencies
+ARG XENDEV_CIRCOM_INSTALL=0
+RUN if [ "${XENDEV_CIRCOM_INSTALL}" = "1" ]; then \
+    cd /tmp \
+    && git clone https://github.com/iden3/circom.git \
+    && cd circom \
+    && cargo build --release \
+    && cargo install --path circom \
+  ; fi
 
 # install cpanminus for installing perl modules
 # running cpanm gives suggestion to install local::lib, so do that

@@ -40,6 +40,11 @@
   name = "RRethy/vim-hexokinase"
   merged = false
 
+# vim syntax for circom
+[[custom_plugins]]
+  name = "iden3/vim-circom-syntax"
+  merged = false
+
 # vim syntax for json with comments (otherwise very ugly)
 [[custom_plugins]]
   name = "neoclide/jsonc.vim"
