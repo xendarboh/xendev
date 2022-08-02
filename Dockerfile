@@ -129,6 +129,14 @@ RUN git clone --branch ${_TOMB_VERSION} --depth 1 https://github.com/dyne/Tomb.g
   && make install \
   && rm -rf /usr/local/src/tomb
 
+# install entr
+RUN git clone --depth 1 https://github.com/eradman/entr.git /tmp/entr \
+  && cd /tmp/entr \
+  && ./configure \
+  && make test \
+  && make install \
+  && rm -rf /tmp/entr
+
 # install ripgrep (used by spacevim/vim-todo)
 # @todo with ubuntu:cosmic do `apt install ripgrep`
 RUN export F="ripgrep_${_RIPGREP_VERSION}_amd64.deb" \
@@ -255,7 +263,7 @@ RUN useradd -m -s /bin/bash -u ${_USER_ID} -G ${_USER_GROUPS} ${_USER} \
 ENV HOME=/home/${_USER} USER=${_USER} LC_ALL=${_LOCALE} LANG=${_LOCALE}
 ENV PATH=/home/${_USER}/bin:/home/${_USER}/.yarn/bin:/home/${_USER}/.go/bin:/home/${_USER}/go:/home/${_USER}/perl5/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/${_USER}/.fzf/bin
 ENV SHELL=/bin/bash
-SHELL ["/bin/bash", "-c"]
+SHELL ["/bin/bash", "--login", "-c"]
 USER ${_USER}
 WORKDIR /home/${_USER}
 

@@ -16,6 +16,7 @@ A dockerized terminal-based vim-centric development environment.
 - [codemod](https://github.com/facebookarchive/codemod): A tool/library to assist with large-scale codebase refactors
 - [cpanminus](https://github.com/miyagawa/cpanminus): get, unpack, build and install modules from CPAN
 - [diff-so-fancy](https://github.com/so-fancy/diff-so-fancy): Good-lookin' diffs. Actually… nah… The best-lookin' diffs
+- [entr](https://github.com/eradman/entr): Run arbitrary commands when files change
 - [fish-shell](https://github.com/fish-shell/fish-shell): The user-friendly command line shell
 - [forgit](https://github.com/wfxr/forgit): A utility tool powered by fzf for using git interactively
 - [fzf](https://github.com/junegunn/fzf): A command-line fuzzy finder
