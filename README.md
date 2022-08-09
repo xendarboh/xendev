@@ -71,7 +71,7 @@ A dockerized terminal-based vim-centric development environment.
 
 - vi-style key bindings
 - dark [gruvbox](https://github.com/morhetz/gruvbox) color scheme
-- [FROM ubuntu:21.04](https://hub.docker.com/_/ubuntu)
+- [FROM ubuntu:rolling](https://hub.docker.com/_/ubuntu)
 - `LOCALE=en_US.UTF-8`
 
 ## Howto
