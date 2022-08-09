@@ -1,5 +1,7 @@
 export GOPATH=~/go
-export PATH=~/.yarn/bin:~/.go/bin:${GOPATH}:${PATH}
+export PATH=~/.go/bin:${GOPATH}:${PATH}
+export PATH=~/.yarn/bin:${PATH}
+export PATH=./node_modules/.bin:${PATH}
 
 export TERM=screen-256color
 
@@ -25,6 +27,25 @@ eval "$(_PIO_COMPLETE=source pio)"
 export GTAGSLABEL=pygments
 
 source ~/.bash/*.sh
+
+# Workaround issue whereby tmux new window using current pwd does not respect symlinks.
+# This reads and apllies a file of directory mappings of the format "from:to".
+dirmap() {
+  F="${XENDEV_DIR}/conf.local/directory_map.txt"
+  test -f "${F}" || return
+  for line in $(cat "${F}")
+  do
+    from=$(echo "$line" | cut -d':' -f1)
+    to=$(echo "$line" | cut -d':' -f2)
+
+    if [[ $PWD =~ ^$from ]]; then
+      echo "[xendev] directory map: $from --> $to"
+      NEWPWD=$(echo "$PWD" | sed -e "s|^${from}|${to}|")
+      cd ${NEWPWD}
+    fi
+  done
+}
+dirmap
 
 ####################################
 # bash-git-prompt

@@ -97,6 +97,16 @@ A dockerized terminal-based vim-centric development environment.
 
 - See [conf/](conf/) files
 
+### Local (machine-specific) Configuration
+
+```sh
+cp conf.local.example conf.local
+```
+
+- `conf.local/directory_map.txt` list of "from:to" directory mappings for
+  preserving current working directory in new tmux windows (since tmux does
+  not manage symlinked directories).
+
 ### vim CoC (autocompletion)
 
 | Configuration Location                                                             | Purpose                             |
