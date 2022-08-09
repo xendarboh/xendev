@@ -306,28 +306,34 @@
 
 # lang#zig This layer is for zig development, provides code runner support for zig files.
 
-# language-server-protocol This layers provides language server protocol for vim and neovim
-[[layers]]
-  name = "lsp"
-  filetypes = [
-    # "c",
-    # "cpp",
-    "javascript",
-    "typescript",
-    "typescriptreact"
-  ]
-  # https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-  enabled_clients = [
-    "bashls",
-    # "clangd",
-    "cssls",
-    "dockerls",
-    "eslint",
-    "html",
-    "jsonls",
-    "solc",
-    "tsserver"
-  ]
+# # language-server-protocol This layers provides language server protocol for vim and neovim
+# xendev: lsp features provided by coc
+# [[layers]]
+#   name = "lsp"
+#   filetypes = [
+#     # "c",
+#     # "cpp",
+#     "javascript",
+#     "typescript",
+#     "typescriptreact"
+#   ]
+#   # https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+#   enabled_clients = [
+#     "bashls",
+#     # "clangd",
+#     "cssls",
+#     "dockerls",
+#     "eslint",
+#     "html",
+#     "jsonls",
+#     "solc",
+#     # "tsserver"
+#   ]
+#   # 2022-08-01: Fix [nvim-lspconfig error attempt to concatenate local 'k' (a boolean value)](https://groups.google.com/g/spacevim/c/E5C9zXU_Xk8?pli=1)
+#   #                 Doesn't matter what, just need something here
+#   [layers.override_client_cmds]
+#     rust_analyzer = ["rust-analyzer"]
+#     # tsserver = ['typescript-language-server', '--stdio']
 
 # leaderf This layer provides a heavily customized LeaderF centric workflow
 # mail mail layer provides basic mail client for SpaceVim.

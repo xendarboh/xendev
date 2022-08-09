@@ -95,6 +95,17 @@ function! myspacevim#after() abort
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
   """"""""""""""""""
+  " CoC
+  """"""""""""""""""
+
+  " 2022-08-08: Use <cr> to confirm completion (for autoImports)
+  " https://github.com/neoclide/coc.nvim/wiki/Completion-with-sources#use-cr-to-confirm-completion
+  " For features like textEdit and additionalTextEdits (mostly used by automatic import feature)
+  " of LSP to work, you have to confirm completion by coc#pum#confirm()
+  inoremap <expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
+
+
+  """"""""""""""""""
   " neoformat
   """"""""""""""""""
 
@@ -156,6 +167,9 @@ function! myspacevim#after() abort
 
   let g:neomake_c_enabled_makers   = ['clangtidy']
   let g:neomake_cpp_enabled_makers = ['clangtidy']
+
+  let g:neomake_solidity_enabled_makers = ['solhint']
+
   " let g:neomake_javascript_enabled_makers = ['eslint']
   " let g:neomake_jsx_enabled_makers = ['eslint']
   " let g:neomake_typescript_enabled_makers = ['eslint']

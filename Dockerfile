@@ -377,6 +377,10 @@ RUN mkdir -p ~/.tmux/plugins \
 ####################################
 RUN curl -sLf https://spacevim.org/install.sh | bash
 
+# use specific spacevim release
+# ARG _SPACEVIM_VERSION=v2.0.0
+# RUN cd /home/${_USER}/.SpaceVim && git checkout ${_SPACEVIM_VERSION}
+
 # 2020-12-15 fix System error while opening ShaDa file: no such file or directory
 RUN touch /tmp/main.shada
 
@@ -412,6 +416,8 @@ RUN nvim --headless \
     coc-json \
     coc-markdownlint \
     coc-sh \
+    coc-solidity \
+    coc-tsserver \
     coc-toml \
     coc-yaml \
   ' \
