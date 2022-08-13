@@ -348,19 +348,13 @@ RUN mkdir -p ${XENDEV_DIR}
 COPY --chown=${_USER}:${_USER} . ${XENDEV_DIR}
 
 # link configuration files so that a mounted volume may override at container execution time
-RUN echo \
-  && ln -s ${XENDEV_DIR}/conf/bash_aliases          /home/${_USER}/.bash_aliases \
-  && ln -s ${XENDEV_DIR}/conf/bash_local            /home/${_USER}/.bash_local \
-  && ln -s ${XENDEV_DIR}/conf/bash_prompt           /home/${_USER}/.bash_prompt \
-  && ln -s ${XENDEV_DIR}/conf/tmux.conf             /home/${_USER}/.tmux.conf
-
-# 2020-04-20: Workaround upstream SpaceVim bug that breaks rooter when .SpaceVim.d is a symlink
-# https://github.com/SpaceVim/SpaceVim/issues/4152
-RUN mkdir -p /home/${_USER}/.SpaceVim.d \
-  && ln -s ${XENDEV_DIR}/conf/SpaceVim.d/autoload            /home/${_USER}/.SpaceVim.d/autoload \
-  && ln -s ${XENDEV_DIR}/conf/SpaceVim.d/coc-settings.json   /home/${_USER}/.SpaceVim.d/coc-settings.json \
-  && ln -s ${XENDEV_DIR}/conf/SpaceVim.d/colorizer-palettes  /home/${_USER}/.SpaceVim.d/colorizer-palettes \
-  && ln -s ${XENDEV_DIR}/conf/SpaceVim.d/init.toml           /home/${_USER}/.SpaceVim.d/init.toml
+RUN ln -sv \
+    ${XENDEV_DIR}/conf/.SpaceVim.d \
+    ${XENDEV_DIR}/conf/.bash_aliases \
+    ${XENDEV_DIR}/conf/.bash_local \
+    ${XENDEV_DIR}/conf/.bash_prompt \
+    ${XENDEV_DIR}/conf/.tmux.conf \
+  /home/${_USER}/
 
 # enable local bash configuration
 RUN /bin/echo -e "\ntest -f ~/.bash_local && . ~/.bash_local\n" >> .bashrc
