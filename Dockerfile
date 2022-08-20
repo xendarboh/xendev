@@ -37,6 +37,7 @@ RUN apt update \
   build-essential \
   curl \
   dos2unix \
+  fish \
   gpg-agent \
   htop \
   jq \
@@ -57,6 +58,7 @@ RUN apt update \
   sudo \
   tmux \
   tree \
+  tzdata \
   units \
   unzip \
   wget \
@@ -240,7 +242,6 @@ RUN pip install codemod
 
 # install spacevim things
 RUN apt update && apt install --no-install-recommends -y -q \
-  fish \
   fontconfig \
   libtool-bin \
   lua5.3 \
@@ -249,6 +250,9 @@ RUN apt update && apt install --no-install-recommends -y -q \
   xfonts-utils \
   && rm -rf /var/lib/apt/lists/*
 RUN pip install pipenv # necessary?
+
+# install starship cross-shell prompt
+RUN curl -sS https://starship.rs/install.sh | sh -s -- --yes
 
 # create user, grant sudo access
 RUN useradd -m -s /bin/bash -u ${_USER_ID} -G ${_USER_GROUPS} ${_USER} \
@@ -289,6 +293,10 @@ RUN if [ "${XENDEV_CIRCOM_INSTALL}" = "1" ]; then \
     && cargo build --release \
     && cargo install --path circom \
   ; fi
+
+# install rust things
+RUN cargo install \
+  exa
 
 # install cpanminus for installing perl modules
 # running cpanm gives suggestion to install local::lib, so do that
@@ -331,13 +339,25 @@ RUN git clone \
   https://github.com/magicmonty/bash-git-prompt.git ~/.bash-git-prompt
 
 # install fzf
-RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf \
-  && ~/.fzf/install --all --no-fish --no-zsh
+RUN git clone \
+    --depth 1 \
+    https://github.com/junegunn/fzf.git ~/.fzf \
+  && ~/.fzf/install \
+    --all \
+    --no-zsh
 
 # install extra bash things
 RUN mkdir ~/.bash \
   && wget -O ~/.bash/forgit.plugin.sh \
     https://raw.githubusercontent.com/wfxr/forgit/master/forgit.plugin.zsh
+
+# install extra fish things
+SHELL ["/bin/fish", "--login", "-c"]
+RUN curl -sL https://git.io/fisher | source \
+  && fisher install jorgebucaran/fisher \
+  && fisher install jomik/fish-gruvbox \
+  && fisher install wfxr/forgit
+SHELL ["/bin/bash", "--login", "-c"]
 
 # 2020-12-15: fix b0rking line endings on pxlf
 # 2022-06-18: location changed; install with npm, not yarn
@@ -354,7 +374,13 @@ RUN ln -sv \
     ${XENDEV_DIR}/conf/.bash_local \
     ${XENDEV_DIR}/conf/.bash_prompt \
     ${XENDEV_DIR}/conf/.tmux.conf \
-  /home/${_USER}/
+  /home/${_USER}/ \
+  && ln -sv \
+    ${XENDEV_DIR}/conf/.config/starship.toml \
+  /home/${_USER}/.config/ \
+  && ln -svf \
+    ${XENDEV_DIR}/conf/.config/fish/config.fish \
+    /home/${_USER}/.config/fish/config.fish
 
 # enable local bash configuration
 RUN /bin/echo -e "\ntest -f ~/.bash_local && . ~/.bash_local\n" >> .bashrc
@@ -381,10 +407,10 @@ RUN touch /tmp/main.shada
 # install plugins
 # https://github.com/SpaceVim/SpaceVim/issues/3477#issuecomment-619203729
 RUN nvim --headless +"call dein#install#_update([], 'update', 0)" +qall
+# RUN nvim --headless +'call dein#install#_update([], "install", v:false)' +qall
 
-# this also works, it's used by the upstream Dockerfile, but is not as complete/current as above
-# https://github.com/SpaceVim/SpaceVim/blob/master/docker/Dockerfile.nvim-python3
-# RUN nvim --headless +'call dein#install()' +qall
+# this is ~redundant to the above but can increase visibility of vim plugin errors
+RUN nvim --headless +'call dein#install()' +qall
 
 # 2021-04-14: minor: prevent vim first run warning: startify: Can't read viminfo file.
 RUN nvim --headless +e /tmp/tmp +qall

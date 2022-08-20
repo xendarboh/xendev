@@ -1,0 +1,17 @@
+format = """
+$all\
+"""
+
+right_format = """
+$time\
+"""
+
+# remove '⬢ [Systemd]'
+# https://github.com/starship/starship/issues/4216
+[container]
+disabled=true
+
+[time]
+disabled = false
+format = '[  $time ]($style) '
+time_format = "%Y-%m-%d %H:%M:%S"

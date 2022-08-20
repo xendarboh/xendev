@@ -17,7 +17,9 @@ A dockerized terminal-based vim-centric development environment.
 - [cpanminus](https://github.com/miyagawa/cpanminus): get, unpack, build and install modules from CPAN
 - [diff-so-fancy](https://github.com/so-fancy/diff-so-fancy): Good-lookin' diffs. Actually… nah… The best-lookin' diffs
 - [entr](https://github.com/eradman/entr): Run arbitrary commands when files change
+- [exa](https://github.com/ogham/exa): A modern replacement for ‘ls’
 - [fish-shell](https://github.com/fish-shell/fish-shell): The user-friendly command line shell
+  - [fisher](https://github.com/jorgebucaran/fisher): A plugin manager for Fish
 - [forgit](https://github.com/wfxr/forgit): A utility tool powered by fzf for using git interactively
 - [fzf](https://github.com/junegunn/fzf): A command-line fuzzy finder
 - [git](https://github.com/git/git), [git-lfs](https://github.com/git-lfs/git-lfs): Git extension for versioning large files
@@ -34,6 +36,7 @@ A dockerized terminal-based vim-centric development environment.
 - [silversearcher-ag](https://github.com/ggreer/the_silver_searcher): A code-searching tool similar to ack, but faster
 - [solc-js](https://github.com/ethereum/solc-js): Javascript bindings for the Solidity compiler
 - [solidity](https://github.com/ethereum/solidity): Solidity, the Smart Contract Programming Language
+- [starship](https://github.com/starship/starship): The minimal, blazing-fast, and infinitely customizable prompt for any shell!
 - [taskbook](https://github.com/klaussinani/taskbook): Tasks, boards & notes for the command-line habitat
 - [ts-lehre](https://github.com/heavenshell/ts-lehre): Generate document block(JsDoc, EsDoc, TsDoc) from source code
 - [xclip](https://github.com/astrand/xclip): Command line interface to the X11 clipboard

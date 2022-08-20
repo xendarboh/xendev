@@ -1,4 +1,9 @@
 function! myspacevim#before() abort
+  " 2022-08-16 FIX error: Cannot find the "neovim" node package.
+  " Command to start the Node host. Setting this makes startup faster.
+  " https://github.com/neovim/neovim/commit/0093c25dd3795972b953f9914cc33fc38c5d9dbc
+  let g:node_host_prog = '/usr/local/bin/neovim-node-host'
+
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   " >= 2021
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

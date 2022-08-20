@@ -39,9 +39,9 @@ dirmap() {
     to=$(echo "$line" | cut -d':' -f2)
 
     if [[ $PWD =~ ^$from ]]; then
-      echo "[xendev] directory map: $from --> $to"
-      NEWPWD=$(echo "$PWD" | sed -e "s|^${from}|${to}|")
-      cd ${NEWPWD}
+      XENDEV_DIRMAP_MSG="[xendev] directory map: $from --> $to"
+      XENDEV_DIRMAP_PWD=$(echo "$PWD" | sed -e "s|^${from}|${to}|")
+      echo ${XENDEV_DIRMAP_MSG} && cd ${XENDEV_DIRMAP_PWD}
     fi
   done
 }
@@ -72,3 +72,16 @@ GIT_PROMPT_SHOW_UNTRACKED_FILES=normal # can be no, normal or all; determines co
 # GIT_PROMPT_THEME_FILE=~/.git-prompt-colors.sh
 GIT_PROMPT_THEME=Solarized # use theme optimized for solarized color scheme
 source ~/.bash-git-prompt/gitprompt.sh
+
+
+####################################
+# drop into fish shell
+# - only if the parent process is not fish
+# - allow bash commands (bash -c)
+# https://wiki.archlinux.org/title/fish#Modify_.bashrc_to_drop_into_fish
+####################################
+
+if [[ $(ps --no-header --pid=$PPID --format=comm) != "fish" && -z ${BASH_EXECUTION_STRING} ]]
+then
+  exec fish
+fi
