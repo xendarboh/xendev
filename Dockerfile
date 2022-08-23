@@ -326,8 +326,11 @@ RUN wget -O bin/kpcli http://downloads.sourceforge.net/project/kpcli/kpcli-${_KP
     Convert::Base32 \
     Crypt::Rijndael \
     Data::Password \
+    Data::Password::passwdqc \
     File::KeePass \
+    Math::Random::ISAAC \
     Sort::Naturally \
+    Sub::Install \
     Term::ReadKey \
     Term::ReadLine::Gnu \
     Term::ShellUI \
