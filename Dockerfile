@@ -31,59 +31,59 @@ RUN apt update \
     ca-certificates \
     software-properties-common \
   && apt install --no-install-recommends -y -q \
-  ack-grep \
-  automake \
-  bash-completion \
-  build-essential \
-  curl \
-  dos2unix \
-  fish \
-  gpg-agent \
-  htop \
-  jq \
-  less \
-  libtool \
-  locales \
-  man-db \
-  openssh-client \
-  pkg-config \
-  psmisc \
-  python3-pip \
-  python3-pygments \
-  rake \
-  rsync \
-  silversearcher-ag \
-  sqlite3 \
-  sshfs \
-  sudo \
-  tmux \
-  tree \
-  tzdata \
-  units \
-  unzip \
-  wget \
-  whiptail \
-  xsel \
-  zip \
-  # https://github.com/mapbox/node-sqlite3/issues/1443
-  python-is-python3 \
-  # for spacevim layer tags:
-  exuberant-ctags \
-  global \
-  # for bfg-repo-cleaner:
-  openjdk-11-jre \
-  # for flow-bin:
-  libelf1 \
-  # for kpcli:
-  libreadline-dev \
-  xclip \
-  # for neovim (build dep):
-  cmake \
-  # for tomb:
-  cryptsetup \
-  gettext \
-  pinentry-curses \
-  zsh \
+    ack-grep \
+    automake \
+    bash-completion \
+    build-essential \
+    curl \
+    dos2unix \
+    fish \
+    gpg-agent \
+    htop \
+    jq \
+    less \
+    libtool \
+    locales \
+    man-db \
+    openssh-client \
+    pkg-config \
+    psmisc \
+    python3-pip \
+    python3-pygments \
+    rake \
+    rsync \
+    silversearcher-ag \
+    sqlite3 \
+    sshfs \
+    sudo \
+    tmux \
+    tree \
+    tzdata \
+    units \
+    unzip \
+    wget \
+    whiptail \
+    xsel \
+    zip \
+    # https://github.com/mapbox/node-sqlite3/issues/1443
+    python-is-python3 \
+    # for spacevim layer tags:
+    exuberant-ctags \
+    global \
+    # for bfg-repo-cleaner:
+    openjdk-11-jre \
+    # for flow-bin:
+    libelf1 \
+    # for kpcli:
+    libreadline-dev \
+    xclip \
+    # for neovim (build dep):
+    cmake \
+    # for tomb:
+    cryptsetup \
+    gettext \
+    pinentry-curses \
+    zsh \
   && rm -rf /var/lib/apt/lists/*
 
 # set locale
@@ -241,13 +241,14 @@ RUN pip install grip
 RUN pip install codemod
 
 # install spacevim things
-RUN apt update && apt install --no-install-recommends -y -q \
-  fontconfig \
-  libtool-bin \
-  lua5.3 \
-  ninja-build \
-  wamerican \
-  xfonts-utils \
+RUN apt update \
+  && apt install --no-install-recommends -y -q \
+    fontconfig \
+    libtool-bin \
+    lua5.3 \
+    ninja-build \
+    wamerican \
+    xfonts-utils \
   && rm -rf /var/lib/apt/lists/*
 RUN pip install pipenv # necessary?
 
@@ -354,9 +355,10 @@ RUN mkdir ~/.bash \
 # install extra fish things
 SHELL ["/bin/fish", "--login", "-c"]
 RUN curl -sL https://git.io/fisher | source \
-  && fisher install jorgebucaran/fisher \
-  && fisher install jomik/fish-gruvbox \
-  && fisher install wfxr/forgit
+  && fisher install \
+    jorgebucaran/fisher \
+    jomik/fish-gruvbox \
+    wfxr/forgit
 SHELL ["/bin/bash", "--login", "-c"]
 
 # 2020-12-15: fix b0rking line endings on pxlf
@@ -374,10 +376,10 @@ RUN ln -sv \
     ${XENDEV_DIR}/conf/.bash_local \
     ${XENDEV_DIR}/conf/.bash_prompt \
     ${XENDEV_DIR}/conf/.tmux.conf \
-  /home/${_USER}/ \
+    /home/${_USER}/ \
   && ln -sv \
     ${XENDEV_DIR}/conf/.config/starship.toml \
-  /home/${_USER}/.config/ \
+    /home/${_USER}/.config/ \
   && ln -svf \
     ${XENDEV_DIR}/conf/.config/fish/config.fish \
     /home/${_USER}/.config/fish/config.fish
