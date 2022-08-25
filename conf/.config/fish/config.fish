@@ -6,6 +6,7 @@ starship init fish | source
 
 theme_gruvbox dark medium
 
+# forgit requires SHELL=/bin/fish
 set SHELL /bin/fish
 
 # add all emacs-mode bindings to vi-mode
@@ -56,3 +57,6 @@ abbr la 'exa --all'
 abbr lt 'exa --tree'
 
 abbr s 'git status'
+
+# 2022-08 FIX: (neo)vim format buffer (prettier) inserts chars with SHELL=/bin/fish
+abbr vim 'set SHELL /bin/bash; vim'
