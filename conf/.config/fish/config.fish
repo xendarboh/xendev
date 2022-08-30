@@ -57,6 +57,7 @@ abbr la 'exa --all'
 abbr lt 'exa --tree'
 
 abbr s 'git status'
+abbr gl 'git log --show-signature'
 
 # 2022-08 FIX: (neo)vim format buffer (prettier) inserts chars with SHELL=/bin/fish
 abbr vim 'set SHELL /bin/bash; vim'

@@ -11,4 +11,7 @@ services:
     hostname: xendev
     tty: true
     volumes:
-      - .:/src/xendev
+      - .:/home/xendev/src/xendev
+      - ~/.gnupg:/home/xendev/.gnupg:rw
+      - ~/.ssh:/home/xendev/.ssh:ro
+      - ~/src:/src/

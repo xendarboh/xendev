@@ -3,6 +3,8 @@ export PATH=~/.go/bin:${GOPATH}:${PATH}
 export PATH=~/.yarn/bin:${PATH}
 export PATH=./node_modules/.bin:${PATH}
 
+export GPG_TTY=$(tty)
+
 export TERM=screen-256color
 
 export EDITOR=/usr/bin/vim
