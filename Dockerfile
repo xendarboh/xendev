@@ -183,6 +183,7 @@ RUN npm install --location=global \
   prettier \
   prettier-plugin-solidity \
   pretty-xl-formula \
+  retypeapp \
   solc \
   taskbook \
   tern \
