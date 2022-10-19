@@ -84,13 +84,13 @@ A dockerized terminal-based vim-centric development environment.
 - use of a terminal with:
   - truecolor support (use scripts in [test/](test/) to test support inside `xendev`)
   - a patched font like one from [nerd-fonts](https://github.com/ryanoasis/nerd-fonts) with [powerline](https://github.com/powerline/fonts) symbols
-- docker-compose
+- docker compose
 - make (or manually run the commands in the [Makefile](Makefile))
 
 ### Build
 
 - Optionally configure things in [.env](.env)
-- `cd xendev/ && make build` (or `docker-compose build`)
+- `cd xendev/ && make build` (or `docker compose build`)
 
 ### Run
 

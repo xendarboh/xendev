@@ -12,8 +12,8 @@ help: ## print this help message with some nifty mojo
 
 .PHONY: build
 build: ## build docker image
-	time docker-compose build
+	time docker compose build
 
 .PHONY: rebuild
 rebuild: ## (re)build docker image with --no-cache --pull
-	time docker-compose build --no-cache --pull
+	time docker compose build --no-cache --pull
