@@ -297,6 +297,9 @@
   name = "lang#vim"
 
 # lang#vue This layer adds Vue language support to SpaceVim
+[[layers]]
+  name = "lang#vue"
+
 # lang#WebAssembly This layer adds WebAssembly support to SpaceVim
 # lang#wolfram This layer is for wolfram development, provides syntax checking, code runner and repl support for wolfram files.
 
