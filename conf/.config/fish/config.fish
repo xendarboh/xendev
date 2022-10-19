@@ -6,6 +6,9 @@ starship init fish | source
 
 theme_gruvbox dark medium
 
+# gpg needs this
+export GPG_TTY=(tty)
+
 # forgit requires SHELL=/bin/fish
 set SHELL /bin/fish
 
