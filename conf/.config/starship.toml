@@ -9,7 +9,12 @@ $time\
 # remove '⬢ [Systemd]'
 # https://github.com/starship/starship/issues/4216
 [container]
-disabled=true
+disabled = true
+
+[directory]
+truncate_to_repo = false
+truncation_length = 8
+truncation_symbol = "…/"
 
 [time]
 disabled = false
