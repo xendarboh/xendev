@@ -9,6 +9,7 @@ services:
     image: xen/dev
     container_name: xendev
     hostname: xendev
+    init: true
     tty: true
     volumes:
       - .:/home/xendev/src/xendev
