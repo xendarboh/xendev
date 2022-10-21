@@ -180,6 +180,7 @@ RUN npm install --location=global \
   javascript-typescript-langserver \
   neovim \
   npm-check \
+  npm-check-updates \
   prettier \
   prettier-plugin-solidity \
   pretty-xl-formula \
