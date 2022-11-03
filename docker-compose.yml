@@ -4,8 +4,8 @@ services:
     build:
       context: ./
       args:
-        - XENDEV_CIRCOM_INSTALL=${XENDEV_CIRCOM_INSTALL}
-        - XENDEV_LLVM_INSTALL=${XENDEV_LLVM_INSTALL}
+        - INSTALL_CIRCOM=${INSTALL_CIRCOM}
+        - INSTALL_LLVM=${INSTALL_LLVM}
     image: xen/dev
     container_name: xendev
     hostname: xendev

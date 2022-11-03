@@ -1,15 +1,22 @@
 FROM ubuntu:rolling
 
 # configuration
-ARG _KPCLI_VERSION=3.8.1
 ARG _LOCALE=en_US.UTF-8
-ARG _NODE_VERSION=v18.12.0
-ARG _RIPGREP_VERSION=13.0.0
-ARG _TOMB_VERSION=v2.9
-ARG _ENTR_VERSION=5.2
 ARG _USER=xendev
 ARG _USER_GROUPS=audio,dialout,video
 ARG _USER_ID=1000
+
+# optional installs
+ARG INSTALL_CIRCOM=0
+ARG INSTALL_LLVM=0
+
+# versions
+ARG VERSION_ENTR=5.2
+ARG VERSION_KPCLI=3.8.1
+ARG VERSION_LLVM=14
+ARG VERSION_NODE=v18.12.0
+ARG VERSION_RIPGREP=13.0.0
+ARG VERSION_TOMB=v2.9
 
 # persist _USER for use in inheriting images
 ENV XENDEV_USER ${_USER}
@@ -101,16 +108,14 @@ RUN apt-add-repository ppa:git-core/ppa \
 
 # install latest clang tools
 # https://apt.llvm.org/
-ARG XENDEV_LLVM_INSTALL=0
-ARG XENDEV_LLVM_VERSION=14
-RUN if [ "${XENDEV_LLVM_INSTALL}" = "1" ]; then \
+RUN if [ "${INSTALL_LLVM}" = "1" ]; then \
     cd /tmp \
     && wget https://apt.llvm.org/llvm.sh \
     && chmod +x llvm.sh \
-    && ./llvm.sh ${XENDEV_LLVM_VERSION} all \
+    && ./llvm.sh ${VERSION_LLVM} all \
     && rm -f llvm.sh \
-    && for x in $(ls /usr/bin/clang*${XENDEV_LLVM_VERSION}); do \
-        ln -sv $x $(echo $x | sed -e "s/-${XENDEV_LLVM_VERSION}//"); \
+    && for x in $(ls /usr/bin/clang*${VERSION_LLVM}); do \
+        ln -sv $x $(echo $x | sed -e "s/-${VERSION_LLVM}//"); \
       done \
   ; fi
 
@@ -127,14 +132,18 @@ RUN wget "https://search.maven.org/classic/remote_content?g=com.madgag&a=bfg&v=L
   && chmod 755 /usr/local/bin/bfg
 
 # install tomb
-RUN git clone --branch ${_TOMB_VERSION} --depth 1 https://github.com/dyne/Tomb.git /usr/local/src/tomb \
+RUN git clone \
+    --branch ${VERSION_TOMB} \
+    --depth 1 \
+    https://github.com/dyne/Tomb.git \
+    /usr/local/src/tomb \
   && cd /usr/local/src/tomb \
   && make install \
   && rm -rf /usr/local/src/tomb
 
 # install entr
 RUN git clone \
-    --branch ${_ENTR_VERSION} \
+    --branch ${VERSION_ENTR} \
     --depth 1 \
     https://github.com/eradman/entr.git \
     /tmp/entr \
@@ -146,8 +155,8 @@ RUN git clone \
 
 # install ripgrep (used by spacevim/vim-todo)
 # @todo with ubuntu:cosmic do `apt install ripgrep`
-RUN export F="ripgrep_${_RIPGREP_VERSION}_amd64.deb" \
-  && curl -LO "https://github.com/BurntSushi/ripgrep/releases/download/${_RIPGREP_VERSION}/${F}" \
+RUN export F="ripgrep_${VERSION_RIPGREP}_amd64.deb" \
+  && curl -LO "https://github.com/BurntSushi/ripgrep/releases/download/${VERSION_RIPGREP}/${F}" \
   && dpkg -i "${F}"
 
 # # install the platinum searcher
@@ -161,9 +170,9 @@ RUN export F="ripgrep_${_RIPGREP_VERSION}_amd64.deb" \
 #   && rm -f ${F}
 
 # install node
-RUN export F="node-${_NODE_VERSION}-linux-x64.tar.xz" \
+RUN export F="node-${VERSION_NODE}-linux-x64.tar.xz" \
   && cd /tmp \
-  && wget http://nodejs.org/dist/${_NODE_VERSION}/${F} \
+  && wget http://nodejs.org/dist/${VERSION_NODE}/${F} \
   && tar \
     --exclude='ChangeLog' \
     --exclude='LICENSE' \
@@ -293,8 +302,7 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 # install latest circom
 # https://docs.circom.io/getting-started/installation/#installing-dependencies
-ARG XENDEV_CIRCOM_INSTALL=0
-RUN if [ "${XENDEV_CIRCOM_INSTALL}" = "1" ]; then \
+RUN if [ "${INSTALL_CIRCOM}" = "1" ]; then \
     cd /tmp \
     && git clone https://github.com/iden3/circom.git \
     && cd circom \
@@ -322,7 +330,7 @@ RUN eval $(perl -I ~/perl5/lib/perl5/ -Mlocal::lib) \
   && rm -rf .cpanm
 
 # install latest kpcli and dependencies
-RUN wget -O bin/kpcli http://downloads.sourceforge.net/project/kpcli/kpcli-${_KPCLI_VERSION}.pl \
+RUN wget -O bin/kpcli http://downloads.sourceforge.net/project/kpcli/kpcli-${VERSION_KPCLI}.pl \
   && chmod +x bin/kpcli \
   && eval $(perl -I ~/perl5/lib/perl5/ -Mlocal::lib) \
   && bin/cpanm --quiet --notest \
@@ -347,12 +355,14 @@ RUN wget -O bin/kpcli http://downloads.sourceforge.net/project/kpcli/kpcli-${_KP
 RUN git clone \
   --depth 1 \
   --branch master \
-  https://github.com/magicmonty/bash-git-prompt.git ~/.bash-git-prompt
+  https://github.com/magicmonty/bash-git-prompt.git \
+  ~/.bash-git-prompt
 
 # install fzf
 RUN git clone \
     --depth 1 \
-    https://github.com/junegunn/fzf.git ~/.fzf \
+    https://github.com/junegunn/fzf.git \
+    ~/.fzf \
   && ~/.fzf/install \
     --all \
     --no-zsh
