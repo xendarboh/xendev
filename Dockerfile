@@ -6,6 +6,7 @@ ARG _LOCALE=en_US.UTF-8
 ARG _NODE_VERSION=v18.12.0
 ARG _RIPGREP_VERSION=13.0.0
 ARG _TOMB_VERSION=v2.9
+ARG _ENTR_VERSION=5.2
 ARG _USER=xendev
 ARG _USER_GROUPS=audio,dialout,video
 ARG _USER_ID=1000
@@ -132,7 +133,11 @@ RUN git clone --branch ${_TOMB_VERSION} --depth 1 https://github.com/dyne/Tomb.g
   && rm -rf /usr/local/src/tomb
 
 # install entr
-RUN git clone --depth 1 https://github.com/eradman/entr.git /tmp/entr \
+RUN git clone \
+    --branch ${_ENTR_VERSION} \
+    --depth 1 \
+    https://github.com/eradman/entr.git \
+    /tmp/entr \
   && cd /tmp/entr \
   && ./configure \
   && make test \
