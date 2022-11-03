@@ -30,19 +30,19 @@ function fish_greeting
 end
 
 function dirmap
-  set F "$XENDEV_DIR/conf.local/directory_map.txt"
-  test -f "$F" || return
-  for line in (cat "$F")
-    set from (echo "$line" | cut -d':' -f1)
-    set to (echo "$line" | cut -d':' -f2)
+    set F "$XENDEV_DIR/conf.local/directory_map.txt"
+    test -f "$F" || return
+    for line in (cat "$F")
+        set from (echo "$line" | cut -d':' -f1)
+        set to (echo "$line" | cut -d':' -f2)
 
-    set match (string match --regex ^$from $PWD)
-    if test ! -z "$match"
-      set XENDEV_DIRMAP_MSG "[xendev] directory map: $from --> $to"
-      set XENDEV_DIRMAP_PWD (echo "$PWD" | sed -e "s|^$from|$to|")
-      echo $XENDEV_DIRMAP_MSG && cd $XENDEV_DIRMAP_PWD
+        set match (string match --regex ^$from $PWD)
+        if test ! -z "$match"
+            set XENDEV_DIRMAP_MSG "[xendev] directory map: $from --> $to"
+            set XENDEV_DIRMAP_PWD (echo "$PWD" | sed -e "s|^$from|$to|")
+            echo $XENDEV_DIRMAP_MSG && cd $XENDEV_DIRMAP_PWD
+        end
     end
-  end
 end
 dirmap
 
@@ -55,12 +55,11 @@ alias exa="exa \
 --time-style=long-iso \
 "
 
-abbr ll 'exa'
+abbr ll exa
 abbr la 'exa --all'
 abbr lt 'exa --tree'
 
 abbr s 'git status'
 abbr gl 'git log --show-signature'
 
-# 2022-08 FIX: (neo)vim format buffer (prettier) inserts chars with SHELL=/bin/fish
-abbr vim 'set SHELL /bin/bash; vim'
+# vim:sw=4:ts=4:et:
