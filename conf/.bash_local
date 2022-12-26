@@ -1,6 +1,6 @@
 export GOPATH=~/go
 export PATH=~/.local/bin:${PATH}
-export PATH=~/.go/bin:${GOPATH}:${PATH}
+export PATH=~/.go/bin:${GOPATH}/bin:${PATH}
 export PATH=~/.yarn/bin:${PATH}
 export PATH=./node_modules/.bin:${PATH}
 
