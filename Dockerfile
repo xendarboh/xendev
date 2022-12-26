@@ -416,6 +416,7 @@ RUN /bin/echo -e "\ntest -f ~/.bash_local && . ~/.bash_local\n" >> .bashrc
 RUN mkdir -p ~/.tmux/plugins \
   && cd ~/.tmux/plugins \
   && git clone --depth 1 https://github.com/tmux-plugins/tpm.git \
+  && git clone --depth 1 https://github.com/tmux-plugins/tmux-resurrect \
   && git clone --depth 1 https://github.com/egel/tmux-gruvbox.git
 
 
