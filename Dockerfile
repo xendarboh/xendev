@@ -302,8 +302,16 @@ RUN curl -LO https://get.golang.org/$(uname)/go_installer \
   && rm go_installer \
   && rm ~/.bash_profile
 
+# install go things
+RUN go install \
+  github.com/jesseduffield/lazygit@latest
+
 # install rust
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
+# install rust things
+RUN cargo install \
+  exa
 
 # install latest circom
 # https://docs.circom.io/getting-started/installation/#installing-dependencies
@@ -314,10 +322,6 @@ RUN if [ "${INSTALL_CIRCOM}" = "1" ]; then \
     && cargo build --release \
     && cargo install --path circom \
   ; fi
-
-# install rust things
-RUN cargo install \
-  exa
 
 # install cpanminus for installing perl modules
 # running cpanm gives suggestion to install local::lib, so do that

@@ -12,7 +12,6 @@ A dockerized terminal-based vim-centric development environment.
 - [Node.js](https://github.com/nodejs/node): Node.js JavaScript runtime
 - [Tomb](https://github.com/dyne/Tomb): the Crypto Undertaker
 - [bash-git-prompt](https://github.com/magicmonty/bash-git-prompt): An informative and fancy bash prompt for Git users
-- [bfg-repo-cleaner](https://github.com/rtyley/bfg-repo-cleaner): Removes large or troublesome blobs like git-filter-branch does, but faster
 - [coc.nvim](https://github.com/neoclide/coc.nvim): Conquer of Completion; Make your Vim/Neovim as smart as VSCode
 - [codemod](https://github.com/facebookarchive/codemod): A tool/library to assist with large-scale codebase refactors
 - [cpanminus](https://github.com/miyagawa/cpanminus): get, unpack, build and install modules from CPAN
@@ -21,9 +20,12 @@ A dockerized terminal-based vim-centric development environment.
 - [exa](https://github.com/ogham/exa): A modern replacement for ‘ls’
 - [fish-shell](https://github.com/fish-shell/fish-shell): The user-friendly command line shell
   - [fisher](https://github.com/jorgebucaran/fisher): A plugin manager for Fish
-- [forgit](https://github.com/wfxr/forgit): A utility tool powered by fzf for using git interactively
 - [fzf](https://github.com/junegunn/fzf): A command-line fuzzy finder
-- [git](https://github.com/git/git), [git-lfs](https://github.com/git-lfs/git-lfs): Git extension for versioning large files
+- [git](https://github.com/git/git)
+  - [bfg-repo-cleaner](https://github.com/rtyley/bfg-repo-cleaner): Removes large or troublesome blobs like git-filter-branch does, but faster
+  - [forgit](https://github.com/wfxr/forgit): A utility tool powered by fzf for using git interactively
+  - [git-lfs](https://github.com/git-lfs/git-lfs): Git extension for versioning large files
+  - [lazygit](https://github.com/jesseduffield/lazygit): Simple terminal UI for git commands
 - [go](https://github.com/golang/go): The Go programming language
 - [grip](https://github.com/joeyespo/grip): Preview GitHub README.md files locally before committing them
 - [import-js](https://github.com/galooshi/import-js): A tool to simplify importing JS modules
