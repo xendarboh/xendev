@@ -367,6 +367,9 @@ RUN git clone \
     --all \
     --no-zsh
 
+# install zoxide
+RUN curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
+
 # install extra bash things
 RUN mkdir ~/.bash \
   && wget -O ~/.bash/forgit.plugin.sh \

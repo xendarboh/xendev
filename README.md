@@ -41,6 +41,7 @@ A dockerized terminal-based vim-centric development environment.
 - [ts-lehre](https://github.com/heavenshell/ts-lehre): Generate document block(JsDoc, EsDoc, TsDoc) from source code
 - [xclip](https://github.com/astrand/xclip): Command line interface to the X11 clipboard
 - [yarn](https://github.com/yarnpkg/yarn): Fast, reliable, and secure dependency management
+- [zoxide](https://github.com/ajeetdsouza/zoxide): A smarter cd command
 - [tmux](https://github.com/tmux/tmux): A terminal multiplexer
   - [tpm](https://github.com/tmux-plugins/tpm): Tmux Plugin Manager
   - [tmux-gruvbox](https://github.com/egel/tmux-gruvbox): Gruvbox color scheme for Tmux
