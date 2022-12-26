@@ -53,6 +53,7 @@ RUN apt update \
     libtool \
     locales \
     man-db \
+    ncdu \
     openssh-client \
     pkg-config \
     psmisc \

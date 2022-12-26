@@ -29,6 +29,7 @@ A dockerized terminal-based vim-centric development environment.
 - [jq](https://github.com/stedolan/jq): Command-line JSON processor
 - [kpcli](http://kpcli.sourceforge.net/): A command line interface for KeePass
 - [llvm-project](https://github.com/llvm/llvm-project): (clang) A collection of modular and reusable compiler and toolchain technologies
+- [ncdu](https://code.blicky.net/yorhel/ncdu): NCurses Disk Usage
 - [ninja-build](https://github.com/ninja-build/ninja): A small build system with a focus on speed
 - [platformio-core](https://github.com/platformio/platformio-core): A professional collaborative platform for embedded development
 - [prettier](https://github.com/prettier/prettier): Prettier is an opinionated code formatter
