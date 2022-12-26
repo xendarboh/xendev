@@ -12,7 +12,6 @@ A dockerized terminal-based vim-centric development environment.
   - [neovim-remote](https://github.com/mhinz/neovim-remote): Support for --remote and friends
 - [Node.js](https://github.com/nodejs/node): Node.js JavaScript runtime
 - [Tomb](https://github.com/dyne/Tomb): the Crypto Undertaker
-- [bash-git-prompt](https://github.com/magicmonty/bash-git-prompt): An informative and fancy bash prompt for Git users
 - [circom](https://github.com/iden3/circom): zkSnark circuit compiler
 - [codemod](https://github.com/facebookarchive/codemod): A tool/library to assist with large-scale codebase refactors
 - [cpanminus](https://github.com/miyagawa/cpanminus): get, unpack, build and install modules from CPAN

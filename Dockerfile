@@ -360,13 +360,6 @@ RUN wget -O bin/kpcli http://downloads.sourceforge.net/project/kpcli/kpcli-${VER
     Term::ShellUI \
   && rm -rf .cpanm
 
-# install ultimate git bash prompt
-RUN git clone \
-  --depth 1 \
-  --branch master \
-  https://github.com/magicmonty/bash-git-prompt.git \
-  ~/.bash-git-prompt
-
 # install fzf
 RUN git clone \
     --depth 1 \
