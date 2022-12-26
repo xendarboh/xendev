@@ -7,12 +7,13 @@ A dockerized terminal-based vim-centric development environment.
 ## Tools
 
 - [Neovim](https://github.com/neovim/neovim): Vim-fork focused on extensibility and usability
+  - [SpaceVim](https://github.com/SpaceVim/SpaceVim): A community-driven modular vim/neovim distribution - The ultimate vimrc
+  - [coc.nvim](https://github.com/neoclide/coc.nvim): Conquer of Completion; Make your Vim/Neovim as smart as VSCode
   - [neovim-remote](https://github.com/mhinz/neovim-remote): Support for --remote and friends
-- [SpaceVim](https://github.com/SpaceVim/SpaceVim): A community-driven modular vim/neovim distribution - The ultimate vimrc
 - [Node.js](https://github.com/nodejs/node): Node.js JavaScript runtime
 - [Tomb](https://github.com/dyne/Tomb): the Crypto Undertaker
 - [bash-git-prompt](https://github.com/magicmonty/bash-git-prompt): An informative and fancy bash prompt for Git users
-- [coc.nvim](https://github.com/neoclide/coc.nvim): Conquer of Completion; Make your Vim/Neovim as smart as VSCode
+- [circom](https://github.com/iden3/circom): zkSnark circuit compiler
 - [codemod](https://github.com/facebookarchive/codemod): A tool/library to assist with large-scale codebase refactors
 - [cpanminus](https://github.com/miyagawa/cpanminus): get, unpack, build and install modules from CPAN
 - [diff-so-fancy](https://github.com/so-fancy/diff-so-fancy): Good-lookin' diffs. Actually… nah… The best-lookin' diffs
@@ -38,42 +39,18 @@ A dockerized terminal-based vim-centric development environment.
 - [prettier](https://github.com/prettier/prettier): Prettier is an opinionated code formatter
 - [ripgrep](https://github.com/BurntSushi/ripgrep): recursively searches directories for a regex pattern while respecting your gitignore
 - [silversearcher-ag](https://github.com/ggreer/the_silver_searcher): A code-searching tool similar to ack, but faster
-- [solc-js](https://github.com/ethereum/solc-js): Javascript bindings for the Solidity compiler
 - [solidity](https://github.com/ethereum/solidity): Solidity, the Smart Contract Programming Language
+  - [solc-js](https://github.com/ethereum/solc-js): Javascript bindings for the Solidity compiler
 - [starship](https://github.com/starship/starship): The minimal, blazing-fast, and infinitely customizable prompt for any shell!
 - [taskbook](https://github.com/klaussinani/taskbook): Tasks, boards & notes for the command-line habitat
+- [tmux](https://github.com/tmux/tmux): A terminal multiplexer
+  - [tpm](https://github.com/tmux-plugins/tpm): Tmux Plugin Manager
+  - [tmux-gruvbox](https://github.com/egel/tmux-gruvbox): Gruvbox color scheme for Tmux
 - [ts-lehre](https://github.com/heavenshell/ts-lehre): Generate document block(JsDoc, EsDoc, TsDoc) from source code
 - [xclip](https://github.com/astrand/xclip): Command line interface to the X11 clipboard
 - [yarn](https://github.com/yarnpkg/yarn): Fast, reliable, and secure dependency management
 - [zoxide](https://github.com/ajeetdsouza/zoxide): A smarter cd command
-- [tmux](https://github.com/tmux/tmux): A terminal multiplexer
-  - [tpm](https://github.com/tmux-plugins/tpm): Tmux Plugin Manager
-  - [tmux-gruvbox](https://github.com/egel/tmux-gruvbox): Gruvbox color scheme for Tmux
 - and more...
-
-## DX (vim)
-
-- Language Server Protocol (LSP) servers for languages including:
-  - bash
-  - c/c++
-  - css
-  - dockerfile
-  - eslint
-  - html
-  - javascript
-  - json
-  - typescript
-- Code formatting support for languages including:
-  - c/c++
-  - css
-  - html
-  - javascript
-  - json
-  - markdown
-  - solidity
-  - typescript
-  - xml
-  - yaml
 
 ## Preferences
 
