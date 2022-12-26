@@ -7,6 +7,7 @@ A dockerized terminal-based vim-centric development environment.
 ## Tools
 
 - [Neovim](https://github.com/neovim/neovim): Vim-fork focused on extensibility and usability
+  - [neovim-remote](https://github.com/mhinz/neovim-remote): Support for --remote and friends
 - [SpaceVim](https://github.com/SpaceVim/SpaceVim): A community-driven modular vim/neovim distribution - The ultimate vimrc
 - [Node.js](https://github.com/nodejs/node): Node.js JavaScript runtime
 - [Tomb](https://github.com/dyne/Tomb): the Crypto Undertaker
