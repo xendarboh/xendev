@@ -56,7 +56,7 @@ alias exa="exa \
 --time-style=long-iso \
 "
 
-abbr ll exa
+abbr ll 'exa --sort changed'
 abbr la 'exa --all'
 abbr lt 'exa --tree'
 
