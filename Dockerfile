@@ -6,10 +6,6 @@ ARG _USER=xendev
 ARG _USER_GROUPS=audio,dialout,video
 ARG _USER_ID=1000
 
-# optional installs
-ARG INSTALL_CIRCOM=0
-ARG INSTALL_LLVM=0
-
 # versions
 ARG VERSION_ENTR=5.2
 ARG VERSION_KPCLI=3.8.1
@@ -79,8 +75,6 @@ RUN apt update \
     # for spacevim layer tags:
     exuberant-ctags \
     global \
-    # for bfg-repo-cleaner:
-    openjdk-11-jre \
     # for flow-bin:
     libelf1 \
     # for kpcli:
@@ -109,7 +103,9 @@ RUN apt-add-repository ppa:git-core/ppa \
 
 # install latest clang tools
 # https://apt.llvm.org/
-RUN if [ "${INSTALL_LLVM}" = "1" ]; then \
+ARG INSTALL_LLVM=0
+RUN \
+  if [ "${INSTALL_LLVM}" = "1" ]; then \
     cd /tmp \
     && wget https://apt.llvm.org/llvm.sh \
     && chmod +x llvm.sh \
@@ -128,9 +124,19 @@ RUN apt-add-repository ppa:ethereum/ethereum \
   && rm -rf /var/lib/apt/lists/*
 
 # install bfg-repo-cleaner
-RUN wget "https://search.maven.org/classic/remote_content?g=com.madgag&a=bfg&v=LATEST" \
-    -O /usr/local/bin/bfg \
-  && chmod 755 /usr/local/bin/bfg
+ARG INSTALL_BFG=0
+RUN \
+  if [ "${INSTALL_BFG}" = "1" ]; then \
+    apt-get update \
+    && apt-get install --no-install-recommends -y -q \
+      openjdk-11-jre \
+    && rm -rf /var/lib/apt/lists/* \
+    && wget "https://search.maven.org/classic/remote_content?g=com.madgag&a=bfg&v=LATEST" \
+      -O /opt/bfg.jar \
+    && echo -e '#!/bin/bash\njava -jar /opt/bfg.jar ${@}' \
+      > /usr/local/bin/bfg \
+    && chmod 755 /usr/local/bin/bfg \
+  ; fi
 
 # install tomb
 RUN git clone \
@@ -315,7 +321,9 @@ RUN cargo install \
 
 # install latest circom
 # https://docs.circom.io/getting-started/installation/#installing-dependencies
-RUN if [ "${INSTALL_CIRCOM}" = "1" ]; then \
+ARG INSTALL_CIRCOM=0
+RUN \
+  if [ "${INSTALL_CIRCOM}" = "1" ]; then \
     cd /tmp \
     && git clone https://github.com/iden3/circom.git \
     && cd circom \

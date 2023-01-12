@@ -4,6 +4,7 @@ services:
     build:
       context: ./
       args:
+        - INSTALL_BFG=${INSTALL_BFG}
         - INSTALL_CIRCOM=${INSTALL_CIRCOM}
         - INSTALL_LLVM=${INSTALL_LLVM}
     image: xen/dev
