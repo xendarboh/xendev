@@ -295,6 +295,7 @@ RUN useradd -m -s /bin/bash -u ${_USER_ID} -G ${_USER_GROUPS} ${_USER} \
 ENV HOME=/home/${_USER} USER=${_USER} LC_ALL=${_LOCALE} LANG=${_LOCALE}
 ENV PATH=/home/${_USER}/bin:/home/${_USER}/.yarn/bin:/home/${_USER}/.go/bin:/home/${_USER}/go:/home/${_USER}/perl5/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/${_USER}/.fzf/bin
 ENV SHELL=/bin/bash
+ENV XDG_CONFIG_HOME=/home/${_USER}/.config
 SHELL ["/bin/bash", "--login", "-c"]
 USER ${_USER}
 WORKDIR /home/${_USER}
@@ -404,7 +405,6 @@ COPY --chown=${_USER}:${_USER} . ${XENDEV_DIR}
 
 # link configuration files so that a mounted volume may override at container execution time
 RUN ln -sv \
-    ${XENDEV_DIR}/conf/.SpaceVim.d \
     ${XENDEV_DIR}/conf/.bash_aliases \
     ${XENDEV_DIR}/conf/.bash_local \
     ${XENDEV_DIR}/conf/.bash_prompt \
@@ -412,6 +412,7 @@ RUN ln -sv \
     /home/${_USER}/ \
   && ln -sv \
     ${XENDEV_DIR}/conf/.config/starship.toml \
+    ${XENDEV_DIR}/conf/SpaceVim.d \
     /home/${_USER}/.config/ \
   && ln -svf \
     ${XENDEV_DIR}/conf/.config/fish/config.fish \
@@ -434,8 +435,8 @@ RUN mkdir -p ~/.tmux/plugins \
 RUN curl -sLf https://spacevim.org/install.sh | bash
 
 # use specific spacevim release
-# ARG _SPACEVIM_VERSION=v2.0.0
-# RUN cd /home/${_USER}/.SpaceVim && git checkout ${_SPACEVIM_VERSION}
+# ARG VERSION_SPACEVIM=v2.0.0
+# RUN cd ${XDG_CONFIG_HOME}/SpaceVim && git checkout ${VERSION_SPACEVIM}
 
 # 2020-12-15 fix System error while opening ShaDa file: no such file or directory
 RUN touch /tmp/main.shada
@@ -454,9 +455,11 @@ RUN nvim --headless +e /tmp/tmp +qall
 # 2021-04-14: does something... but does not fix first-run error from deoplete
 RUN nvim --headless +UpdateRemotePlugins +qall
 
-# 2020-12-15: fix vimproc_linux64.so is not found
-# https://github.com/SpaceVim/SpaceVim/issues/544#issuecomment-687652874
-RUN cd ~/.SpaceVim/bundle/vimproc.vim/ && make
+# spacevim things that need something extra
+RUN \
+  # https://github.com/SpaceVim/SpaceVim/issues/544#issuecomment-687652874
+  # https://github.com/Shougo/vimproc.vim#vundle
+  cd ${XDG_CONFIG_HOME}/SpaceVim/bundle/vimproc.vim/ && make
 
 # vim plugins that need something extra
 RUN cd ~/.cache/vimfiles/repos/github.com/RRethy/vim-hexokinase && make

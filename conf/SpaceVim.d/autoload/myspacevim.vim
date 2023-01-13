@@ -18,7 +18,7 @@ function! myspacevim#before() abort
 
   " 2021-04-21: change CoC's config directory without polluting SpaceVim
   " https://github.com/SpaceVim/SpaceVim/issues/2564#issuecomment-651513935
-  let g:coc_config_home = '~/.SpaceVim.d/'
+  let g:coc_config_home = expand($XDG_CONFIG_HOME).'/SpaceVim.d/'
 
 
   """"""""""""""""""
@@ -55,9 +55,9 @@ function! myspacevim#before() abort
 
   " Define custom patterns via palettes
   let g:Hexokinase_palettes = [
-        \ expand($HOME).'/.SpaceVim.d/colorizer-palettes/Color3.json',
-        \ expand($HOME).'/.SpaceVim.d/colorizer-palettes/gruvbox.json',
-        \ expand($HOME).'/.SpaceVim.d/colorizer-palettes/test.json'
+        \ expand($XDG_CONFIG_HOME).'/SpaceVim.d/colorizer-palettes/Color3.json',
+        \ expand($XDG_CONFIG_HOME).'/SpaceVim.d/colorizer-palettes/gruvbox.json',
+        \ expand($XDG_CONFIG_HOME).'/SpaceVim.d/colorizer-palettes/test.json'
         \ ]
 
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
