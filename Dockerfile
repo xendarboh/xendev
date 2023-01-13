@@ -1,4 +1,5 @@
-FROM ubuntu:rolling
+ARG IMAGE_BASE=
+FROM ${IMAGE_BASE}
 
 # configuration
 ARG _LOCALE=en_US.UTF-8
@@ -488,6 +489,18 @@ RUN nvim --headless \
 # update yarn to the latest version
 # 2022-06-18: do this last as other installations depend on yarn v1
 RUN yarn set version stable
+
+
+########################################################################
+# /home/${_USER} --> /etc/skel
+# symlink xendev user's home to /etc/skel to support xlldocker user home
+########################################################################
+USER root
+RUN mv /etc/skel /etc/skel.bak \
+  && mkdir /etc/skel \
+  && ln -sv /home/${_USER}/{.,}* /etc/skel/
+USER ${_USER}
+
 
 ########################################################################
 CMD ["/bin/bash", "-l"]

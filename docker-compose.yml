@@ -1,6 +1,14 @@
 version: "3.9"
 services:
-  xendev:
+  xen-x11:
+    build:
+      context: ./
+      dockerfile: Dockerfile.x11
+      args:
+        - IMAGE_BASE=${IMAGE_BASE}
+    image: xen/x11
+
+  xen-dev:
     build:
       context: ./
       args:
@@ -8,12 +16,3 @@ services:
         - INSTALL_CIRCOM=${INSTALL_CIRCOM}
         - INSTALL_LLVM=${INSTALL_LLVM}
     image: xen/dev
-    container_name: xendev
-    hostname: xendev
-    init: true
-    tty: true
-    volumes:
-      - .:/home/xendev/src/xendev
-      - ~/.gnupg:/home/xendev/.gnupg:rw
-      - ~/.ssh:/home/xendev/.ssh:ro
-      - ~/src:/src/

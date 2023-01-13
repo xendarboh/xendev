@@ -1,0 +1,182 @@
+########################################################################
+# https://github.com/mviereck/dockerfile-x11docker-xfce
+########################################################################
+
+# x11docker/xfce
+#
+# Run XFCE desktop in docker.
+# Use x11docker to run image.
+# Get x11docker from github:
+#   https://github.com/mviereck/x11docker
+#
+# Examples:
+#   - Run desktop:
+#       x11docker --desktop x11docker/xfce
+#   - Run single application:
+#       x11docker x11docker/xfce thunar
+#
+# Options:
+# Persistent home folder stored on host with   --home
+# Shared host folder with                      --share DIR
+# Hardware acceleration with option            --gpu
+# Clipboard sharing with option                --clipboard
+# ALSA sound support with option               --alsa
+# Pulseaudio sound support with option         --pulseaudio
+# Language setting with                        --lang [=$LANG]
+# Printing over CUPS with                      --printer
+# Webcam support with                          --webcam
+#
+# Look at x11docker --help for further options.
+
+# FROM debian:bullseye
+ARG IMAGE_BASE=
+FROM ${IMAGE_BASE}
+
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN apt-get update \
+  && apt-mark hold iptables \
+  && apt-get install -y -q --no-install-recommends \
+      dbus-x11 \
+      psmisc \
+      xdg-utils \
+      x11-xserver-utils \
+      x11-utils \
+  && apt-get install -y -q --no-install-recommends \
+      xfce4 \
+  && apt-get install -y -q --no-install-recommends \
+      libgtk-3-bin \
+      libpulse0 \
+      mousepad \
+      xfce4-notifyd \
+      xfce4-taskmanager \
+      xfce4-terminal \
+# && apt-get install -y -q --no-install-recommends \
+#     xfce4-battery-plugin \
+#     xfce4-clipman-plugin \
+#     xfce4-cpufreq-plugin \
+#     xfce4-cpugraph-plugin \
+#     xfce4-diskperf-plugin \
+#     xfce4-datetime-plugin \
+#     xfce4-fsguard-plugin \
+#     xfce4-genmon-plugin \
+#     xfce4-indicator-plugin \
+#     xfce4-netload-plugin \
+#     xfce4-places-plugin \
+#     xfce4-sensors-plugin \
+#     xfce4-smartbookmark-plugin \
+#     xfce4-systemload-plugin \
+#     xfce4-timer-plugin \
+#     xfce4-verve-plugin \
+#     xfce4-weather-plugin \
+#     xfce4-whiskermenu-plugin \
+  && apt-get install -y -q --no-install-recommends \
+      libxv1 \
+      mesa-utils \
+      mesa-utils-extra \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN sed -i \
+    's%<property name="ThemeName" type="string" value="Xfce"/>%<property name="ThemeName" type="string" value="Raleigh"/>%' \
+    /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml
+
+# disable xfwm4 compositing if X extension COMPOSITE is missing and no config file exists
+RUN Configfile="~/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml" && \
+echo "#! /bin/bash\n\
+xdpyinfo | grep -q -i COMPOSITE || {\n\
+  echo 'x11docker/xfce: X extension COMPOSITE is missing.\n\
+Window manager compositing will not work.\n\
+If you run x11docker with option --nxagent,\n\
+you might want to add option --composite.' >&2\n\
+  [ -e $Configfile ] || {\n\
+    mkdir -p $(dirname $Configfile)\n\
+    echo '<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\
+<channel name=\"xfwm4\" version=\"1.0\">\n\
+\n\
+  <property name=\"general\" type=\"empty\">\n\
+    <property name=\"use_compositing\" type=\"bool\" value=\"false\"/>\n\
+  </property>\n\
+</channel>\n\
+' > $Configfile\n\
+  }\n\
+}\n\
+startxfce4\n\
+" > /usr/local/bin/start && \
+chmod +x /usr/local/bin/start
+
+CMD start
+
+
+########################################################################
+# xendev
+########################################################################
+
+RUN apt update \
+  # base
+  && apt install --no-install-recommends -y -q \
+    ca-certificates \
+    curl \
+    unzip \
+  # kitty deps
+  && apt install --no-install-recommends -y -q \
+    imagemagick \
+    libcanberra0 \
+    librsvg2-bin \
+    libxkbcommon-x11-0 \
+    xz-utils \
+  && rm -rf /var/lib/apt/lists/*
+
+# https://sw.kovidgoyal.net/kitty/binary/#desktop-integration-on-linux
+ENV DEST=/usr/local
+RUN \
+  # Install kitty to ${DEST}
+  curl -L https://sw.kovidgoyal.net/kitty/installer.sh \
+    | sh /dev/stdin dest=${DEST} launch=n \
+  # Create a symbolic link to add kitty to PATH
+  && ln -sf ${DEST}/kitty.app/bin/kitty ${DEST}/bin/kitty \
+  # Place the kitty.desktop file somewhere it can be found by the OS
+  && mkdir -p ${DEST}/share/applications \
+  && cp ${DEST}/kitty.app/share/applications/kitty.desktop ${DEST}/share/applications/ \
+  # If you want to open text files and images in kitty via your file manager also add the kitty-open.desktop file
+  && cp ${DEST}/kitty.app/share/applications/kitty-open.desktop ${DEST}/share/applications/ \
+  # Update the paths to the kitty and its icon in the kitty.desktop file(s)
+  && sed -i "s|Icon=kitty|Icon=${DEST}/kitty.app/share/icons/hicolor/256x256/apps/kitty.png|g" ${DEST}/share/applications/kitty*.desktop \
+  && sed -i "s|Exec=kitty|Exec=${DEST}/kitty.app/bin/kitty|g" ${DEST}/share/applications/kitty*.desktop
+
+# install kitty gruvbox themes
+RUN \
+  mkdir -p ${DEST}/kitty.app/themes \
+  && cd ${DEST}/kitty.app/themes \
+  && curl -LO https://github.com/wdomitrz/kitty-gruvbox-theme/archive/refs/heads/master.zip \
+  && unzip master.zip \
+  && mv kitty-gruvbox-theme-master gruvbox \
+  && rm -f master.zip
+
+# install NerdFonts
+RUN \
+  mkdir -p /usr/local/share/fonts/NerdFonts \
+  && cd /usr/local/share/fonts/NerdFonts \
+  && curl -LO https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Hack.zip \
+  && unzip -o Hack.zip \
+  && rm -f Hack.zip \
+  && fc-cache -vf /usr/local/share/fonts
+
+# configure kitty
+RUN mkdir -p /etc/skel/.config/kitty && \
+echo "\
+font_family Hack Nerd Font Mono\n\
+include /usr/local/kitty.app/themes/gruvbox/gruvbox_dark_hard.conf\n\
+" > /etc/skel/.config/kitty/kitty.conf
+
+# 20230112: requires --no-sandbox, crashes, and churns
+# https://brave.com/linux/
+# RUN \
+#   curl -fsSLo \
+#     /usr/share/keyrings/brave-browser-archive-keyring.gpg \
+#     https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg \
+#   && echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" \
+#     > /etc/apt/sources.list.d/brave-browser-release.list \
+#   && apt update \
+#   && apt install -y -q --no-install-recommends \
+#     brave-browser \
+#   && rm -rf /var/lib/apt/lists/*

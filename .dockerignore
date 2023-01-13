@@ -1,4 +1,6 @@
 .git
 Dockerfile
+Dockerfile.x11
 Makefile
-host
+README.md
+xendev.sh
