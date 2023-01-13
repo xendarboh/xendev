@@ -5,7 +5,7 @@ end
 starship init fish | source
 zoxide init fish | source
 
-theme_gruvbox dark medium
+theme_gruvbox dark hard
 
 # gpg needs this
 export GPG_TTY=(tty)
