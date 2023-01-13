@@ -301,17 +301,19 @@ USER ${_USER}
 WORKDIR /home/${_USER}
 
 # install latest go
-# the installer writes to .bash_profile, remove to avoid conflict with custom bash config
 # https://github.com/golang/tools/tree/master/cmd/getgo#usage
 RUN curl -LO https://get.golang.org/$(uname)/go_installer \
   && chmod +x go_installer \
   && ./go_installer \
   && rm go_installer \
-  && rm ~/.bash_profile
+  # the installer writes to .bash_profile, remove to avoid conflict with custom bash config
+  && rm ~/.bash_profile \
+  && go clean --cache
 
 # install go things
 RUN go install \
-  github.com/jesseduffield/lazygit@latest
+    github.com/jesseduffield/lazygit@latest \
+  && go clean --cache
 
 # install rust
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
