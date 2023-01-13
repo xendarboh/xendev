@@ -388,7 +388,8 @@ RUN mkdir ~/.bash \
 
 # install extra fish things
 SHELL ["/bin/fish", "--login", "-c"]
-RUN curl -sL https://git.io/fisher | source \
+RUN curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish \
+    | source \
   && fisher install \
     jorgebucaran/fisher \
     jomik/fish-gruvbox \
