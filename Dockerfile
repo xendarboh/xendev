@@ -12,7 +12,6 @@ ARG VERSION_ENTR=5.2
 ARG VERSION_KPCLI=3.8.1
 ARG VERSION_LLVM=14
 ARG VERSION_NODE=v18.13.0
-ARG VERSION_RIPGREP=13.0.0
 ARG VERSION_TOMB=v2.9
 
 # persist _USER for use in inheriting images
@@ -57,6 +56,7 @@ RUN apt update \
     python3-pip \
     python3-pygments \
     rake \
+    ripgrep \
     rsync \
     silversearcher-ag \
     sqlite3 \
@@ -160,12 +160,6 @@ RUN git clone \
   && make test \
   && make install \
   && rm -rf /tmp/entr
-
-# install ripgrep (used by spacevim/vim-todo)
-# @todo with ubuntu:cosmic do `apt install ripgrep`
-RUN export F="ripgrep_${VERSION_RIPGREP}_amd64.deb" \
-  && curl -LO "https://github.com/BurntSushi/ripgrep/releases/download/${VERSION_RIPGREP}/${F}" \
-  && dpkg -i "${F}"
 
 # # install the platinum searcher
 # ARG _PT_VERSION=v2.2.0
