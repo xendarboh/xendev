@@ -47,6 +47,12 @@ function dirmap
 end
 dirmap
 
+function on_variable_pwd --on-variable PWD
+    # update tmux-window-name upon directory change (iff running tmux)
+    test ! -z "$TMUX_PLUGIN_MANAGER_PATH" \
+        && $TMUX_PLUGIN_MANAGER_PATH/tmux-window-name/scripts/rename_session_windows.py &>/dev/null
+end
+
 alias exa="exa \
 --git \
 --group-directories-first \

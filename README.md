@@ -46,6 +46,7 @@ A dockerized terminal-based vim-centric development environment.
   - [tpm](https://github.com/tmux-plugins/tpm): Tmux Plugin Manager
   - [tmux-gruvbox](https://github.com/egel/tmux-gruvbox): Gruvbox color scheme for Tmux
   - [tmux-resurrect](https://github.com/tmux-plugins/tmux-resurrect): Persists tmux environment across system restarts
+  - [tmux-window-name](https://github.com/ofirgall/tmux-window-name): A plugin to name your tmux windows smartly
 - [ts-lehre](https://github.com/heavenshell/ts-lehre): Generate document block(JsDoc, EsDoc, TsDoc) from source code
 - [xclip](https://github.com/astrand/xclip): Command line interface to the X11 clipboard
 - [yarn](https://github.com/yarnpkg/yarn): Fast, reliable, and secure dependency management
