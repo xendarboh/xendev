@@ -1,8 +1,23 @@
-# xendev
-
-A dockerized terminal-based vim-centric development environment.
+# xen/dev
 
 [![GPLv3 License](https://img.shields.io/badge/license-GPLv3-blue.svg)](LICENSE)
+
+A modern portable containerized terminal-based vim-centric development environment.
+
+Overpowered "dotfiles" intended to run in a number of ways; either within:
+
+- a terminal of your choice
+- a customized gpu-accelerated terminal
+- a x11docker-powered full, but minimal, desktop
+
+## Quickstart Example
+
+```sh
+git clone https://github.com/xendarboh/xendev.git
+cd xendev
+make build-x11
+x11docker --gpu --clipboard --network -- xen/dev kitty
+```
 
 ## Tools
 
@@ -11,6 +26,10 @@ A dockerized terminal-based vim-centric development environment.
   - [coc.nvim](https://github.com/neoclide/coc.nvim): Conquer of Completion; Make your Vim/Neovim as smart as VSCode
   - [neovim-remote](https://github.com/mhinz/neovim-remote): Support for --remote and friends
 - [Node.js](https://github.com/nodejs/node): Node.js JavaScript runtime
+  - [pnpm](https://github.com/pnpm/pnpm): Fast, disk space efficient package manager
+  - [yarn](https://github.com/yarnpkg/yarn): Fast, reliable, and secure dependency management
+  - [npm-check](https://github.com/dylang/npm-check): Check for outdated, incorrect, and unused dependencies
+  - [npm-check-updates](https://github.com/raineorshine/npm-check-updates): Find newer versions of package dependencies than what your package.json allows
 - [Tomb](https://github.com/dyne/Tomb): the Crypto Undertaker
 - [circom](https://github.com/iden3/circom): zkSnark circuit compiler
 - [codemod](https://github.com/facebookarchive/codemod): A tool/library to assist with large-scale codebase refactors
@@ -20,8 +39,9 @@ A dockerized terminal-based vim-centric development environment.
 - [exa](https://github.com/ogham/exa): A modern replacement for ‘ls’
 - [fish-shell](https://github.com/fish-shell/fish-shell): The user-friendly command line shell
   - [fisher](https://github.com/jorgebucaran/fisher): A plugin manager for Fish
+  - [fish-gruvbox](https://github.com/Jomik/fish-gruvbox): gruvbox theme for fish
 - [fzf](https://github.com/junegunn/fzf): A command-line fuzzy finder
-- [git](https://github.com/git/git)
+- [git](https://github.com/git/git) (latest stable version)
   - [bfg-repo-cleaner](https://github.com/rtyley/bfg-repo-cleaner): Removes large or troublesome blobs like git-filter-branch does, but faster
   - [forgit](https://github.com/wfxr/forgit): A utility tool powered by fzf for using git interactively
   - [git-lfs](https://github.com/git-lfs/git-lfs): Git extension for versioning large files
@@ -36,7 +56,9 @@ A dockerized terminal-based vim-centric development environment.
 - [ninja-build](https://github.com/ninja-build/ninja): A small build system with a focus on speed
 - [platformio-core](https://github.com/platformio/platformio-core): A professional collaborative platform for embedded development
 - [prettier](https://github.com/prettier/prettier): Prettier is an opinionated code formatter
+- [retype](https://github.com/retypeapp/retype): An ultra-high-performance static site generator that builds a website based on simple text files
 - [ripgrep](https://github.com/BurntSushi/ripgrep): recursively searches directories for a regex pattern while respecting your gitignore
+- [rustup](https://github.com/rust-lang/rustup): The Rust toolchain installer
 - [silversearcher-ag](https://github.com/ggreer/the_silver_searcher): A code-searching tool similar to ack, but faster
 - [solidity](https://github.com/ethereum/solidity): Solidity, the Smart Contract Programming Language
   - [solc-js](https://github.com/ethereum/solc-js): Javascript bindings for the Solidity compiler
@@ -49,9 +71,119 @@ A dockerized terminal-based vim-centric development environment.
   - [tmux-window-name](https://github.com/ofirgall/tmux-window-name): A plugin to name your tmux windows smartly
 - [ts-lehre](https://github.com/heavenshell/ts-lehre): Generate document block(JsDoc, EsDoc, TsDoc) from source code
 - [xclip](https://github.com/astrand/xclip): Command line interface to the X11 clipboard
-- [yarn](https://github.com/yarnpkg/yarn): Fast, reliable, and secure dependency management
 - [zoxide](https://github.com/ajeetdsouza/zoxide): A smarter cd command
 - and more...
+
+Additionally (and optionally), the following are provided by the X11 base image.
+
+- [Xfce](https://gitlab.xfce.org/xfce): A lightweight desktop environment for UNIX-like operating systems. It aims to be fast and low on system resources, while still being visually appealing and user friendly.
+- [kitty](https://github.com/kovidgoyal/kitty): Cross-platform, fast, feature-rich, GPU based terminal
+  - [kitty-gruvbox-theme](https://github.com/wdomitrz/kitty-gruvbox-theme): Gruvbox theme for kitty terminal
+- [ImageMagick](https://github.com/ImageMagick/ImageMagick): Software suite for displaying, converting, and editing raster image and vector image files
+- [nerd-fonts](https://github.com/ryanoasis/nerd-fonts): Developer targeted fonts with a high number of glyphs (icons)
+  - [Hack](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/Hack): A typeface designed for source code
+
+Powered-by
+
+- [x11docker](https://github.com/mviereck/x11docker): Run GUI applications and desktops in docker and podman containers. Focus on security.
+- [Xendarboh](https://github.com/xendarboh): An Elven Tech Wizard
+
+## Build
+
+### Host Requirements
+
+- x11docker
+  - docker or podman
+  - x11docker gpu support
+- docker compose
+- make (or manually run the commands in the [Makefile](Makefile))
+
+### Configure
+
+Optionally edit [.env](.env).
+
+### Build Image(s)
+
+#### Build the full image with X11 support
+
+```sh
+make build-x11
+```
+
+#### Build the terminal-only image
+
+```sh
+make build
+```
+
+#### See all make commands
+
+```sh
+❯ make
+help                 print this help message with some nifty mojo
+build                build docker image
+rebuild              (re)build docker image with --no-cache --pull
+build-x11            build docker image with X11 support
+rebuild-x11          rebuild docker image with X11 support
+```
+
+## Run Examples
+
+### Within a terminal of your choice
+
+```sh
+x11docker --tty --interactive -- xen/dev
+```
+
+- Expects the host terminal to have:
+  - truecolor support (use scripts in [test/](test/) to test support inside `xendev`)
+  - a patched font like one from [nerd-fonts](https://github.com/ryanoasis/nerd-fonts) with [powerline](https://github.com/powerline/fonts) symbols
+
+### Within a gpu-accelerated terminal
+
+```sh
+x11docker --gpu --clipboard --network -- xen/dev kitty
+```
+
+### Within an x11docker-powered desktop
+
+```sh
+x11docker --desktop --gpu --clipboard --network -- xen/dev
+```
+
+### With directories shared from the host
+
+```sh
+#!/bin/bash
+name="${1:-xendev}"
+
+# NOTE: host user should not be "xendev"
+U=$(whoami)
+
+# ensure volume directories exist
+mkdir -p /home/${U}/.config/git
+mkdir -p /home/${U}/.gnupg
+mkdir -p /home/${U}/.platformio
+mkdir -p /home/${U}/src
+
+x11docker \
+  --clipboard \
+  --gpu \
+  --name ${name} \
+  --network=host \
+  --share /media \
+  --share /mnt \
+  --share ~/.ssh \
+  --share ~/.gnupg \
+  --share ~/.platformio \
+  -- \
+  --volume /home/${U}/.config/git:/home/xendev/.config/git \
+  --volume /home/${U}/src:/home/xendev/src \
+  -- \
+  xen/dev \
+  kitty \
+    --title ${name}
+```
 
 ## Preferences
 
@@ -60,26 +192,7 @@ A dockerized terminal-based vim-centric development environment.
 - [FROM ubuntu:rolling](https://hub.docker.com/_/ubuntu)
 - `LOCALE=en_US.UTF-8`
 
-## Howto
-
-### Host "Requirements"
-
-- use of a terminal with:
-  - truecolor support (use scripts in [test/](test/) to test support inside `xendev`)
-  - a patched font like one from [nerd-fonts](https://github.com/ryanoasis/nerd-fonts) with [powerline](https://github.com/powerline/fonts) symbols
-- docker compose
-- make (or manually run the commands in the [Makefile](Makefile))
-
-### Build
-
-- Optionally configure things in [.env](.env)
-- `cd xendev/ && make build` (or `docker compose build`)
-
-### Run
-
-- TODO...
-
-## Configuration
+## Customization
 
 - See [conf/](conf/) files
 
