@@ -199,7 +199,6 @@ RUN npm install --location=global \
   npm-check-updates \
   prettier \
   prettier-plugin-solidity \
-  pretty-xl-formula \
   retypeapp \
   solc \
   taskbook \
@@ -392,10 +391,6 @@ RUN curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/function
     jomik/fish-gruvbox \
     wfxr/forgit
 SHELL ["/bin/bash", "--login", "-c"]
-
-# 2020-12-15: fix b0rking line endings on pxlf
-# 2022-06-18: location changed; install with npm, not yarn
-# RUN dos2unix ~/.config/yarn/global/node_modules/pretty-xl-formula/cli.js
 
 # copy configuration files so that links to them work during docker build
 RUN mkdir -p ${XENDEV_DIR}
