@@ -186,29 +186,6 @@ RUN export F="node-${VERSION_NODE}-linux-x64.tar.xz" \
 RUN npm install --location=global \
     corepack
 
-# install node things
-RUN npm install --location=global \
-  bash-language-server \
-  diff-so-fancy \
-  dockerfile-language-server-nodejs \
-  eslint-cli \
-  import-js \
-  javascript-typescript-langserver \
-  neovim \
-  npm-check \
-  npm-check-updates \
-  prettier \
-  prettier-plugin-solidity \
-  retypeapp \
-  solc \
-  taskbook \
-  tern \
-  typescript \
-  typescript-language-server \
-  vscode-langservers-extracted \
-  # for spacevim layer lang#typescript:
-  lehre
-
 # install neovim tag'd release from source
 # reference: https://github.com/neovim/neovim/wiki/Building-Neovim
 # ARG _NEOVIM_VERSION=v0.1.6
@@ -293,6 +270,31 @@ ENV XDG_CONFIG_HOME=/home/${_USER}/.config
 SHELL ["/bin/bash", "--login", "-c"]
 USER ${_USER}
 WORKDIR /home/${_USER}
+
+# install node things
+# https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally
+ENV NPM_CONFIG_PREFIX=/home/${_USER}/.npm-global
+RUN npm install --location=global \
+  bash-language-server \
+  diff-so-fancy \
+  dockerfile-language-server-nodejs \
+  eslint-cli \
+  import-js \
+  javascript-typescript-langserver \
+  neovim \
+  npm-check \
+  npm-check-updates \
+  prettier \
+  prettier-plugin-solidity \
+  retypeapp \
+  solc \
+  taskbook \
+  tern \
+  typescript \
+  typescript-language-server \
+  vscode-langservers-extracted \
+  # for spacevim layer lang#typescript:
+  lehre
 
 # install latest go
 # https://github.com/golang/tools/tree/master/cmd/getgo#usage
@@ -487,7 +489,7 @@ RUN yarn set version stable
 
 ########################################################################
 # /home/${_USER} --> /etc/skel
-# symlink xendev user's home to /etc/skel to support xlldocker user home
+# symlink xendev user's home to /etc/skel to support x11docker user home
 ########################################################################
 USER root
 RUN mv /etc/skel /etc/skel.bak \
