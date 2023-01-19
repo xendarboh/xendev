@@ -448,7 +448,6 @@ RUN touch /tmp/main.shada
 # install plugins
 # https://github.com/SpaceVim/SpaceVim/issues/3477#issuecomment-619203729
 RUN nvim --headless +"call dein#install#_update([], 'update', 0)" +qall
-# RUN nvim --headless +'call dein#install#_update([], "install", v:false)' +qall
 
 # this is ~redundant to the above but can increase visibility of vim plugin errors
 RUN nvim --headless +'call dein#install()' +qall
@@ -503,4 +502,4 @@ USER ${_USER}
 
 
 ########################################################################
-CMD ["/bin/bash", "-l"]
+CMD ["/bin/bash", "-c", "command -v start &>/dev/null && start || /bin/bash -l"]

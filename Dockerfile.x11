@@ -100,7 +100,7 @@ you might want to add option --composite.' >&2\n\
 ' > $Configfile\n\
   }\n\
 }\n\
-startxfce4\n\
+xdpyinfo && startxfce4 || /bin/bash -l\n\
 " > /usr/local/bin/start && \
 chmod +x /usr/local/bin/start
 
