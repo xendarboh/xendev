@@ -29,6 +29,6 @@ build-x11: ## build docker image with X11 support
 rebuild-x11: ## rebuild docker image with X11 support
 	time docker compose build --no-cache --pull xen-x11
 	time docker compose build \
-		--no-cache --pull \
+		--no-cache \
 		--build-arg IMAGE_BASE=xen/x11 \
 		xen-dev
