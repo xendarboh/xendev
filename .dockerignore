@@ -3,4 +3,4 @@ Dockerfile
 Dockerfile.x11
 Makefile
 README.md
-xendev.sh
+xendev

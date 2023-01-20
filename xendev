@@ -1,0 +1,39 @@
+#!/bin/bash
+
+name="${1:-xendev}"
+docker='docker'
+image='xen/dev'
+
+if (docker inspect ${name} >/dev/null 2>&1)
+then
+  echo "${name} already running, entering existing container"
+  ${docker} exec -ti ${name} /bin/bash
+else
+  # NOTE: host user should not be "xendev"
+  U=$(whoami)
+
+  # ensure volume directories exist
+  mkdir -p /home/${U}/.config/git
+  mkdir -p /home/${U}/.gnupg
+  mkdir -p /home/${U}/.platformio
+  mkdir -p /home/${U}/src
+
+  x11docker \
+    --clipboard \
+    --gpu \
+    --name ${name} \
+    --network=host \
+    --share /media \
+    --share /mnt \
+    --share ~/.gnupg \
+    --share ~/.platformio \
+    --share ~/.ssh \
+    -- \
+    --tmpfs /tmp:exec \
+    --volume /home/${U}/.config/git:/home/xendev/.config/git \
+    --volume /home/${U}/src:/home/xendev/src \
+    -- \
+    ${image} \
+    kitty \
+      -T ${name}
+fi

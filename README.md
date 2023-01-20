@@ -153,6 +153,13 @@ x11docker --desktop --gpu --clipboard --network -- xen/dev
 
 ### With directories shared from the host
 
+See [xendev](xendev) for an example helper bash script that shares ssh and gpg
+config and keys from the host.
+
+Note: Some applications need more privileges or capabilities than x11docker
+provides by default; refer to the x11docker docs on [privilege
+checks](https://github.com/mviereck/x11docker#privilege-checks).
+
 ```sh
 #!/bin/bash
 name="${1:-xendev}"
@@ -177,6 +184,7 @@ x11docker \
   --share ~/.gnupg \
   --share ~/.platformio \
   -- \
+  --tmpfs /tmp:exec \
   --volume /home/${U}/.config/git:/home/xendev/.config/git \
   --volume /home/${U}/src:/home/xendev/src \
   -- \
