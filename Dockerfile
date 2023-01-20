@@ -56,6 +56,7 @@ RUN apt update \
     python3-pip \
     python3-pygments \
     rake \
+    ranger \
     ripgrep \
     rsync \
     silversearcher-ag \

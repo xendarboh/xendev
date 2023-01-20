@@ -56,6 +56,7 @@ x11docker --gpu --clipboard --network -- xen/dev kitty
 - [ninja-build](https://github.com/ninja-build/ninja): A small build system with a focus on speed
 - [platformio-core](https://github.com/platformio/platformio-core): A professional collaborative platform for embedded development
 - [prettier](https://github.com/prettier/prettier): Prettier is an opinionated code formatter
+- [ranger](https://github.com/ranger/ranger): A VIM-inspired filemanager for the console
 - [retype](https://github.com/retypeapp/retype): An ultra-high-performance static site generator that builds a website based on simple text files
 - [ripgrep](https://github.com/BurntSushi/ripgrep): recursively searches directories for a regex pattern while respecting your gitignore
 - [rustup](https://github.com/rust-lang/rustup): The Rust toolchain installer
