@@ -15,7 +15,6 @@ else
   # ensure volume directories exist
   mkdir -p /home/${U}/.config/git
   mkdir -p /home/${U}/.gnupg
-  mkdir -p /home/${U}/.platformio
   mkdir -p /home/${U}/src
 
   x11docker \
@@ -26,7 +25,6 @@ else
     --share /media \
     --share /mnt \
     --share ~/.gnupg \
-    --share ~/.platformio \
     --share ~/.ssh \
     -- \
     --tmpfs /tmp:exec \
