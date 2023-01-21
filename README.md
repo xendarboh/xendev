@@ -1,22 +1,22 @@
-# xen/dev
+# xen/dev:latest
 
 [![GPLv3 License](https://img.shields.io/badge/license-GPLv3-blue.svg)](LICENSE)
 
-A modern portable containerized terminal-based vim-centric development environment.
+A modern portable sandboxed containerized terminal-based vim-centric development environment.
 
-Overpowered "dotfiles" intended to run in a number of ways; either within:
+Overpowered "dotfiles" intended to run in a number of ways; either within a:
 
-- a terminal of your choice
-- a customized gpu-accelerated terminal
-- a x11docker-powered full, but minimal, desktop
+- terminal of your choice
+- customized gpu-accelerated terminal
+- x11docker-powered full, but minimal, desktop
 
-## Quickstart Example
+## Quickstart
 
 ```sh
 git clone https://github.com/xendarboh/xendev.git
 cd xendev
-make build-x11
-x11docker --gpu --clipboard --network -- xen/dev kitty
+make build
+./xendev
 ```
 
 ## Tools
@@ -93,11 +93,11 @@ Powered-by
 
 ### Host Requirements
 
-- x11docker
-  - docker or podman
-  - x11docker gpu support
+- docker or podman
 - docker compose
-- make (or manually run the commands in the [Makefile](Makefile))
+- x11docker (not required for tty-only)
+  - x11docker gpu support
+- make (or manually run the commands in [Makefile](Makefile))
 
 ### Configure
 
@@ -108,37 +108,52 @@ Optionally edit [.env](.env).
 #### Build the full image with X11 support
 
 ```sh
-make build-x11
+make build
 ```
 
-#### Build the terminal-only image
+#### Build the tty-only image
 
 ```sh
-make build
+make build-tty
 ```
 
 #### See all make commands
 
 ```sh
-❯ make
+❯ make                                                                                                                                                                                                        2023-01-21 14:02:33
 help                 print this help message with some nifty mojo
-build                build docker image
-rebuild              (re)build docker image with --no-cache --pull
-build-x11            build docker image with X11 support
-rebuild-x11          rebuild docker image with X11 support
+build                build docker image with X11 support
+rebuild              rebuild docker image with X11 support
+build-tty            build tty-only docker image
+rebuild-tty          (re)build tty-only docker image with --no-cache --pull
 ```
 
 ## Run Examples
 
 ### Within a terminal of your choice
 
+#### Without X11
+
+This is the mode of minimal host requirements, only `docker|podman`
+
+```sh
+make build-tty
+docker run -ti --rm xen/dev /bin/bash
+```
+
+This also works with `make build`, just larger docker image.
+
+#### with X11
+
+In this mode, host clipboard will work with enhanced security provided by `x11docker`.
+
 ```sh
 x11docker --tty --interactive -- xen/dev
 ```
 
-- Expects the host terminal to have:
+- Host terminal expectations, ideally:
   - truecolor support (use scripts in [test/](test/) to test support inside `xendev`)
-  - a patched font like one from [nerd-fonts](https://github.com/ryanoasis/nerd-fonts) with [powerline](https://github.com/powerline/fonts) symbols
+  - patched font like one from [nerd-fonts](https://github.com/ryanoasis/nerd-fonts) with [powerline](https://github.com/powerline/fonts) symbols
 
 ### Within a gpu-accelerated terminal
 
@@ -154,52 +169,22 @@ x11docker --desktop --gpu --clipboard --network -- xen/dev
 
 ### With directories shared from the host
 
-See [xendev](xendev) for an example helper bash script that shares ssh and gpg
-config and keys from the host.
+See the [xendev](xendev) launcher script for a functional example that shares
+the host user's ssh, gpg, and git config with the container and provides
+writeable access to `~/src`.
 
 Note: Some applications need more privileges or capabilities than x11docker
 provides by default; refer to the x11docker docs on [privilege
 checks](https://github.com/mviereck/x11docker#privilege-checks).
 
-```sh
-#!/bin/bash
-name="${1:-xendev}"
-
-# NOTE: host user should not be "xendev"
-U=$(whoami)
-
-# ensure volume directories exist
-mkdir -p /home/${U}/.config/git
-mkdir -p /home/${U}/.gnupg
-mkdir -p /home/${U}/.platformio
-mkdir -p /home/${U}/src
-
-x11docker \
-  --clipboard \
-  --gpu \
-  --name ${name} \
-  --network=host \
-  --share /media \
-  --share /mnt \
-  --share ~/.ssh \
-  --share ~/.gnupg \
-  --share ~/.platformio \
-  -- \
-  --tmpfs /tmp:exec \
-  --volume /home/${U}/.config/git:/home/xendev/.config/git \
-  --volume /home/${U}/src:/home/xendev/src \
-  -- \
-  xen/dev \
-  kitty \
-    --title ${name}
-```
-
-## Preferences
+## Preferences & Philosophy
 
 - vi-style key bindings
 - dark [gruvbox](https://github.com/morhetz/gruvbox) color scheme
 - [FROM ubuntu:rolling](https://hub.docker.com/_/ubuntu)
-- `LOCALE=en_US.UTF-8`
+- `LOCALE=en_US.UTF-8` (overridden by x11docker)
+- modern latest greatest versions; from apt, PPA, install scripts, or built from source
+- analog choice of sandboxed security vs function
 
 ## Customization
 
@@ -213,7 +198,7 @@ cp conf.local.example conf.local
 
 - `conf.local/directory_map.txt` list of "from:to" directory mappings for
   preserving current working directory in new tmux windows (since tmux does
-  not manage symlinked directories).
+  not handle symlinked directories well).
 
 ### vim CoC (autocompletion)
 
