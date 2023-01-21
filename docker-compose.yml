@@ -12,6 +12,7 @@ services:
     build:
       context: ./
       args:
+        - IMAGE_BASE=${IMAGE_BASE}
         - INSTALL_BFG=${INSTALL_BFG}
         - INSTALL_CIRCOM=${INSTALL_CIRCOM}
         - INSTALL_LLVM=${INSTALL_LLVM}
