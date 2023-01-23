@@ -381,9 +381,7 @@ RUN git clone \
 RUN curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
 
 # install extra bash things
-RUN mkdir ~/.bash \
-  && wget -O ~/.bash/forgit.plugin.sh \
-    https://raw.githubusercontent.com/wfxr/forgit/master/forgit.plugin.zsh
+RUN mkdir ~/.bash
 
 # install extra fish things
 SHELL ["/bin/fish", "--login", "-c"]
@@ -391,8 +389,7 @@ RUN curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/function
     | source \
   && fisher install \
     jorgebucaran/fisher \
-    jomik/fish-gruvbox \
-    wfxr/forgit
+    jomik/fish-gruvbox
 SHELL ["/bin/bash", "--login", "-c"]
 
 # copy configuration files so that links to them work during docker build
