@@ -36,7 +36,7 @@ eval "$(zoxide init bash)"
 # https://spacevim.org/layers/gtags/
 export GTAGSLABEL=pygments
 
-source ~/.bash/*.sh
+ls ~/.bash/*.sh &>/dev/null && source ~/.bash/*.sh
 
 # Workaround issue whereby tmux new window using current pwd does not respect symlinks.
 # This reads and apllies a file of directory mappings of the format "from:to".
