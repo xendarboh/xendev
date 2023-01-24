@@ -187,6 +187,9 @@ RUN export F="node-${VERSION_NODE}-linux-x64.tar.xz" \
 RUN npm install --location=global \
     corepack
 
+# install latest deno
+RUN curl -fsSL https://deno.land/install.sh | DENO_INSTALL=/usr/local sh
+
 # install neovim tag'd release from source
 # reference: https://github.com/neovim/neovim/wiki/Building-Neovim
 # ARG _NEOVIM_VERSION=v0.1.6

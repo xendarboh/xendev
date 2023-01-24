@@ -34,6 +34,7 @@ make build
 - [circom](https://github.com/iden3/circom): zkSnark circuit compiler
 - [codemod](https://github.com/facebookarchive/codemod): A tool/library to assist with large-scale codebase refactors
 - [cpanminus](https://github.com/miyagawa/cpanminus): get, unpack, build and install modules from CPAN
+- [deno](https://github.com/denoland/deno): A modern runtime for JavaScript and TypeScript
 - [diff-so-fancy](https://github.com/so-fancy/diff-so-fancy): Good-lookin' diffs. Actually… nah… The best-lookin' diffs
 - [entr](https://github.com/eradman/entr): Run arbitrary commands when files change
 - [exa](https://github.com/ogham/exa): A modern replacement for ‘ls’
