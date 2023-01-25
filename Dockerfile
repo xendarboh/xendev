@@ -504,10 +504,6 @@ RUN nvim --headless \
   ' \
   +qall
 
-# update yarn to the latest version
-# 2022-06-18: do this last as other installations depend on yarn v1
-RUN yarn set version stable
-
 
 ########################################################################
 # /home/${_USER} --> /etc/skel
