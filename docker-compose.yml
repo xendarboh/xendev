@@ -15,5 +15,6 @@ services:
         - IMAGE_BASE=${IMAGE_BASE}
         - INSTALL_BFG=${INSTALL_BFG}
         - INSTALL_CIRCOM=${INSTALL_CIRCOM}
+        - INSTALL_CYPRESS_DEPS=${INSTALL_CYPRESS_DEPS}
         - INSTALL_LLVM=${INSTALL_LLVM}
     image: xen/dev

@@ -140,6 +140,27 @@ RUN \
     && chmod 755 /usr/local/bin/bfg \
   ; fi
 
+# install cypress system deps
+# https://docs.cypress.io/guides/getting-started/installing-cypress#UbuntuDebian
+ARG INSTALL_CYPRESS_DEPS=0
+RUN \
+  if [ "${INSTALL_CYPRESS_DEPS}" = "1" ]; then \
+    apt-get update \
+    && apt-get install --no-install-recommends -y -q \
+      libasound2 \
+      libgbm-dev \
+      libgconf-2-4 \
+      libgtk-3-0 \
+      libgtk2.0-0 \
+      libnotify-dev \
+      libnss3 \
+      libxss1 \
+      libxtst6 \
+      xauth \
+      xvfb \
+    && rm -rf /var/lib/apt/lists/* \
+  ; fi
+
 # install tomb
 RUN git clone \
     --branch ${VERSION_TOMB} \
