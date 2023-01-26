@@ -34,7 +34,7 @@ make build
 - [circom](https://github.com/iden3/circom): zkSnark circuit compiler
 - [codemod](https://github.com/facebookarchive/codemod): A tool/library to assist with large-scale codebase refactors
 - [cpanminus](https://github.com/miyagawa/cpanminus): get, unpack, build and install modules from CPAN
-- [cypress](https://github.com/cypress-io/cypress)(deps): Fast, easy and reliable testing for anything that runs in a browser
+- [cypress](https://github.com/cypress-io/cypress): (deps) Fast, easy and reliable testing for anything that runs in a browser
 - [deno](https://github.com/denoland/deno): A modern runtime for JavaScript and TypeScript
 - [diff-so-fancy](https://github.com/so-fancy/diff-so-fancy): Good-lookin' diffs. Actually… nah… The best-lookin' diffs
 - [entr](https://github.com/eradman/entr): Run arbitrary commands when files change
@@ -64,6 +64,7 @@ make build
 - [silversearcher-ag](https://github.com/ggreer/the_silver_searcher): A code-searching tool similar to ack, but faster
 - [solidity](https://github.com/ethereum/solidity): Solidity, the Smart Contract Programming Language
   - [solc-js](https://github.com/ethereum/solc-js): Javascript bindings for the Solidity compiler
+- [sqlite](https://github.com/sqlite/sqlite): a small, fast, self-contained, high-reliability, full-featured, SQL database engine
 - [starship](https://github.com/starship/starship): The minimal, blazing-fast, and infinitely customizable prompt for any shell!
 - [taskbook](https://github.com/klaussinani/taskbook): Tasks, boards & notes for the command-line habitat
 - [tmux](https://github.com/tmux/tmux): A terminal multiplexer
