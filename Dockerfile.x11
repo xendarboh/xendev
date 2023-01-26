@@ -82,7 +82,7 @@ RUN sed -i \
 
 # disable xfwm4 compositing if X extension COMPOSITE is missing and no config file exists
 RUN Configfile="~/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml" && \
-echo "#! /bin/bash\n\
+echo "#!/bin/bash\n\
 xdpyinfo | grep -q -i COMPOSITE || {\n\
   echo 'x11docker/xfce: X extension COMPOSITE is missing.\n\
 Window manager compositing will not work.\n\
@@ -112,13 +112,16 @@ CMD start
 ########################################################################
 
 RUN apt update \
-  # base
   && apt install --no-install-recommends -y -q \
+    # base
     ca-certificates \
     curl \
     unzip \
-  # kitty deps
-  && apt install --no-install-recommends -y -q \
+    # fonts
+    fonts-hack \
+    fonts-noto-cjk \
+    fonts-noto-color-emoji \
+    # kitty deps
     imagemagick \
     libcanberra0 \
     librsvg2-bin \
@@ -157,16 +160,15 @@ RUN \
   mkdir -p /usr/local/share/fonts/NerdFonts \
   && cd /usr/local/share/fonts/NerdFonts \
   && curl -LO https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Hack.zip \
-  && unzip -o Hack.zip \
-  && rm -f Hack.zip \
-  && fc-cache -vf /usr/local/share/fonts
+    && unzip -o Hack.zip \
+    && rm -f Hack.zip \
+  && curl -LO https://github.com/ryanoasis/nerd-fonts/releases/latest/download/NerdFontsSymbolsOnly.zip \
+    && unzip -o NerdFontsSymbolsOnly.zip \
+    && rm -f NerdFontsSymbolsOnly.zip \
+  && fc-cache -vr /usr/local/share/fonts
 
 # configure kitty
-RUN mkdir -p /etc/skel/.config/kitty && \
-echo "\
-font_family Hack Nerd Font Mono\n\
-include /usr/local/kitty.app/themes/gruvbox/gruvbox_dark_hard.conf\n\
-" > /etc/skel/.config/kitty/kitty.conf
+COPY ./conf/.config/kitty/kitty.conf /etc/skel/.config/kitty/kitty.conf
 
 # 20230112: requires --no-sandbox, crashes, and churns
 # https://brave.com/linux/
