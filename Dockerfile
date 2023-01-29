@@ -496,6 +496,7 @@ RUN nvim --headless \
     coc-html \
     coc-json \
     coc-markdownlint \
+    coc-prisma \
     coc-sh \
     coc-solidity \
     coc-tsserver \

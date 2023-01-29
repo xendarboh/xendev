@@ -50,8 +50,14 @@
   name = "neoclide/jsonc.vim"
   merged = false
 
+# vim syntax for solidity
 [[custom_plugins]]
   name = "TovarishFin/vim-solidity"
+  merged = false
+
+# vim syntax for prisma
+[[custom_plugins]]
+  name="prisma/vim-prisma"
   merged = false
 
 ## -- SpaceVim layer list start

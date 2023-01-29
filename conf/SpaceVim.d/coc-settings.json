@@ -26,6 +26,9 @@
   "typescript.referencesCodeLens.showOnAllFunctions": true,
   "typescript.implementationsCodeLens.enable": true,
 
+  // enable format on save for some file types
+  "coc.preferences.formatOnSaveFiletypes": ["prisma"],
+
   // languageservers defined here are instead of coc- extension
   "languageserver": {
     // https://github.com/neoclide/coc.nvim/wiki/Language-servers#dockerfile
