@@ -4,9 +4,10 @@ export NPM_CONFIG_PREFIX=~/.npm-global
 
 export PATH=~/.local/bin:${PATH}
 export PATH=~/.go/bin:${GOPATH}/bin:${PATH}
-export PATH=~/.yarn/bin:${PATH}
-export PATH=${PNPM_HOME}:${PATH}
 export PATH=${NPM_CONFIG_PREFIX}/bin:${PATH}
+export PATH=${PNPM_HOME}:${PATH}
+export PATH=~/.yarn/bin:${PATH}
+export PATH=./node_modules/.bin:${PATH}
 
 export GPG_TTY=$(tty)
 
@@ -69,3 +70,5 @@ if [[ $(ps --no-header --pid=$PPID --format=comm) != "fish" && -z ${BASH_EXECUTI
 then
   exec fish
 fi
+
+# vim:syntax=sh
