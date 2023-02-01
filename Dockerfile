@@ -341,6 +341,8 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 # install rust things
 RUN cargo install \
+  # 2023-01-31: install exa this way vs apt to avoid:
+  # exa: Options --git and --git-ignore can't be used because `git` feature was disabled in this build of exa
   exa
 
 # install latest circom
@@ -412,8 +414,9 @@ SHELL ["/bin/fish", "--login", "-c"]
 RUN curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish \
     | source \
   && fisher install \
-    jorgebucaran/fisher \
-    jomik/fish-gruvbox
+    gazorby/fish-exa \
+    jomik/fish-gruvbox \
+    jorgebucaran/fisher
 SHELL ["/bin/bash", "--login", "-c"]
 
 # copy configuration files so that links to them work during docker build

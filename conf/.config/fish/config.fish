@@ -53,18 +53,16 @@ function on_variable_pwd --on-variable PWD
         && $TMUX_PLUGIN_MANAGER_PATH/tmux-window-name/scripts/rename_session_windows.py &>/dev/null
 end
 
-alias exa="exa \
---git \
---group-directories-first \
---header \
---icons \
---long \
---time-style=long-iso \
-"
-
-abbr ll 'exa --sort changed'
-abbr la 'exa --all'
-abbr lt 'exa --tree'
+# https://github.com/gazorby/fish-exa#-configuration
+set -Ux EXA_STANDARD_OPTIONS \
+    --group \
+    --group-directories-first \
+    --header \
+    --icons \
+    --long \
+    --time-style=long-iso
+set -Ux EXA_LL_OPTIONS --sort changed
+set -Ux EXA_LT_OPTIONS --ignore-glob '.git|node_modules' --tree --level
 
 abbr s 'git status'
 abbr gl 'git log --show-signature'

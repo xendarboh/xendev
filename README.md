@@ -41,6 +41,7 @@ make build
 - [exa](https://github.com/ogham/exa): A modern replacement for ‘ls’
 - [fish-shell](https://github.com/fish-shell/fish-shell): The user-friendly command line shell
   - [fisher](https://github.com/jorgebucaran/fisher): A plugin manager for Fish
+  - [fish-exa](https://github.com/gazorby/fish-exa): exa aliases for fish
   - [fish-gruvbox](https://github.com/Jomik/fish-gruvbox): gruvbox theme for fish
 - [fzf](https://github.com/junegunn/fzf): A command-line fuzzy finder
 - [git](https://github.com/git/git) (latest stable version)
@@ -77,7 +78,7 @@ make build
 - [zoxide](https://github.com/ajeetdsouza/zoxide): A smarter cd command
 - and more...
 
-Additionally (and optionally), the following are provided by the X11 base image.
+Additionally (and optionally), the following are within the X11 base image:
 
 - [Xfce](https://gitlab.xfce.org/xfce): A lightweight desktop environment for UNIX-like operating systems. It aims to be fast and low on system resources, while still being visually appealing and user friendly.
 - [kitty](https://github.com/kovidgoyal/kitty): Cross-platform, fast, feature-rich, GPU based terminal
@@ -86,7 +87,7 @@ Additionally (and optionally), the following are provided by the X11 base image.
 - [nerd-fonts](https://github.com/ryanoasis/nerd-fonts): Developer targeted fonts with a high number of glyphs (icons)
   - [Hack](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/Hack): A typeface designed for source code
 
-Powered-by
+Powered-by:
 
 - [x11docker](https://github.com/mviereck/x11docker): Run GUI applications and desktops in docker and podman containers. Focus on security.
 - [Xendarboh](https://github.com/xendarboh): An Elven Tech Wizard
