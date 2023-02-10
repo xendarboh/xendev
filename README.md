@@ -6,9 +6,11 @@ A modern portable sandboxed containerized terminal-based vim-centric development
 
 Overpowered "dotfiles" intended to run in a number of ways; either within a:
 
-- terminal of your choice
-- customized gpu-accelerated terminal
-- x11docker-powered full, but minimal, desktop
+- customized sandboxed gpu-accelerated terminal (recommended)
+- x11docker-powered full, but minimal, desktop (interesting)
+- terminal of your choice (minimal requirements)
+
+Note: Developed on and for Linux; other host compatibility is unknown.
 
 ## Quickstart
 
@@ -114,7 +116,7 @@ Optionally edit [.env](.env).
 make build
 ```
 
-#### Build the tty-only image
+#### Or build the tty-only image
 
 ```sh
 make build-tty
@@ -133,11 +135,30 @@ rebuild-tty          (re)build tty-only docker image with --no-cache --pull
 
 ## Run Examples
 
+### Within a gpu-accelerated terminal
+
+This is the recommended mode of operation with balance of sandboxed environment
+and host integration for optimal DX.
+
+```sh
+x11docker --gpu --clipboard --network -- xen/dev kitty
+```
+
+### Within an x11docker-powered desktop
+
+This mode illustrates interesting capabilities provided by x11docker with a
+fullly operational sandboxed desktop running within a window on the host.
+
+```sh
+x11docker --desktop --gpu --clipboard --network -- xen/dev
+```
+
 ### Within a terminal of your choice
 
 #### Without X11
 
-This is the mode of minimal host requirements, only `docker|podman`
+This is the mode of minimal host requirements, only `docker|podman`. It will
+work on a headless server, for example.
 
 ```sh
 make build-tty
@@ -157,18 +178,6 @@ x11docker --tty --interactive -- xen/dev
 - Host terminal expectations, ideally:
   - truecolor support (use scripts in [test/](test/) to test support inside `xendev`)
   - patched font like one from [nerd-fonts](https://github.com/ryanoasis/nerd-fonts) with [powerline](https://github.com/powerline/fonts) symbols
-
-### Within a gpu-accelerated terminal
-
-```sh
-x11docker --gpu --clipboard --network -- xen/dev kitty
-```
-
-### Within an x11docker-powered desktop
-
-```sh
-x11docker --desktop --gpu --clipboard --network -- xen/dev
-```
 
 ### With directories shared from the host
 
