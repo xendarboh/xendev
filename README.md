@@ -172,7 +172,7 @@ This also works with `make build`, just larger docker image.
 In this mode, host clipboard will work with enhanced security provided by `x11docker`.
 
 ```sh
-x11docker --tty --interactive -- xen/dev
+x11docker --tty --interactive --clipboard --network -- xen/dev
 ```
 
 - Host terminal expectations, ideally:
