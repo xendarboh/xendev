@@ -66,5 +66,6 @@ set -Ux EXA_LT_OPTIONS --ignore-glob '.git|node_modules' --tree --level
 
 abbr s 'git status'
 abbr gl 'git log --show-signature'
+abbr lz lazygit
 
 # vim:sw=4:ts=4:et:
