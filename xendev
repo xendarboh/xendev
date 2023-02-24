@@ -30,6 +30,7 @@ else
     --tmpfs /tmp:exec \
     --volume /home/${U}/.config/git:/home/xendev/.config/git \
     --volume /home/${U}/src:/home/xendev/src \
+    --hostname $(hostname)-${name} \
     -- \
     ${image} \
     kitty \
