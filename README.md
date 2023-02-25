@@ -198,6 +198,12 @@ checks](https://github.com/mviereck/x11docker#privilege-checks).
 - modern latest greatest versions; from apt, PPA, install scripts, or built from source
 - analog choice of sandboxed security vs function
 
+## Tests
+
+See the shell scripts within the [test](test/) directory for tests to confirm
+host-mapped gpg support, terminal font rendering (truecolor, glyphs, italics)
+capabilities, etc.
+
 ## Customization
 
 - See [conf/](conf/) files
