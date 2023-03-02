@@ -458,7 +458,12 @@ RUN \
 ####################################
 # install spacevim
 ####################################
-RUN curl -sLf https://spacevim.org/install.sh | bash
+RUN curl -sLf https://spacevim.org/install.sh \
+  # 2023-03-01 Hot Fix (temp hack!?) broken install script, see:
+  # https://github.com/SpaceVim/SpaceVim/issues/4790
+  # https://github.com/60ke/SpaceVim/commit/7607c86c03913d25046bb528560df83558c3e9d8
+  | sed -e 's|config/nvim|nvim|' \
+  | bash
 
 # use specific spacevim release
 # ARG VERSION_SPACEVIM=v2.0.0
