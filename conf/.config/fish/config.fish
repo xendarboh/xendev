@@ -68,4 +68,8 @@ abbr s 'git status'
 abbr gl 'git log --show-signature'
 abbr lz lazygit
 
+abbr kt-clip 'kitty +kitten clipboard'
+abbr kt-diff 'kitty +kitten diff'
+abbr kt-icat 'kitty +kitten icat'
+
 # vim:sw=4:ts=4:et:
