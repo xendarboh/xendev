@@ -82,8 +82,6 @@ RUN apt update \
     # for kpcli:
     libreadline-dev \
     xclip \
-    # for neovim (build dep):
-    cmake \
     # for tomb:
     cryptsetup \
     gettext \
@@ -211,27 +209,58 @@ RUN npm install --location=global \
 # install latest deno
 RUN curl -fsSL https://deno.land/install.sh | DENO_INSTALL=/usr/local sh
 
-# install neovim tag'd release from source
-# reference: https://github.com/neovim/neovim/wiki/Building-Neovim
-# ARG _NEOVIM_VERSION=v0.1.6
-# RUN git clone --branch ${_NEOVIM_VERSION} --depth 1 https://github.com/neovim/neovim.git /usr/local/src/neovim \
-#   && cd /usr/local/src/neovim \
-#   && make CMAKE_BUILD_TYPE=Release \
-#   && make install \
-#   && rm -rf /usr/local/src/neovim
-
-# install neovim (stable) from ppa
-# reference: https://github.com/neovim/neovim/wiki/Installing-Neovim#ubuntu
-# RUN add-apt-repository ppa:neovim-ppa/stable \
-#   && apt-get update \
-#   && apt-get install --no-install-recommends -y -q \
-#     neovim \
-#   && rm -rf /var/lib/apt/lists/*
-
-RUN apt-get update \
-  && apt-get install --no-install-recommends -y -q \
-    neovim \
-  && rm -rf /var/lib/apt/lists/*
+ARG INSTALL_NEOVIM_FROM_SRC=0
+ARG INSTALL_NEOVIM_FROM_PPA_STABLE=0
+ARG INSTALL_NEOVIM_FROM_PPA_UNSTABLE=0
+ARG VERSION_NEOVIM=stable
+RUN \
+  if [ "${INSTALL_NEOVIM_FROM_SRC}" = "1" ]; then \
+    # install neovim tag'd release from source
+    # reference: https://github.com/neovim/neovim/wiki/Building-Neovim
+    apt-get update \
+      && apt-get install --no-install-recommends -y -q \
+        cmake \
+        curl \
+        g++ \
+        gettext \
+        libtool-bin \
+        ninja-build \
+        pkg-config \
+        unzip \
+      && rm -rf /var/lib/apt/lists/* \
+      && git clone \
+        --branch ${VERSION_NEOVIM} \
+        --depth 1 \
+        https://github.com/neovim/neovim.git \
+        /usr/local/src/neovim \
+      && cd /usr/local/src/neovim \
+      && make \
+        CMAKE_BUILD_TYPE=Release \
+        CMAKE_INSTALL_PREFIX=/usr \
+      && make install \
+      && rm -rf /usr/local/src/neovim \
+  ; elif [ "${INSTALL_NEOVIM_FROM_PPA_STABLE}" = "1" ]; then \
+    # install neovim (stable) from ppa
+    # reference: https://github.com/neovim/neovim/wiki/Installing-Neovim#ubuntu
+    add-apt-repository ppa:neovim-ppa/stable \
+      && apt-get update \
+      && apt-get install --no-install-recommends -y -q \
+        neovim \
+      && rm -rf /var/lib/apt/lists/* \
+  ; elif [ "${INSTALL_NEOVIM_FROM_PPA_UNSTABLE}" = "1" ]; then \
+    # install neovim (unstable) from ppa
+    add-apt-repository ppa:neovim-ppa/unstable \
+      && apt-get update \
+      && apt-get install --no-install-recommends -y -q \
+        neovim \
+      && rm -rf /var/lib/apt/lists/* \
+  ; else \
+    # install neovim from apt
+    apt-get update \
+      && apt-get install --no-install-recommends -y -q \
+        neovim \
+      && rm -rf /var/lib/apt/lists/* \
+  ; fi
 
 # install python support for neovim
 # https://github.com/zchee/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
