@@ -39,6 +39,12 @@ export GTAGSLABEL=pygments
 
 ls ~/.bash/*.sh &>/dev/null && source ~/.bash/*.sh
 
+# (re)init nvim rplugin.vim if older than xendev build
+# ensure current and create if new container volume map from host
+test ~/.local/share/nvim/rplugin.vim -ot /etc/xendev-release \
+  && nvim --headless +UpdateRemotePlugins +qall \
+    &>/dev/null
+
 # Workaround issue whereby tmux new window using current pwd does not respect symlinks.
 # This reads and apllies a file of directory mappings of the format "from:to".
 dirmap() {

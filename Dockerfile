@@ -544,13 +544,21 @@ RUN nvim --headless \
 
 
 ########################################################################
-# /home/${_USER} --> /etc/skel
-# symlink xendev user's home to /etc/skel to support x11docker user home
+# temporarily switch back to root user
 ########################################################################
 USER root
+
+# /home/${_USER} --> /etc/skel
+# symlink xendev user's home to /etc/skel to support x11docker user home
 RUN mv /etc/skel /etc/skel.bak \
   && mkdir /etc/skel \
   && ln -sv /home/${_USER}/{.,}* /etc/skel/
+
+# record xendev release
+RUN echo \
+    "VERSION=$(date +'%Y%m%d%H%M%S')" \
+    > /etc/xendev-release
+
 USER ${_USER}
 
 
