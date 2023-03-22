@@ -15,6 +15,7 @@ else
   # ensure volume directories exist
   mkdir -p /home/${U}/.config/git
   mkdir -p /home/${U}/.gnupg
+  mkdir -p /home/${U}/.local/share/xendev
   mkdir -p /home/${U}/src
 
   x11docker \
@@ -29,6 +30,7 @@ else
     -- \
     --tmpfs /tmp:exec \
     --volume /home/${U}/.config/git:/home/xendev/.config/git \
+    --volume /home/${U}/.local/share/xendev:/home/xendev/.local/share \
     --volume /home/${U}/src:/home/xendev/src \
     --hostname $(hostname)-${name} \
     -- \
