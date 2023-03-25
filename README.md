@@ -39,7 +39,6 @@ make build
 - [cypress](https://github.com/cypress-io/cypress): (deps) Fast, easy and reliable testing for anything that runs in a browser
 - [deno](https://github.com/denoland/deno): A modern runtime for JavaScript and TypeScript
 - [diff-so-fancy](https://github.com/so-fancy/diff-so-fancy): Good-lookin' diffs. Actually… nah… The best-lookin' diffs
-- [entr](https://github.com/eradman/entr): Run arbitrary commands when files change
 - [exa](https://github.com/ogham/exa): A modern replacement for ‘ls’
 - [fish-shell](https://github.com/fish-shell/fish-shell): The user-friendly command line shell
   - [fisher](https://github.com/jorgebucaran/fisher): A plugin manager for Fish
@@ -76,6 +75,7 @@ make build
   - [tmux-resurrect](https://github.com/tmux-plugins/tmux-resurrect): Persists tmux environment across system restarts
   - [tmux-window-name](https://github.com/ofirgall/tmux-window-name): A plugin to name your tmux windows smartly
 - [ts-lehre](https://github.com/heavenshell/ts-lehre): Generate document block(JsDoc, EsDoc, TsDoc) from source code
+- [watchman](https://github.com/facebook/watchman): Watches files and records, or triggers actions, when they change
 - [xclip](https://github.com/astrand/xclip): Command line interface to the X11 clipboard
 - [zoxide](https://github.com/ajeetdsouza/zoxide): A smarter cd command
 - and more...

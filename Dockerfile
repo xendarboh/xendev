@@ -8,7 +8,6 @@ ARG _USER_GROUPS=audio,dialout,video
 ARG _USER_ID=1000
 
 # versions
-ARG VERSION_ENTR=5.2
 ARG VERSION_KPCLI=3.8.1
 ARG VERSION_LLVM=14
 ARG VERSION_NODE=v18.15.0
@@ -87,6 +86,8 @@ RUN apt update \
     gettext \
     pinentry-curses \
     zsh \
+    # for coc-tsserver:
+    watchman \
   && rm -rf /var/lib/apt/lists/*
 
 # set locale
@@ -168,18 +169,6 @@ RUN git clone \
   && cd /usr/local/src/tomb \
   && make install \
   && rm -rf /usr/local/src/tomb
-
-# install entr
-RUN git clone \
-    --branch ${VERSION_ENTR} \
-    --depth 1 \
-    https://github.com/eradman/entr.git \
-    /tmp/entr \
-  && cd /tmp/entr \
-  && ./configure \
-  && make test \
-  && make install \
-  && rm -rf /tmp/entr
 
 # # install the platinum searcher
 # ARG _PT_VERSION=v2.2.0
