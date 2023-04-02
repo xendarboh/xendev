@@ -34,6 +34,9 @@ eval "$(_PIO_COMPLETE=source pio)"
 # https://github.com/ajeetdsouza/zoxide#step-2-add-zoxide-to-your-shell
 eval "$(zoxide init bash)"
 
+# zoxide: When set to 1, z will print the matched directory before navigating to it.
+export _ZO_ECHO=1
+
 # https://spacevim.org/layers/gtags/
 export GTAGSLABEL=pygments
 
