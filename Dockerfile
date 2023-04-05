@@ -86,8 +86,6 @@ RUN apt update \
     gettext \
     pinentry-curses \
     zsh \
-    # for coc-tsserver:
-    watchman \
   && rm -rf /var/lib/apt/lists/*
 
 # set locale
@@ -179,6 +177,26 @@ RUN git clone \
 #     --exclude='README.md' \
 #     -C /usr/local/bin --strip-components 1 -xf ${F} \
 #   && rm -f ${F}
+
+# install watchman, for coc-tsserver
+RUN apt update \
+  && apt install --no-install-recommends -y -q \
+    watchman \
+  && rm -rf /var/lib/apt/lists/*
+
+# configure watchman globally
+RUN echo -e \
+'{\n\
+  "enforce_root_files": true\n\
+}'\
+> /etc/watchman.json
+
+# add example local watchman config file
+RUN echo -e \
+'{\n\
+  "ignore_dirs": ["node_modules"]\n\
+}'\
+> /etc/watchmanconfig.example
 
 # install node
 RUN export F="node-${VERSION_NODE}-linux-x64.tar.xz" \

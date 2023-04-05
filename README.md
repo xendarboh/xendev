@@ -78,7 +78,7 @@ make build
 - [watchman](https://github.com/facebook/watchman): Watches files and records, or triggers actions, when they change
 - [xclip](https://github.com/astrand/xclip): Command line interface to the X11 clipboard
 - [zoxide](https://github.com/ajeetdsouza/zoxide): A smarter cd command
-- and more...
+- and more... including numerous language-server-providers
 
 Additionally (and optionally), the following are within the X11 base image:
 
@@ -208,10 +208,28 @@ capabilities, etc.
 
 - See [conf/](conf/) files
 
+## Notes
+
+### Watchman
+
+For best results (of `coc-tsserver`), add a `.watchmanconfig` project root file
+specifying dirs to ignore, for example:
+
+```json
+{
+  "ignore_dirs": ["node_modules"]
+}
+```
+
+Reference:
+
+- [ignore/exclude directory in watchlist not work · Issue #705](https://github.com/facebook/watchman/issues/705)
+- [Configuration Files | Watchman](https://facebook.github.io/watchman/docs/config#root_files)
+
 ### Local (machine-specific) Configuration
 
 ```sh
-cp conf.local.example conf.local
+cp -a conf.local.example conf.local
 ```
 
 - `conf.local/directory_map.txt` list of "from:to" directory mappings for
