@@ -187,7 +187,8 @@ RUN apt update \
 # configure watchman globally
 RUN echo -e \
 '{\n\
-  "enforce_root_files": true\n\
+  "enforce_root_files": true,\n\
+  "root_files": [".watchmanconfig"]\n\
 }'\
 > /etc/watchman.json
 
@@ -196,7 +197,7 @@ RUN echo -e \
 '{\n\
   "ignore_dirs": ["node_modules"]\n\
 }'\
-> /etc/watchmanconfig.example
+> /usr/share/.watchmanconfig
 
 # install node
 RUN export F="node-${VERSION_NODE}-linux-x64.tar.xz" \

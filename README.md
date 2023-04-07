@@ -212,8 +212,9 @@ capabilities, etc.
 
 ### Watchman
 
-For best results (of `coc-tsserver`), add a `.watchmanconfig` project root file
-specifying dirs to ignore, for example:
+Watchman is globally configured to only consider `.watchmanconfig` as a project
+root file. To enable project watching, add a `.watchmanconfig` file which can
+be empty (`{}`) or more ideally configure project dirs to ignore. For example:
 
 ```json
 {
