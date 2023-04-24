@@ -480,7 +480,7 @@ RUN ln -sv \
     /home/${_USER}/ \
   && ln -sv \
     ${XENDEV_DIR}/conf/.config/starship.toml \
-    ${XENDEV_DIR}/conf/SpaceVim.d \
+    ${XENDEV_DIR}/conf/.config/SpaceVim.d \
     /home/${_USER}/.config/ \
   && ln -svf \
     ${XENDEV_DIR}/conf/.config/fish/config.fish \

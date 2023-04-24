@@ -229,9 +229,9 @@ cp -a conf.local.example conf.local
 
 ### vim CoC (autocompletion)
 
-| Configuration Location                                                             | Purpose                             |
-| ---------------------------------------------------------------------------------- | ----------------------------------- |
-| [conf/SpaceVim.d/coc-settings.json](conf/SpaceVim.d/coc-settings.json)             | coc settings                        |
-| [conf/SpaceVim.d/init.toml](conf/SpaceVim.d/init.toml)                             | enable coc as spacevim autocomplete |
-| [conf/SpaceVim.d/autoload/myspacevim.vim](conf/SpaceVim.d/autoload/myspacevim.vim) | set coc home                        |
-| [Dockerfile](Dockerfile)                                                           | install coc extensions with nvim    |
+| Configuration Location                                                                             | Purpose                             |
+| -------------------------------------------------------------------------------------------------- | ----------------------------------- |
+| [conf/.config/SpaceVim.d/coc-settings.json](conf/.config/SpaceVim.d/coc-settings.json)             | coc settings                        |
+| [conf/.config/SpaceVim.d/init.toml](conf/.config/SpaceVim.d/init.toml)                             | enable coc as spacevim autocomplete |
+| [conf/.config/SpaceVim.d/autoload/myspacevim.vim](conf/.config/SpaceVim.d/autoload/myspacevim.vim) | set coc home                        |
+| [Dockerfile](Dockerfile)                                                                           | install coc extensions with nvim    |
