@@ -116,6 +116,19 @@ function! myspacevim#after() abort
   " of LSP to work, you have to confirm completion by coc#pum#confirm()
   inoremap <expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
 
+  " one-key shortcut to restart coc
+  nnoremap <silent> <F12> :CocRestart<CR>
+
+  " show documentation in preview window.
+  nnoremap <silent> <F10> :call <SID>show_documentation()<CR>
+  function! s:show_documentation()
+    if (index(['vim','help'], &filetype) >= 0)
+      execute 'h '.expand('<cword>')
+    else
+      call CocAction('doHover')
+    endif
+  endfunction
+
 
   """"""""""""""""""
   " neoformat

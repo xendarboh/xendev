@@ -333,12 +333,9 @@ WORKDIR /home/${_USER}
 # https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally
 ENV NPM_CONFIG_PREFIX=/home/${_USER}/.npm-global
 RUN npm install --location=global \
-  bash-language-server \
   diff-so-fancy \
-  dockerfile-language-server-nodejs \
   eslint-cli \
   import-js \
-  javascript-typescript-langserver \
   neovim \
   npm-check \
   npm-check-updates \
@@ -349,10 +346,27 @@ RUN npm install --location=global \
   taskbook \
   tern \
   typescript \
-  typescript-language-server \
-  vscode-langservers-extracted \
   # for spacevim layer lang#typescript:
   lehre
+
+# install node things for spacevim layer lsp
+RUN npm install --location=global \
+  # docker_compose_language_service
+  # @microsoft/compose-language-service \
+  # prismals
+  @prisma/language-server \
+  # tailwindcss
+  @tailwindcss/language-server \
+  # bashls
+  bash-language-server \
+  # dockerls
+  dockerfile-language-server-nodejs \
+  # nxls
+  nxls \
+  # tsserver
+  typescript-language-server \
+  # cssls, eslint, html, jsonls
+  vscode-langservers-extracted
 
 # install latest go
 # https://github.com/golang/tools/tree/master/cmd/getgo#usage

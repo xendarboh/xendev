@@ -1,4 +1,7 @@
 {
+  // "tsserver.log": "verbose",
+  // "tsserver.trace.server": "verbose",
+
   // coc diagnostic has two display methods:
   // - floating window: shown like completions
   // - virtual text: shown to the right of the line
