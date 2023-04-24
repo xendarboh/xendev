@@ -11,6 +11,8 @@ function! myspacevim#before() abort
   " https://github.com/neovim/neovim/commit/0093c25dd3795972b953f9914cc33fc38c5d9dbc
   let g:node_host_prog = expand($NPM_CONFIG_PREFIX).'/bin/neovim-node-host'
 
+  let g:jsdoc_formatter = 'tsdoc'
+
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   " >= 2021
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
