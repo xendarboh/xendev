@@ -44,6 +44,7 @@ make build
   - [fisher](https://github.com/jorgebucaran/fisher): A plugin manager for Fish
   - [fish-exa](https://github.com/gazorby/fish-exa): exa aliases for fish
   - [fish-gruvbox](https://github.com/Jomik/fish-gruvbox): gruvbox theme for fish
+  - [fish-nx](https://github.com/xendarboh/fish-nx): Fish completions for Nx
 - [fzf](https://github.com/junegunn/fzf): A command-line fuzzy finder
 - [git](https://github.com/git/git) (latest stable version)
   - [bfg-repo-cleaner](https://github.com/rtyley/bfg-repo-cleaner): Removes large or troublesome blobs like git-filter-branch does, but faster
