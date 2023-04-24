@@ -25,6 +25,7 @@ else
     --network=host \
     --share /media \
     --share /mnt \
+    --share /srv \
     --share ~/.gnupg \
     --share ~/.ssh \
     -- \
