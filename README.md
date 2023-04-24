@@ -212,20 +212,9 @@ capabilities, etc.
 
 ### Watchman
 
-Watchman is globally configured to only consider `.watchmanconfig` as a project
-root file. To enable project watching, add a `.watchmanconfig` file which can
-be empty (`{}`) or more ideally configure project dirs to ignore. For example:
-
-```json
-{
-  "ignore_dirs": ["node_modules"]
-}
-```
-
-Reference:
-
-- [ignore/exclude directory in watchlist not work · Issue #705](https://github.com/facebook/watchman/issues/705)
-- [Configuration Files | Watchman](https://facebook.github.io/watchman/docs/config#root_files)
+By default, watchman will watch all files and this can cause issue (such as vim
+lsp/coc types failing), for example if watching `node_modules`, so configure it
+per project as needed. See `/usr/share/.watchmanconfig` for an example.
 
 ### Local (machine-specific) Configuration
 

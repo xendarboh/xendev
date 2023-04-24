@@ -184,14 +184,6 @@ RUN apt update \
     watchman \
   && rm -rf /var/lib/apt/lists/*
 
-# configure watchman globally
-RUN echo -e \
-'{\n\
-  "enforce_root_files": true,\n\
-  "root_files": [".watchmanconfig"]\n\
-}'\
-> /etc/watchman.json
-
 # add example local watchman config file
 RUN echo -e \
 '{\n\
