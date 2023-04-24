@@ -560,7 +560,7 @@ USER root
 # symlink xendev user's home to /etc/skel to support x11docker user home
 RUN mv /etc/skel /etc/skel.bak \
   && mkdir /etc/skel \
-  && ln -sv /home/${_USER}/{.,}* /etc/skel/
+  && (ln -sv /home/${_USER}/{.,}* /etc/skel/ || true)
 
 # record xendev release
 RUN echo \
