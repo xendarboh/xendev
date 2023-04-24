@@ -27,8 +27,14 @@ build: ## build docker image with X11 support
 
 .PHONY: rebuild
 rebuild: ## rebuild docker image with X11 support
-	time docker compose build --no-cache --pull xen-x11
+	time docker pull ${IMAGE_BASE}
 	time docker compose build \
 		--no-cache \
+		--progress=plain \
+		--pull \
+		xen-x11
+	time docker compose build \
 		--build-arg IMAGE_BASE=xen/x11 \
+		--no-cache \
+		--progress=plain \
 		xen-dev
