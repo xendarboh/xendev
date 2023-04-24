@@ -196,10 +196,14 @@ RUN export F="node-${VERSION_NODE}-linux-x64.tar.xz" \
   && cd /tmp \
   && wget http://nodejs.org/dist/${VERSION_NODE}/${F} \
   && tar \
-    --exclude='ChangeLog' \
+    --directory /usr/local \
+    --exclude='CHANGELOG.md' \
     --exclude='LICENSE' \
     --exclude='README.md' \
-    -C /usr/local --strip-components 1 -xf ${F} \
+    --extract \
+    --file ${F} \
+    --strip-components 1 \
+  && chown -R 0:0 /usr/local \
   && rm -f ${F}
 
 # install yarn and pnpm
