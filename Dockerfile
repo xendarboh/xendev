@@ -40,7 +40,6 @@ RUN apt update \
     build-essential \
     curl \
     dos2unix \
-    fish \
     gpg-agent \
     htop \
     jq \
@@ -91,6 +90,13 @@ RUN apt update \
 # set locale
 RUN locale-gen ${_LOCALE} \
   && update-locale LANG=${_LOCALE} LC_ALL=${_LOCALE}
+
+# install latest fish
+RUN apt-add-repository ppa:fish-shell/release-3 \
+  && apt-get update \
+  && apt-get install --no-install-recommends -y -q \
+    fish \
+  && rm -rf /var/lib/apt/lists/*
 
 # install latest git
 RUN apt-add-repository ppa:git-core/ppa \
