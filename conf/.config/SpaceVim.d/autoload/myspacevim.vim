@@ -121,15 +121,8 @@ function! myspacevim#after() abort
   " one-key shortcut to restart coc
   nnoremap <silent> <F12> :CocRestart<CR>
 
-  " show documentation in preview window.
-  nnoremap <silent> <F10> :call <SID>show_documentation()<CR>
-  function! s:show_documentation()
-    if (index(['vim','help'], &filetype) >= 0)
-      execute 'h '.expand('<cword>')
-    else
-      call CocAction('doHover')
-    endif
-  endfunction
+  " show documentation in preview window
+  nnoremap <silent> <F10> :call CocAction('doHover')<CR>
 
 
   """"""""""""""""""
