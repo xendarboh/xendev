@@ -480,39 +480,18 @@ COPY --chown=${_USER}:${_USER} . ${XENDEV_DIR}
 
 # link configuration files so that a mounted volume may override at container execution time
 RUN \
-  # replace kitty.conf file (from Dockerfile.x11) with symlink
+  # replace kitty.conf file (from standalone-able Dockerfile.x11) with symlink
   rm -f /home/${_USER}/.config/kitty/kitty.conf \
+  # create dirs so stow symlinks files and not dirs
+  && mkdir \
+    -p /home/${_USER}/.config/lazygit \
+  # stow the conf files!
   && stow \
     --dir=${XENDEV_DIR} \
     --target=/home/${_USER}/ \
     --ignore=gitconfig \
     --verbose \
     conf
-
-# # link configuration files so that a mounted volume may override at container execution time
-# RUN ln -sv \
-#     ${XENDEV_DIR}/conf/.bash_aliases \
-#     ${XENDEV_DIR}/conf/.bash_local \
-#     ${XENDEV_DIR}/conf/.bash_prompt \
-#     ${XENDEV_DIR}/conf/.tmux.conf \
-#     /home/${_USER}/ \
-#   && ln -sv \
-#     ${XENDEV_DIR}/conf/.config/starship.toml \
-#     ${XENDEV_DIR}/conf/.config/SpaceVim.d \
-#     /home/${_USER}/.config/ \
-#   && ln -svf \
-#     ${XENDEV_DIR}/conf/.config/fish/completions/* \
-#     /home/${_USER}/.config/fish/completions/ \
-#   && ln -svf \
-#     ${XENDEV_DIR}/conf/.config/fish/config.fish \
-#     /home/${_USER}/.config/fish/config.fish \
-#   && mkdir -p /home/${_USER}/.config/lazygit \
-#   && ln -svf \
-#     ${XENDEV_DIR}/conf/.config/lazygit/config.yml \
-#     /home/${_USER}/.config/lazygit/config.yml \
-#   && ln -svf \
-#     ${XENDEV_DIR}/conf/.config/kitty/kitty.conf \
-#     /home/${_USER}/.config/kitty/kitty.conf
 
 # enable local bash configuration
 RUN /bin/echo -e "\ntest -f ~/.bash_local && . ~/.bash_local\n" >> .bashrc
