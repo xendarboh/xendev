@@ -552,6 +552,7 @@ RUN cd ~/.cache/vimfiles/repos/github.com/RRethy/vim-hexokinase && make
 # install CoC extensions
 RUN nvim --headless \
   +'CocInstall -sync \
+    @yaegassy/coc-tailwindcss3 \
     coc-clangd \
     coc-cmake \
     coc-css \
@@ -562,8 +563,8 @@ RUN nvim --headless \
     coc-prisma \
     coc-sh \
     coc-solidity \
-    coc-tsserver \
     coc-toml \
+    coc-tsserver \
     coc-yaml \
   ' \
   +qall
