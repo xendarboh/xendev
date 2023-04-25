@@ -397,7 +397,8 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 RUN cargo install \
   # 2023-01-31: install exa this way vs apt to avoid:
   # exa: Options --git and --git-ignore can't be used because `git` feature was disabled in this build of exa
-  exa
+  exa \
+  git-absorb
 
 # install latest circom
 # https://docs.circom.io/getting-started/installation/#installing-dependencies

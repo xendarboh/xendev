@@ -48,6 +48,7 @@ make build
 - [fzf](https://github.com/junegunn/fzf): A command-line fuzzy finder
 - [git](https://github.com/git/git) (latest stable version)
   - [bfg-repo-cleaner](https://github.com/rtyley/bfg-repo-cleaner): Removes large or troublesome blobs like git-filter-branch does, but faster
+  - [git-absorb](https://github.com/tummychow/git-absorb): git commit --fixup, but automatic
   - [git-lfs](https://github.com/git-lfs/git-lfs): Git extension for versioning large files
   - [lazygit](https://github.com/jesseduffield/lazygit): Simple terminal UI for git commands
 - [go](https://github.com/golang/go): The Go programming language
