@@ -76,8 +76,6 @@ RUN apt update \
     # for spacevim layer tags:
     exuberant-ctags \
     global \
-    # for flow-bin:
-    libelf1 \
     # for kpcli:
     libreadline-dev \
     xclip \
@@ -174,16 +172,6 @@ RUN git clone \
   && cd /usr/local/src/tomb \
   && make install \
   && rm -rf /usr/local/src/tomb
-
-# # install the platinum searcher
-# ARG _PT_VERSION=v2.2.0
-# RUN export F="pt_linux_amd64.tar.gz" \
-#   && cd /tmp \
-#   && wget "https://github.com/monochromegane/the_platinum_searcher/releases/download/${_PT_VERSION}/${F}" \
-#   && tar \
-#     --exclude='README.md' \
-#     -C /usr/local/bin --strip-components 1 -xf ${F} \
-#   && rm -f ${F}
 
 # install latest watchman, for coc-tsserver
 RUN cd /tmp \

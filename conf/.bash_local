@@ -49,7 +49,7 @@ test ~/.local/share/nvim/rplugin.vim -ot /etc/xendev-release \
     &>/dev/null
 
 # Workaround issue whereby tmux new window using current pwd does not respect symlinks.
-# This reads and apllies a file of directory mappings of the format "from:to".
+# This reads and applies a file of directory mappings of the format "from:to".
 dirmap() {
   F="${XENDEV_DIR}/conf.local/directory_map.txt"
   test -f "${F}" || return

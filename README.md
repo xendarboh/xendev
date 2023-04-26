@@ -194,11 +194,11 @@ checks](https://github.com/mviereck/x11docker#privilege-checks).
 
 ## Preferences & Philosophy
 
+- modern latest greatest versions; from apt, PPA, install scripts, or built from source
+- [FROM ubuntu:latest](https://hub.docker.com/_/ubuntu)
 - vi-style key bindings
 - dark [gruvbox](https://github.com/morhetz/gruvbox) color scheme
-- [FROM ubuntu:latest](https://hub.docker.com/_/ubuntu)
 - `LOCALE=en_US.UTF-8` (overridden by x11docker)
-- modern latest greatest versions; from apt, PPA, install scripts, or built from source
 - analog choice of sandboxed security vs function
 
 ## Tests

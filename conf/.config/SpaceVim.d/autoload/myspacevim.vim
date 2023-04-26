@@ -1,4 +1,10 @@
 function! myspacevim#before() abort
+  """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+  " misc
+  """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+  let g:jsdoc_formatter = 'tsdoc'
+
   " 2022-11 set the shell to bash regardless of shell of executing environment
   " FIX: (neo)vim format buffer (prettier) inserts chars with SHELL=/bin/fish
   set shell=/bin/bash
@@ -11,24 +17,19 @@ function! myspacevim#before() abort
   " https://github.com/neovim/neovim/commit/0093c25dd3795972b953f9914cc33fc38c5d9dbc
   let g:node_host_prog = expand($NPM_CONFIG_PREFIX).'/bin/neovim-node-host'
 
-  let g:jsdoc_formatter = 'tsdoc'
 
-  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  " >= 2021
-  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-  """"""""""""""""""
+  """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   " CoC
-  """"""""""""""""""
+  """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
   " 2021-04-21: change CoC's config directory without polluting SpaceVim
   " https://github.com/SpaceVim/SpaceVim/issues/2564#issuecomment-651513935
   let g:coc_config_home = expand($XDG_CONFIG_HOME).'/SpaceVim.d/'
 
 
-  """"""""""""""""""
+  """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   " colorizer
-  """"""""""""""""""
+  """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 	" Methods of highlighting
         " \ 'sign_column',
@@ -65,38 +66,12 @@ function! myspacevim#before() abort
         \ expand($XDG_CONFIG_HOME).'/SpaceVim.d/colorizer-palettes/test.json'
         \ ]
 
-  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  " <= 2020 (needs review)
-  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-  """"""""""""""""""
-  " ALE
-  """"""""""""""""""
-
-  " " auto fix (on file save)
-  " " https://github.com/w0rp/ale#2ii-fixing
-  " let g:ale_fixers = {
-  " \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-  " \   'javascript': ['prettier', 'eslint'],
-  " \   'json': ['prettier'],
-  " \   'markdown': ['prettier'],
-  " \ }
-
-  " let g:ale_fix_on_save = 0
-
-  " " https://github.com/w0rp/ale#5i-how-do-i-disable-particular-linters
-  " " By default, all available tools for all supported languages will be run.
-  " " If you want to only select a subset of the tools:
-  " let g:ale_linters = {
-  " \   'javascript': ['eslint', 'flow'],
-  " \ }
-
-
-  """"""""""""""""""
+  """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   " vim-surround
-  """"""""""""""""""
+  """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-  " use `echo char2nr("?")` to see ASCII, append to `surround_` for custom replacement
+  " Note: use `echo char2nr("?")` to see ASCII,append to `surround_` for custom replacement
 
   " j: JSX comment
   let g:surround_106 = "{/* \r */}"
@@ -104,13 +79,9 @@ function! myspacevim#before() abort
 endfunction
 
 function! myspacevim#after() abort
-  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  " >= 2021
-  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-  """"""""""""""""""
+  """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   " CoC
-  """"""""""""""""""
+  """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
   " 2022-08-08: Use <cr> to confirm completion (for autoImports)
   " https://github.com/neoclide/coc.nvim/wiki/Completion-with-sources#use-cr-to-confirm-completion
@@ -125,9 +96,9 @@ function! myspacevim#after() abort
   nnoremap <silent> <F10> :call CocAction('doHover')<CR>
 
 
-  """"""""""""""""""
+  """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   " neoformat
-  """"""""""""""""""
+  """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
   " Add formatters, use prettier when supported
   " https://spacevim.org/layers/format/
@@ -173,9 +144,9 @@ function! myspacevim#after() abort
   let g:neoformat_enabled_yaml       = ['prettier']
 
 
-  """"""""""""""""""
+  """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   " neomake
-  """"""""""""""""""
+  """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
     " \ '-checks=*,-fuchsia*,-llvm*',
     " \ '-extra-arg=-std=c++14',
@@ -195,12 +166,9 @@ function! myspacevim#after() abort
   " let g:neomake_typescript_enabled_makers = ['eslint']
 
 
-  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  " <= 2020 (needs review)
-  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-	" call SpaceVim#custom#SPCGroupName(['G'], '+TestGroup')
-	" call SpaceVim#custom#SPC('nore', ['G', 't'], 'echom 1', 'echomessage 1', 1)
+  """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+  " misc
+  """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
   " italic comments
   " https://stackoverflow.com/questions/3494435/vimrc-make-comments-italic

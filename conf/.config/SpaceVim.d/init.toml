@@ -30,9 +30,6 @@
   # Error detected while processing function SpaceVim#mapping#tab[1]..SpaceVim#mapping#tab#i_tab[4]..neosnippet#expandable[1]..neosnippet#mappings#expandable[2]..neosnippet#mappings#completed_expandable[5]..<SNR>325_get_completed_snippets[7]..<SNR>325_get_user_data:
   # E474: Unidentified byte: clangd:0
   snippet_engine = "ultisnips"
-
-  # layer: checkers
-  # lint_engine = "ale"
 # }}}
 
 # display colors in the file
