@@ -222,7 +222,7 @@ per project as needed. See `/usr/share/.watchmanconfig` for an example.
 ### Local (machine-specific) Configuration
 
 ```sh
-cp -a conf.local.example conf.local
+cp -a conf.local-example conf.local
 ```
 
 - `conf.local/directory_map.txt` list of "from:to" directory mappings for
