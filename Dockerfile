@@ -185,11 +185,18 @@ RUN git clone \
 #     -C /usr/local/bin --strip-components 1 -xf ${F} \
 #   && rm -f ${F}
 
-# install watchman, for coc-tsserver
-RUN apt update \
-  && apt install --no-install-recommends -y -q \
-    watchman \
-  && rm -rf /var/lib/apt/lists/*
+# install latest watchman, for coc-tsserver
+RUN cd /tmp \
+  && wget $( \
+    curl -Ls https://api.github.com/repos/facebook/watchman/releases/latest \
+    | grep -Eo "https://(.*)watchman_ubuntu$(lsb_release -rs)_(.*).deb" \
+    ) \
+  && apt update \
+  && (dpkg -i watchman_*.deb || true) \
+  && apt install --no-install-recommends -y -q -f \
+  && rm -rf /var/lib/apt/lists/* \
+  && rm -f watchman_*.deb \
+  && watchman version
 
 # add example local watchman config file
 RUN echo -e \
