@@ -12,12 +12,17 @@ services:
     build:
       context: ./
       args:
-        - IMAGE_BASE=${IMAGE_BASE}
-        - INSTALL_BFG=${INSTALL_BFG}
-        - INSTALL_CIRCOM=${INSTALL_CIRCOM}
-        - INSTALL_CYPRESS_DEPS=${INSTALL_CYPRESS_DEPS}
-        - INSTALL_LLVM=${INSTALL_LLVM}
+        - IMAGE_BASE
+        - INSTALL_BFG
+        - INSTALL_CIRCOM
+        - INSTALL_CYPRESS_DEPS
+        - INSTALL_LLVM
         - INSTALL_NEOVIM_FROM_PPA_STABLE
         - INSTALL_NEOVIM_FROM_PPA_UNSTABLE
         - INSTALL_NEOVIM_FROM_SRC
+        - VERSION_KPCLI
+        - VERSION_LLVM
+        - VERSION_NEOVIM_FROM_SRC
+        - VERSION_NODE
+        - VERSION_TOMB
     image: xen/dev

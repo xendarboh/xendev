@@ -7,12 +7,6 @@ ARG _USER=xendev
 ARG _USER_GROUPS=audio,dialout,video
 ARG _USER_ID=1000
 
-# versions
-ARG VERSION_KPCLI=3.8.1
-ARG VERSION_LLVM=14
-ARG VERSION_NODE=v18.16.0
-ARG VERSION_TOMB=v2.9
-
 # persist _USER for use in inheriting images
 ENV XENDEV_USER ${_USER}
 
@@ -108,6 +102,7 @@ RUN apt-add-repository ppa:git-core/ppa \
 # install latest clang tools
 # https://apt.llvm.org/
 ARG INSTALL_LLVM=0
+ARG VERSION_LLVM
 RUN \
   if [ "${INSTALL_LLVM}" = "1" ]; then \
     cd /tmp \
@@ -164,6 +159,7 @@ RUN \
   ; fi
 
 # install tomb
+ARG VERSION_TOMB
 RUN git clone \
     --branch ${VERSION_TOMB} \
     --depth 1 \
@@ -194,6 +190,7 @@ RUN echo -e \
 > /usr/share/.watchmanconfig
 
 # install node
+ARG VERSION_NODE
 RUN export F="node-${VERSION_NODE}-linux-x64.tar.xz" \
   && cd /tmp \
   && wget http://nodejs.org/dist/${VERSION_NODE}/${F} \
@@ -218,7 +215,7 @@ RUN curl -fsSL https://deno.land/install.sh | DENO_INSTALL=/usr/local sh
 ARG INSTALL_NEOVIM_FROM_SRC=0
 ARG INSTALL_NEOVIM_FROM_PPA_STABLE=0
 ARG INSTALL_NEOVIM_FROM_PPA_UNSTABLE=0
-ARG VERSION_NEOVIM=stable
+ARG VERSION_NEOVIM_FROM_SRC=stable
 RUN \
   if [ "${INSTALL_NEOVIM_FROM_SRC}" = "1" ]; then \
     # install neovim tag'd release from source
@@ -235,7 +232,7 @@ RUN \
         unzip \
       && rm -rf /var/lib/apt/lists/* \
       && git clone \
-        --branch ${VERSION_NEOVIM} \
+        --branch ${VERSION_NEOVIM_FROM_SRC} \
         --depth 1 \
         https://github.com/neovim/neovim.git \
         /usr/local/src/neovim \
@@ -395,13 +392,19 @@ RUN cargo install \
   exa \
   git-absorb
 
-# install latest circom
+# install latest circom release
 # https://docs.circom.io/getting-started/installation/#installing-dependencies
 ARG INSTALL_CIRCOM=0
 RUN \
   if [ "${INSTALL_CIRCOM}" = "1" ]; then \
     cd /tmp \
-    && git clone https://github.com/iden3/circom.git \
+    && git clone \
+      --branch $( \
+        curl -Ls https://api.github.com/repos/iden3/circom/releases/latest \
+        | sed -n -e 's/"tag_name": "\(.*\)",/\1/p' \
+      ) \
+      --depth 1 \
+      https://github.com/iden3/circom.git \
     && cd circom \
     && cargo build --release \
     && cargo install --path circom \
@@ -423,6 +426,7 @@ RUN eval $(perl -I ~/perl5/lib/perl5/ -Mlocal::lib) \
   && rm -rf .cpanm
 
 # install latest kpcli and dependencies
+ARG VERSION_KPCLI
 RUN wget -O bin/kpcli http://downloads.sourceforge.net/project/kpcli/kpcli-${VERSION_KPCLI}.pl \
   && chmod +x bin/kpcli \
   && eval $(perl -I ~/perl5/lib/perl5/ -Mlocal::lib) \
@@ -444,9 +448,13 @@ RUN wget -O bin/kpcli http://downloads.sourceforge.net/project/kpcli/kpcli-${VER
     Term::ShellUI \
   && rm -rf .cpanm
 
-# install fzf
+# install latest fzf release
 RUN git clone \
     --depth 1 \
+    --branch $( \
+      curl -Ls https://api.github.com/repos/junegunn/fzf/releases/latest \
+      | sed -n -e 's/"tag_name": "\(.*\)",/\1/p' \
+    ) \
     https://github.com/junegunn/fzf.git \
     ~/.fzf \
   && ~/.fzf/install \

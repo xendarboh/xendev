@@ -17,6 +17,7 @@ Note: Developed on and for Linux; other host compatibility is unknown.
 ```sh
 git clone https://github.com/xendarboh/xendev.git
 cd xendev
+cp .env-example .env
 make build
 ./xendev
 ```
@@ -109,7 +110,7 @@ Powered-by:
 
 ### Configure
 
-Optionally edit [.env](.env).
+Edit `.env` to set specific versions and optional installations.
 
 ### Build Image(s)
 
