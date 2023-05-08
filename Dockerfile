@@ -169,12 +169,18 @@ RUN git clone \
   && make install \
   && rm -rf /usr/local/src/tomb
 
-# install latest watchman, for coc-tsserver
+# install watchman, for coc-tsserver
+ARG VERSION_WATCHMAN
 RUN cd /tmp \
-  && wget $( \
-    curl -Ls https://api.github.com/repos/facebook/watchman/releases/latest \
-    | grep -Eo "https://(.*)watchman_ubuntu$(lsb_release -rs)_(.*).deb" \
+  && if [ "${VERSION_WATCHMAN}" = "LATEST" ]; then \
+    wget $( \
+      curl -Ls https://api.github.com/repos/facebook/watchman/releases/latest \
+      | grep -Eo "https://(.*)watchman_ubuntu$(lsb_release -rs)_(.*).deb" \
     ) \
+  ; else \
+    export F="${VERSION_WATCHMAN}/watchman_ubuntu$(lsb_release -rs)_${VERSION_WATCHMAN}.deb" \
+    && wget "https://github.com/facebook/watchman/releases/download/${F}" \
+  ; fi \
   && apt update \
   && (dpkg -i watchman_*.deb || true) \
   && apt install --no-install-recommends -y -q -f \

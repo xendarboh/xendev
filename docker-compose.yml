@@ -25,4 +25,5 @@ services:
         - VERSION_NEOVIM_FROM_SRC
         - VERSION_NODE
         - VERSION_TOMB
+        - VERSION_WATCHMAN
     image: xen/dev
