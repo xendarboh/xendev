@@ -193,7 +193,7 @@ RUN echo -e \
 ARG VERSION_NODE
 RUN export F="node-${VERSION_NODE}-linux-x64.tar.xz" \
   && cd /tmp \
-  && wget http://nodejs.org/dist/${VERSION_NODE}/${F} \
+  && wget https://nodejs.org/dist/${VERSION_NODE}/${F} \
   && tar \
     --directory /usr/local \
     --exclude='CHANGELOG.md' \
@@ -427,7 +427,7 @@ RUN eval $(perl -I ~/perl5/lib/perl5/ -Mlocal::lib) \
 
 # install latest kpcli and dependencies
 ARG VERSION_KPCLI
-RUN wget -O bin/kpcli http://downloads.sourceforge.net/project/kpcli/kpcli-${VERSION_KPCLI}.pl \
+RUN wget -O bin/kpcli https://downloads.sourceforge.net/project/kpcli/kpcli-${VERSION_KPCLI}.pl \
   && chmod +x bin/kpcli \
   && eval $(perl -I ~/perl5/lib/perl5/ -Mlocal::lib) \
   && bin/cpanm --quiet --notest \
