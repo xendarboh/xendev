@@ -3,7 +3,7 @@ if status is-interactive
 end
 
 starship init fish | source
-zoxide init fish | source
+~/.local/bin/zoxide init fish | source
 
 theme_gruvbox dark hard
 
@@ -12,6 +12,14 @@ export GPG_TTY=(tty)
 
 # forgit requires SHELL=/bin/fish
 set SHELL /bin/fish
+
+# kitty manual shell integration
+# https://sw.kovidgoyal.net/kitty/shell-integration/#manual-shell-integration
+if set -q KITTY_INSTALLATION_DIR
+    set --global KITTY_SHELL_INTEGRATION enabled
+    source "$KITTY_INSTALLATION_DIR/shell-integration/fish/vendor_conf.d/kitty-shell-integration.fish"
+    set --prepend fish_complete_path "$KITTY_INSTALLATION_DIR/shell-integration/fish/vendor_completions.d"
+end
 
 # add all emacs-mode bindings to vi-mode
 # https://fishshell.com/docs/current/interactive.html#vi-mode-commands

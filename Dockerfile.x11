@@ -135,8 +135,8 @@ RUN \
   # Install kitty to ${DEST}
   curl -L https://sw.kovidgoyal.net/kitty/installer.sh \
     | sh /dev/stdin dest=${DEST} launch=n \
-  # Create a symbolic link to add kitty to PATH
-  && ln -sf ${DEST}/kitty.app/bin/kitty ${DEST}/bin/kitty \
+  # Create symbolic links to add kitty and kitten to PATH
+  && ln -sf ${DEST}/kitty.app/bin/* ${DEST}/bin/ \
   # Place the kitty.desktop file somewhere it can be found by the OS
   && mkdir -p ${DEST}/share/applications \
   && cp ${DEST}/kitty.app/share/applications/kitty.desktop ${DEST}/share/applications/ \
