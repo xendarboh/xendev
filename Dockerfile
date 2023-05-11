@@ -596,6 +596,14 @@ RUN echo \
     "VERSION=$(date +'%Y%m%d%H%M%S')" \
     > /etc/xendev-release
 
+# unminimize to install docs
+ARG INSTALL_DOCS=0
+RUN \
+  if [ "${INSTALL_DOCS}" = "1" ]; then \
+    yes | unminimize \
+    && rm -rf /var/lib/apt/lists/* \
+  ; fi
+
 USER ${_USER}
 
 
