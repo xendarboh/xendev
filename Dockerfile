@@ -197,9 +197,30 @@ RUN echo -e \
 
 # install node
 ARG VERSION_NODE
-RUN export F="node-${VERSION_NODE}-linux-x64.tar.xz" \
+RUN \
+  if [ "${VERSION_NODE}" = "LATEST" ]; then \
+    export V=$( \
+      wget -O - -q https://nodejs.org/dist/index.json \
+        | grep '"lts":false' \
+        | head -n1 \
+        | cut -d',' -f1 \
+        | cut -d'"' -f4 \
+    ) \
+  ; elif [ "${VERSION_NODE}" = "LTS" ]; then \
+    export V=$( \
+      wget -O - -q https://nodejs.org/dist/index.json \
+        | grep -v '"lts":false' \
+        | grep lts \
+        | head -n1 \
+        | cut -d',' -f1 \
+        | cut -d'"' -f4 \
+    ) \
+  ; else \
+    export V=${VERSION_NODE} \
+  ; fi \
+  && export F="node-${V}-linux-x64.tar.xz" \
   && cd /tmp \
-  && wget https://nodejs.org/dist/${VERSION_NODE}/${F} \
+  && wget https://nodejs.org/dist/${V}/${F} \
   && tar \
     --directory /usr/local \
     --exclude='CHANGELOG.md' \
