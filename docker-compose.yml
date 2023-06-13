@@ -13,7 +13,6 @@ services:
       context: ./
       args:
         - IMAGE_BASE
-        - INSTALL_BFG
         - INSTALL_CIRCOM
         - INSTALL_CYPRESS_DEPS
         - INSTALL_DOCS

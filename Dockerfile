@@ -126,6 +126,39 @@ RUN \
     install \
   && rm -rf /usr/local/src/git-crypt
 
+# install latest git-filter-repo
+RUN cd /tmp \
+  # download the latest source package
+  # Note: 2023-06-12 make from git clone failed
+  && export V=$( \
+    curl -L -s https://api.github.com/repos/newren/git-filter-repo/releases/latest \
+    | sed -n -e 's/"tag_name": "\(.*\)",/\1/p' \
+    | sed -e 's/^.*v//' \
+  ) \
+  && export F="git-filter-repo-${V}" \
+  && wget "https://github.com/newren/git-filter-repo/releases/download/v${V}/${F}.tar.xz" \
+  && tar -xf "${F}.tar.xz" \
+  && cd ${F} \
+  # make install
+  && make \
+    bindir=/usr/local/bin \
+    prefix=/usr \
+    pythondir=$(python -c "import site; print(site.getsitepackages()[-1])") \
+    install \
+  && gzip $(git --man-path)/man1/git-filter-repo.1 \
+  # install contrib tools
+  && cd contrib/filter-repo-demos \
+  && for x in \
+      bfg-ish \
+      clean-ignore \
+      insert-beginning \
+      lint-history \
+      signed-off-by \
+    ; do \
+      install -Dm0755 $x /usr/local/bin/gfr-$x; \
+    done \
+  && rm -rf /tmp/git-filter-repo-*
+
 # install latest clang tools
 # https://apt.llvm.org/
 ARG INSTALL_LLVM=0
@@ -148,21 +181,6 @@ RUN apt-add-repository ppa:ethereum/ethereum \
   && apt-get install --no-install-recommends -y -q \
     solc \
   && rm -rf /var/lib/apt/lists/*
-
-# install bfg-repo-cleaner
-ARG INSTALL_BFG=0
-RUN \
-  if [ "${INSTALL_BFG}" = "1" ]; then \
-    apt-get update \
-    && apt-get install --no-install-recommends -y -q \
-      openjdk-11-jre \
-    && rm -rf /var/lib/apt/lists/* \
-    && wget "https://search.maven.org/classic/remote_content?g=com.madgag&a=bfg&v=LATEST" \
-      -O /opt/bfg.jar \
-    && echo -e '#!/bin/bash\njava -jar /opt/bfg.jar ${@}' \
-      > /usr/local/bin/bfg \
-    && chmod 755 /usr/local/bin/bfg \
-  ; fi
 
 # install cypress system deps
 # https://docs.cypress.io/guides/getting-started/installing-cypress#UbuntuDebian

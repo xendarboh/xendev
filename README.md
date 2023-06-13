@@ -2,7 +2,7 @@
 
 [![GPLv3 License](https://img.shields.io/badge/license-GPLv3-blue.svg)](LICENSE)
 
-A modern portable sandboxed containerized terminal-based vim-centric development environment.
+A modern portable sandboxed terminal-based vim-centric development environment.
 
 Overpowered "dotfiles" intended to run in a number of ways; either within a:
 
@@ -48,9 +48,14 @@ make build
   - [fish-nx](https://github.com/xendarboh/fish-nx): Fish completions for Nx
 - [fzf](https://github.com/junegunn/fzf): A command-line fuzzy finder
 - [git](https://github.com/git/git) (latest stable version)
-  - [bfg-repo-cleaner](https://github.com/rtyley/bfg-repo-cleaner): Removes large or troublesome blobs like git-filter-branch does, but faster
   - [git-absorb](https://github.com/tummychow/git-absorb): git commit --fixup, but automatic
   - [git-crypt](https://github.com/AGWA/git-crypt): Transparent file encryption in git
+  - [git-filter-repo](https://github.com/newren/git-filter-repo): Quickly rewrite git repository history (filter-branch replacement)
+    - gfr-bfg-ish: A re-implementation of most of BFG Repo Cleaner, with new features and bug fixes
+    - gfr-clean-ignore: Delete files from history which match current gitignore rules
+    - gfr-insert-beginning: Add a new file (e.g. LICENSE/COPYING) to the beginning of history
+    - gfr-lint-history: Run some lint command on all non-binary files in history
+    - gfr-signed-off-by: Add a Signed-off-by tag to a range of commits
   - [git-lfs](https://github.com/git-lfs/git-lfs): Git extension for versioning large files
   - [lazygit](https://github.com/jesseduffield/lazygit): Simple terminal UI for git commands
 - [go](https://github.com/golang/go): The Go programming language
