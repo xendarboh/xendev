@@ -451,17 +451,18 @@ RUN cargo install \
 ARG INSTALL_CIRCOM=0
 RUN \
   if [ "${INSTALL_CIRCOM}" = "1" ]; then \
-    cd /tmp \
-    && git clone \
+    git clone \
       --branch $( \
         curl -Ls https://api.github.com/repos/iden3/circom/releases/latest \
         | sed -n -e 's/"tag_name": "\(.*\)",/\1/p' \
       ) \
       --depth 1 \
       https://github.com/iden3/circom.git \
-    && cd circom \
+      /usr/local/src/circom \
+    && cd /usr/local/src/circom \
     && cargo build --release \
     && cargo install --path circom \
+    && rm -rf /usr/local/src/circom \
   ; fi
 
 # install cpanminus for installing perl modules
