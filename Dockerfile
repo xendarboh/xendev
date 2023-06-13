@@ -99,6 +99,33 @@ RUN apt-add-repository ppa:git-core/ppa \
     git-lfs \
   && rm -rf /var/lib/apt/lists/*
 
+# install latest git-crypt
+RUN \
+  # install deps
+  apt update \
+  && apt install --no-install-recommends -y -q \
+    libssl-dev \
+  && rm -rf /var/lib/apt/lists/* \
+  # git clone the latest release
+  && git clone \
+    --depth 1 \
+    --branch $( \
+      curl -Ls https://api.github.com/repos/AGWA/git-crypt/releases/latest \
+      | sed -n -e 's/"tag_name": "\(.*\)",/\1/p' \
+    ) \
+    https://github.com/AGWA/git-crypt.git \
+    /usr/local/src/git-crypt \
+  && cd /usr/local/src/git-crypt \
+  # apply patch so it builds
+  && curl -L https://patch-diff.githubusercontent.com/raw/AGWA/git-crypt/pull/249.patch \
+    | git apply -v \
+  # make, install, then cleanup
+  && make  \
+  && make \
+    PREFIX=/usr/local \
+    install \
+  && rm -rf /usr/local/src/git-crypt
+
 # install latest clang tools
 # https://apt.llvm.org/
 ARG INSTALL_LLVM=0
