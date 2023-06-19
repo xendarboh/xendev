@@ -73,6 +73,7 @@ set -Ux EXA_STANDARD_OPTIONS \
 set -Ux EXA_LL_OPTIONS --sort changed
 set -Ux EXA_LT_OPTIONS --ignore-glob '.git|node_modules' --tree --level
 
+abbr b 'git branch -av'
 abbr s 'git status'
 abbr gl 'git log --show-signature'
 abbr lz lazygit
