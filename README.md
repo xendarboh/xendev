@@ -75,6 +75,7 @@ make build
 - [silversearcher-ag](https://github.com/ggreer/the_silver_searcher): A code-searching tool similar to ack, but faster
 - [solidity](https://github.com/ethereum/solidity): Solidity, the Smart Contract Programming Language
   - [solc-js](https://github.com/ethereum/solc-js): Javascript bindings for the Solidity compiler
+- [spacer](https://github.com/samwho/spacer): CLI tool to insert spacers when command output stops
 - [sqlite](https://github.com/sqlite/sqlite): a small, fast, self-contained, high-reliability, full-featured, SQL database engine
 - [starship](https://github.com/starship/starship): The minimal, blazing-fast, and infinitely customizable prompt for any shell!
 - [stow](https://github.com/aspiers/stow): a symlink farm manager

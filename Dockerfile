@@ -462,7 +462,8 @@ RUN cargo install \
   # 2023-01-31: install exa this way vs apt to avoid:
   # exa: Options --git and --git-ignore can't be used because `git` feature was disabled in this build of exa
   exa \
-  git-absorb
+  git-absorb \
+  spacer
 
 # install latest circom release
 # https://docs.circom.io/getting-started/installation/#installing-dependencies
