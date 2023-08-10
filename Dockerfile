@@ -437,14 +437,22 @@ RUN npm install --location=global \
   vscode-langservers-extracted
 
 # install latest go
-# https://github.com/golang/tools/tree/master/cmd/getgo#usage
-RUN curl -LO https://get.golang.org/$(uname)/go_installer \
-  && chmod +x go_installer \
-  && ./go_installer \
-  && rm go_installer \
-  # the installer writes to .bash_profile, remove to avoid conflict with custom bash config
-  && rm ~/.bash_profile \
-  && go clean --cache
+# Note: 2023-08: go_installer fails with:
+#   Downloading Go from 400 Bad Request failed with HTTP status %!s(MISSING)
+#   https://github.com/golang/tools/tree/master/cmd/getgo#usage
+RUN mkdir -p /tmp/go && cd /tmp/go \
+  # https://github.com/golang/tools/blob/master/cmd/getgo/download.go
+  && curl -Ls 'https://go.dev/dl/?mode=json' \
+    | jq -r '.[0].files[] | select(.os == "linux" and .arch == "amd64")' \
+    > go.json \
+  && export F=$(cat go.json | jq -r '.filename') \
+  && export C=$(cat go.json | jq -r '.sha256') \
+  && curl -LO "https://go.dev/dl/${F}" \
+  && echo "${C} ${F}" > checksum.txt \
+  && sha256sum --check checksum.txt \
+  && tar -xzf ${F} \
+  && mv go /home/${_USER}/.go \
+  && rm -rf /tmp/go
 
 # install go things
 RUN go install \
