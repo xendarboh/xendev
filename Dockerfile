@@ -81,15 +81,15 @@ RUN locale-gen ${_LOCALE} \
 
 # install latest fish
 RUN apt-add-repository ppa:fish-shell/release-3 \
-  && apt-get update \
-  && apt-get install --no-install-recommends -y -q \
+  && apt update \
+  && apt install --no-install-recommends -y -q \
     fish \
   && rm -rf /var/lib/apt/lists/*
 
 # install latest git
 RUN apt-add-repository ppa:git-core/ppa \
-  && apt-get update \
-  && apt-get install --no-install-recommends -y -q \
+  && apt update \
+  && apt install --no-install-recommends -y -q \
     git \
     git-lfs \
   && rm -rf /var/lib/apt/lists/*
@@ -172,8 +172,8 @@ RUN \
 
 # install solidity compiler
 RUN apt-add-repository ppa:ethereum/ethereum \
-  && apt-get update \
-  && apt-get install --no-install-recommends -y -q \
+  && apt update \
+  && apt install --no-install-recommends -y -q \
     solc \
   && rm -rf /var/lib/apt/lists/*
 
@@ -182,8 +182,8 @@ RUN apt-add-repository ppa:ethereum/ethereum \
 ARG INSTALL_CYPRESS_DEPS=0
 RUN \
   if [ "${INSTALL_CYPRESS_DEPS}" = "1" ]; then \
-    apt-get update \
-    && apt-get install --no-install-recommends -y -q \
+    apt update \
+    && apt install --no-install-recommends -y -q \
       libasound2 \
       libgbm-dev \
       libgconf-2-4 \
@@ -220,7 +220,7 @@ RUN \
     && rm -rf /usr/local/src/tomb \
   ; fi
 
-# install watchman, for coc-tsserver
+# install watchman
 ARG VERSION_WATCHMAN
 RUN cd /tmp \
   && if [ "${VERSION_WATCHMAN}" = "LATEST" ]; then \
@@ -298,8 +298,8 @@ RUN \
   if [ "${INSTALL_NEOVIM_FROM_SRC}" = "1" ]; then \
     # install neovim tag'd release from source
     # reference: https://github.com/neovim/neovim/wiki/Building-Neovim
-    apt-get update \
-      && apt-get install --no-install-recommends -y -q \
+    apt update \
+      && apt install --no-install-recommends -y -q \
         cmake \
         curl \
         g++ \
@@ -324,21 +324,21 @@ RUN \
     # install neovim (stable) from ppa
     # reference: https://github.com/neovim/neovim/wiki/Installing-Neovim#ubuntu
     add-apt-repository ppa:neovim-ppa/stable \
-      && apt-get update \
-      && apt-get install --no-install-recommends -y -q \
+      && apt update \
+      && apt install --no-install-recommends -y -q \
         neovim \
       && rm -rf /var/lib/apt/lists/* \
   ; elif [ "${INSTALL_NEOVIM_FROM_PPA_UNSTABLE}" = "1" ]; then \
     # install neovim (unstable) from ppa
     add-apt-repository ppa:neovim-ppa/unstable \
-      && apt-get update \
-      && apt-get install --no-install-recommends -y -q \
+      && apt update \
+      && apt install --no-install-recommends -y -q \
         neovim \
       && rm -rf /var/lib/apt/lists/* \
   ; else \
     # install neovim from apt
-    apt-get update \
-      && apt-get install --no-install-recommends -y -q \
+    apt update \
+      && apt install --no-install-recommends -y -q \
         neovim \
       && rm -rf /var/lib/apt/lists/* \
   ; fi
