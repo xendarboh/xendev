@@ -359,9 +359,6 @@ RUN update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 60 \
 # http://docs.platformio.org/en/latest/installation.html#python-package-manager
 RUN pip install --upgrade platformio
 
-# install grip markdown previewer
-RUN pip install grip
-
 # install codemod
 # https://github.com/facebook/codemod
 # 20210201: consider replace/supplement with https://github.com/facebookincubator/fastmod

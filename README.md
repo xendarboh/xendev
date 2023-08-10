@@ -59,7 +59,6 @@ make build
   - [git-lfs](https://github.com/git-lfs/git-lfs): Git extension for versioning large files
   - [lazygit](https://github.com/jesseduffield/lazygit): Simple terminal UI for git commands
 - [go](https://github.com/golang/go): The Go programming language
-- [grip](https://github.com/joeyespo/grip): Preview GitHub README.md files locally before committing them
 - [import-js](https://github.com/galooshi/import-js): A tool to simplify importing JS modules
 - [jq](https://github.com/stedolan/jq): Command-line JSON processor
 - [kpcli](http://kpcli.sourceforge.net/): A command line interface for KeePass

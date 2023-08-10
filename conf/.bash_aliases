@@ -1,5 +1,3 @@
-alias grip='grip . 0.0.0.0:6419'
-
 # git
 alias gl='git log --date=relative --graph --name-status'
 alias s='git status'
