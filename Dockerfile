@@ -73,11 +73,6 @@ RUN apt update \
     # for kpcli:
     libreadline-dev \
     xclip \
-    # for tomb:
-    cryptsetup \
-    gettext \
-    pinentry-curses \
-    zsh \
   && rm -rf /var/lib/apt/lists/*
 
 # set locale
@@ -204,15 +199,26 @@ RUN \
   ; fi
 
 # install tomb
+ARG INSTALL_TOMB=0
 ARG VERSION_TOMB
-RUN git clone \
-    --branch ${VERSION_TOMB} \
-    --depth 1 \
-    https://github.com/dyne/Tomb.git \
-    /usr/local/src/tomb \
-  && cd /usr/local/src/tomb \
-  && make install \
-  && rm -rf /usr/local/src/tomb
+RUN \
+  if [ "${INSTALL_TOMB}" = "1" ]; then \
+    apt update \
+      && apt install --no-install-recommends -y -q \
+        cryptsetup \
+        gettext \
+        pinentry-curses \
+        zsh \
+      && rm -rf /var/lib/apt/lists/* \
+    && git clone \
+      --branch ${VERSION_TOMB} \
+      --depth 1 \
+      https://github.com/dyne/Tomb.git \
+      /usr/local/src/tomb \
+    && cd /usr/local/src/tomb \
+    && make install \
+    && rm -rf /usr/local/src/tomb \
+  ; fi
 
 # install watchman, for coc-tsserver
 ARG VERSION_WATCHMAN
