@@ -428,21 +428,21 @@ RUN npm install --location=global \
 
 # install node things for LSP
 RUN npm install --location=global \
-  # docker_compose_language_service
+  # docker_compose_language_service:
   # @microsoft/compose-language-service \
-  # prismals
+  # prismals:
   @prisma/language-server \
-  # tailwindcss
+  # tailwindcss:
   @tailwindcss/language-server \
-  # bashls
+  # bashls:
   bash-language-server \
-  # dockerls
+  # dockerls:
   dockerfile-language-server-nodejs \
-  # nxls
+  # nxls:
   nxls \
-  # tsserver
+  # tsserver:
   typescript-language-server \
-  # cssls, eslint, html, jsonls
+  # cssls, eslint, html, jsonls:
   vscode-langservers-extracted
 
 # install latest go
