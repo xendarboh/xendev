@@ -26,7 +26,7 @@ make build
 
 - [Neovim](https://github.com/neovim/neovim): Vim-fork focused on extensibility and usability
   - [SpaceVim](https://github.com/SpaceVim/SpaceVim): A community-driven modular vim/neovim distribution - The ultimate vimrc
-  - [coc.nvim](https://github.com/neoclide/coc.nvim): Conquer of Completion; Make your Vim/Neovim as smart as VSCode
+    - [coc.nvim](https://github.com/neoclide/coc.nvim): Conquer of Completion; Make your Vim/Neovim as smart as VSCode
   - [neovim-remote](https://github.com/mhinz/neovim-remote): Support for --remote and friends
 - [Node.js](https://github.com/nodejs/node): Node.js JavaScript runtime
   - [pnpm](https://github.com/pnpm/pnpm): Fast, disk space efficient package manager
