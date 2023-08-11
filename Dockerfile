@@ -426,7 +426,7 @@ RUN npm install --location=global \
   tern \
   typescript
 
-# install node things for spacevim layer lsp
+# install node things for LSP
 RUN npm install --location=global \
   # docker_compose_language_service
   # @microsoft/compose-language-service \
@@ -666,6 +666,41 @@ RUN \
     && npm install --location=global \
       # for spacevim layer lang#typescript:
       lehre \
+  ; fi
+
+
+####################################
+# install lunarvim
+####################################
+ARG INSTALL_LUNARVIM=0
+ARG VERSION_LUNARVIM
+RUN \
+  if [ "${INSTALL_LUNARVIM}" = "1" ]; then \
+    # install npm deps
+    npm install --location=global \
+      neovim \
+      tree-sitter-cli \
+    \
+    # install pip deps
+    && pip install \
+      pynvim \
+    \
+    # install rust deps
+    && cargo install \
+      fd-find \
+      ripgrep \
+    \
+    # run lunarvim install script
+    # https://github.com/LunarVim/LunarVim/blob/master/utils/installer/install.sh
+    && mkdir /tmp/lv && cd /tmp/lv \
+    && curl -LOs "https://raw.githubusercontent.com/LunarVim/LunarVim/${VERSION_LUNARVIM}/utils/installer/install.sh" \
+    && chmod u+x install.sh \
+    && \
+      LV_BRANCH=${VERSION_LUNARVIM} \
+      ./install.sh \
+        --no-install-dependencies \
+        --yes \
+    && rm -rf /tmp/lv \
   ; fi
 
 

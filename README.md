@@ -25,6 +25,7 @@ make build
 ## Tools
 
 - [Neovim](https://github.com/neovim/neovim): Vim-fork focused on extensibility and usability
+  - [LunarVim](https://github.com/LunarVim/LunarVim): An IDE layer for Neovim. Completely free and community driven
   - [SpaceVim](https://github.com/SpaceVim/SpaceVim): A community-driven modular vim/neovim distribution - The ultimate vimrc
     - [coc.nvim](https://github.com/neoclide/coc.nvim): Conquer of Completion; Make your Vim/Neovim as smart as VSCode
   - [neovim-remote](https://github.com/mhinz/neovim-remote): Support for --remote and friends
