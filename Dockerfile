@@ -67,9 +67,6 @@ RUN apt update \
     zip \
     # https://github.com/mapbox/node-sqlite3/issues/1443
     python-is-python3 \
-    # for spacevim layer tags:
-    exuberant-ctags \
-    global \
     # for kpcli:
     libreadline-dev \
     xclip \
@@ -371,15 +368,23 @@ RUN pip install --upgrade platformio
 RUN pip install codemod
 
 # install spacevim things
-RUN apt update \
-  && apt install --no-install-recommends -y -q \
-    fontconfig \
-    libtool-bin \
-    lua5.3 \
-    ninja-build \
-    wamerican \
-    xfonts-utils \
-  && rm -rf /var/lib/apt/lists/*
+ARG INSTALL_SPACEVIM=0
+RUN \
+  if [ "${INSTALL_SPACEVIM}" = "1" ]; then \
+    apt update \
+    && apt install --no-install-recommends -y -q \
+      fontconfig \
+      libtool-bin \
+      lua5.3 \
+      ninja-build \
+      wamerican \
+      xfonts-utils \
+      # for spacevim layer tags:
+      exuberant-ctags \
+      global \
+    && rm -rf /var/lib/apt/lists/* \
+  ; fi
+
 RUN pip install pipenv # necessary?
 
 # install starship cross-shell prompt
@@ -419,9 +424,7 @@ RUN npm install --location=global \
   solc \
   taskbook \
   tern \
-  typescript \
-  # for spacevim layer lang#typescript:
-  lehre
+  typescript
 
 # install node things for spacevim layer lsp
 RUN npm install --location=global \
@@ -602,61 +605,68 @@ RUN \
 ####################################
 # install spacevim
 ####################################
-RUN curl -sLf https://spacevim.org/install.sh \
-  # 2023-03-01 Hot Fix (temp hack!?) broken install script, see:
-  # https://github.com/SpaceVim/SpaceVim/issues/4790
-  # https://github.com/60ke/SpaceVim/commit/7607c86c03913d25046bb528560df83558c3e9d8
-  | sed -e 's|config/nvim|nvim|' \
-  | bash
-
-# use specific spacevim release
-# ARG VERSION_SPACEVIM=v2.0.0
-# RUN cd ${XDG_CONFIG_HOME}/SpaceVim && git checkout ${VERSION_SPACEVIM}
-
-# 2020-12-15 fix System error while opening ShaDa file: no such file or directory
-RUN touch /tmp/main.shada
-
-# install plugins
-# https://github.com/SpaceVim/SpaceVim/issues/3477#issuecomment-619203729
-RUN nvim --headless +"call dein#install#_update([], 'update', 0)" +qall
-
-# this is ~redundant to the above but can increase visibility of vim plugin errors
-RUN nvim --headless +'call dein#install()' +qall
-
-# 2021-04-14: minor: prevent vim first run warning: startify: Can't read viminfo file.
-RUN nvim --headless +e /tmp/tmp +qall
-
-# 2021-04-14: does something... but does not fix first-run error from deoplete
-RUN nvim --headless +UpdateRemotePlugins +qall
-
-# spacevim things that need something extra
 RUN \
-  # https://github.com/SpaceVim/SpaceVim/issues/544#issuecomment-687652874
-  # https://github.com/Shougo/vimproc.vim#vundle
-  cd ${XDG_CONFIG_HOME}/SpaceVim/bundle/vimproc.vim/ && make
-
-# vim plugins that need something extra
-RUN cd ~/.cache/vimfiles/repos/github.com/RRethy/vim-hexokinase && make
-
-# install CoC extensions
-RUN nvim --headless \
-  +'CocInstall -sync \
-    @yaegassy/coc-tailwindcss3 \
-    coc-clangd \
-    coc-cmake \
-    coc-css \
-    coc-emoji \
-    coc-html \
-    coc-json \
-    coc-markdownlint \
-    coc-prisma \
-    coc-sh \
-    coc-solidity \
-    coc-toml \
-    coc-tsserver \
-    coc-yaml \
-  ' \
-  +qall
+  if [ "${INSTALL_SPACEVIM}" = "1" ]; then \
+    curl -sLf https://spacevim.org/install.sh \
+      # 2023-03-01 Hot Fix (temp hack!?) broken install script, see:
+      # https://github.com/SpaceVim/SpaceVim/issues/4790
+      # https://github.com/60ke/SpaceVim/commit/7607c86c03913d25046bb528560df83558c3e9d8
+      | sed -e 's|config/nvim|nvim|' \
+      | bash \
+    \
+    # use specific spacevim release
+    # && cd ${XDG_CONFIG_HOME}/SpaceVim \
+    # && git checkout ${VERSION_SPACEVIM} \
+    \
+    # 2020-12-15 fix System error while opening ShaDa file: no such file or directory
+    && touch /tmp/main.shada \
+    \
+    # install plugins
+    # https://github.com/SpaceVim/SpaceVim/issues/3477#issuecomment-619203729
+    && nvim --headless +"call dein#install#_update([], 'update', 0)" +qall \
+    \
+    # this is ~redundant to the above but can increase visibility of vim plugin errors
+    && nvim --headless +'call dein#install()' +qall \
+    \
+    # 2021-04-14: minor: prevent vim first run warning: startify: Can't read viminfo file.
+    && nvim --headless +e /tmp/tmp +qall \
+    \
+    # 2021-04-14: does something... but does not fix first-run error from deoplete
+    && nvim --headless +UpdateRemotePlugins +qall \
+    \
+    # spacevim things that need something extra
+    # https://github.com/SpaceVim/SpaceVim/issues/544#issuecomment-687652874
+    # https://github.com/Shougo/vimproc.vim#vundle
+    && cd ${XDG_CONFIG_HOME}/SpaceVim/bundle/vimproc.vim/ && make \
+    \
+    # vim plugins that need something extra
+    && cd ~/.cache/vimfiles/repos/github.com/RRethy/vim-hexokinase && make \
+    \
+    # install CoC extensions
+    && nvim --headless \
+      +'CocInstall -sync \
+        @yaegassy/coc-tailwindcss3 \
+        coc-clangd \
+        coc-cmake \
+        coc-css \
+        coc-emoji \
+        coc-html \
+        coc-json \
+        coc-markdownlint \
+        coc-prisma \
+        coc-sh \
+        coc-solidity \
+        coc-toml \
+        coc-tsserver \
+        coc-yaml \
+      ' \
+      +qall \
+    \
+    # install spacevim node things
+    && npm install --location=global \
+      # for spacevim layer lang#typescript:
+      lehre \
+  ; fi
 
 
 ########################################################################
