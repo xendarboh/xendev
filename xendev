@@ -4,6 +4,9 @@ name="${1:-xendev}"
 docker='docker'
 image='xen/dev'
 
+# pass args after name ($1) to x11docker
+shift 1 ; x11docker_args="${@}"
+
 if (docker inspect ${name} >/dev/null 2>&1)
 then
   echo "${name} already running, entering existing container"
@@ -28,6 +31,7 @@ else
     --share /srv \
     --share ~/.gnupg \
     --share ~/.ssh \
+    ${x11docker_args} \
     -- \
     --tmpfs /tmp:exec \
     --volume /home/${U}/.config/git:/home/xendev/.config/git \
