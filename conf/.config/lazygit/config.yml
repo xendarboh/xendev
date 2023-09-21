@@ -1,4 +1,4 @@
 gui:
+  nerdFontsVersion: "3"
   showFileTree: false # for rendering changes files in a tree format
-  showIcons: true
-  timeFormat: '2006-01-02 15:04:05' # https://pkg.go.dev/time#Time.Format
+  timeFormat: "2006-01-02 15:04:05" # https://pkg.go.dev/time#Time.Format
