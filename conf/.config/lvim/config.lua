@@ -9,6 +9,12 @@ vim.opt.whichwrap = "b,s"     -- allow left/right cursor keys to move prev/next
 
 vim.opt.spellfile = "~/.local/share/nvim/spell/en.utf-8.add"
 
+-- https://www.lunarvim.org/docs/configuration/appearance/statusline
+-- https://github.com/nvim-lualine/lualine.nvim/blob/master/README.md
+-- lvim.builtin.lualine.options.component_separators = { left = '', right = '' }
+lvim.builtin.lualine.options.component_separators = nil
+lvim.builtin.lualine.options.section_separators = { left = '', right = '' }
+
 lvim.plugins = {
   {
     "karb94/neoscroll.nvim",
