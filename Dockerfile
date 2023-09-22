@@ -429,7 +429,7 @@ RUN npm install --location=global \
 # install node things for LSP
 RUN npm install --location=global \
   # docker_compose_language_service:
-  # @microsoft/compose-language-service \
+  @microsoft/compose-language-service \
   # prismals:
   @prisma/language-server \
   # tailwindcss:
