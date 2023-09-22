@@ -601,6 +601,16 @@ RUN \
   # tmux-window-name deps
   pip install --user libtmux
 
+# install smart-splits Kitty multiplexer support
+# Kitty conf expects the kittens so don't wait for lunarvim lazy load
+RUN cd /tmp \
+  && git clone \
+    --depth 1 \
+    https://github.com/mrjones2014/smart-splits.nvim.git \
+  && cd smart-splits.nvim \
+  && ./kitty/install-kittens.bash \
+  && rm -rf /tmp/smart-splits.nvim
+
 
 ####################################
 # install spacevim
