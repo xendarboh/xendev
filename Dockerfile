@@ -575,8 +575,9 @@ RUN \
   # replace kitty.conf file (from standalone-able Dockerfile.x11) with symlink
   rm -f /home/${_USER}/.config/kitty/kitty.conf \
   # create dirs so stow symlinks files and not dirs
-  && mkdir \
-    -p /home/${_USER}/.config/lazygit \
+  && mkdir -p \
+    /home/${_USER}/.config/lazygit \
+    /home/${_USER}/.config/lvim \
   # stow the conf files!
   && stow \
     --dir=${XENDEV_DIR} \
