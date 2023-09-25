@@ -150,9 +150,9 @@ RUN \
 RUN \
   mkdir -p ${DEST}/kitty.app/themes \
   && cd ${DEST}/kitty.app/themes \
-  && curl -LO https://github.com/wdomitrz/kitty-gruvbox-theme/archive/refs/heads/master.zip \
+  && curl -LO https://github.com/wdomitrz/kitty_gruvbox_theme/archive/refs/heads/master.zip \
   && unzip master.zip \
-  && mv kitty-gruvbox-theme-master gruvbox \
+  && mv kitty_gruvbox_theme-master gruvbox \
   && rm -f master.zip
 
 # install NerdFonts
