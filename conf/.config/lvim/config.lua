@@ -15,6 +15,15 @@ vim.opt.spellfile = "~/.local/share/nvim/spell/en.utf-8.add"
 lvim.builtin.lualine.options.component_separators = nil
 lvim.builtin.lualine.options.section_separators = { left = '', right = '' }
 
+-- increase null-ls timeout
+-- https://github.com/LunarVim/LunarVim/discussions/2767
+lvim.builtin.which_key.mappings["l"]["f"] = {
+  function()
+    require("lvim.lsp.utils").format { timeout_ms = 2000 }
+  end,
+  "Format",
+}
+
 lvim.plugins = {
   {
     "karb94/neoscroll.nvim",
