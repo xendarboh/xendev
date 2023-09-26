@@ -491,6 +491,29 @@ RUN \
     && rm -rf /usr/local/src/circom \
   ; fi
 
+# install Protocol Buffers
+ARG INSTALL_PB=0
+RUN \
+  if [ "${INSTALL_PB}" = "1" ]; then \
+    # install latest protoc release
+    export V=$( \
+      curl -L -s https://api.github.com/repos/protocolbuffers/protobuf/releases/latest \
+      | sed -n -e 's/"tag_name": "\(.*\)",/\1/p' \
+      | sed -e 's/^.*v//' \
+    ) \
+    && export F="protoc-${V}-linux-x86_64.zip" \
+    && wget "https://github.com/protocolbuffers/protobuf/releases/download/v${V}/${F}" \
+    && unzip ${F} \
+      -x readme.txt \
+      -d ~/.local \
+    && rm -f ${F} \
+    # install protocol buffer compiler plugins for go
+    && go install google.golang.org/protobuf/cmd/protoc-gen-go@latest \
+    && go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest \
+    # clean up
+    && go clean --cache \
+  ; fi
+
 # install cpanminus for installing perl modules
 # running cpanm gives suggestion to install local::lib, so do that
 RUN mkdir bin \
