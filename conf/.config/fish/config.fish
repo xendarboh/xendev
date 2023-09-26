@@ -2,6 +2,7 @@ if status is-interactive
     # Commands to run in interactive sessions can go here
 end
 
+buf completion fish | source
 git-absorb --gen-completions fish | source
 starship init fish | source
 ~/.local/bin/zoxide init fish | source

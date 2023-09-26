@@ -72,6 +72,7 @@ make build
 - [platformio-core](https://github.com/platformio/platformio-core): A professional collaborative platform for embedded development
 - [prettier](https://github.com/prettier/prettier): Prettier is an opinionated code formatter
 - [protobuf](https://github.com/protocolbuffers/protobuf): Protocol Buffers - Google's data interchange format
+  - [buf](https://github.com/bufbuild/buf): A new way of working with Protocol Buffers
   - [protoc-gen-go](https://github.com/protocolbuffers/protobuf-go): compiler plugin: Go support for Google's protocol buffers
   - [protoc-gen-go-grpc](https://github.com/grpc/grpc-go): compiler plugin: The Go language implementation of gRPC. HTTP/2 based RPC
 - [ranger](https://github.com/ranger/ranger): A VIM-inspired filemanager for the console

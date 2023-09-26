@@ -28,6 +28,7 @@ lvim.format_on_save.enabled = true
 lvim.format_on_save.pattern = {
   "*.go",
   "*.lua",
+  "*.proto",
 }
 
 -- https://www.lunarvim.org/docs/configuration/language-features/linting-and-formatting
@@ -42,8 +43,15 @@ formatters.setup {
     ---@usage only start in these filetypes, by default it will attach to all filetypes it supports
     -- filetypes = { "typescript", "typescriptreact" },
   },
+  { name = "buf" },
 }
 
+local linters = require "lvim.lsp.null-ls.linters"
+linters.setup {
+  { name = "buf" },
+}
+
+-- https://www.lunarvim.org/docs/configuration/plugins/user-plugins
 lvim.plugins = {
   {
     "karb94/neoscroll.nvim",
@@ -97,6 +105,15 @@ vim.keymap.set('n', '<C-h>', require('smart-splits').move_cursor_left)
 vim.keymap.set('n', '<C-j>', require('smart-splits').move_cursor_down)
 vim.keymap.set('n', '<C-k>', require('smart-splits').move_cursor_up)
 vim.keymap.set('n', '<C-l>', require('smart-splits').move_cursor_right)
+
+
+-- https://www.reddit.com/r/lunarvim/comments/13a72cl/lsp_problem_attachinginstalling_servers/
+require('mason-lspconfig').setup_handlers({
+  function(server)
+    require('lvim.lsp.manager').setup(server)
+  end
+})
+
 
 -- Load local configuration file if it exists
 local conf = os.getenv("XENDEV_DIR") .. "/conf.local/lvim.lua"

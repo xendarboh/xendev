@@ -27,6 +27,8 @@ if [ -f ~/.bash_prompt  ]; then
     . ~/.bash_prompt
 fi
 
+eval "$(buf completion bash)"
+
 # http://docs.platformio.org/en/stable/faq.html#bash-completion
 eval "$(_PLATFORMIO_COMPLETE=source platformio)"
 eval "$(_PIO_COMPLETE=source pio)"
