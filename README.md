@@ -53,7 +53,7 @@ make build
 - [fzf](https://github.com/junegunn/fzf): A command-line fuzzy finder
 - [git](https://github.com/git/git) (latest stable version)
   - [git-absorb](https://github.com/tummychow/git-absorb): git commit --fixup, but automatic
-  - [git-crypt](https://github.com/AGWA/git-crypt): Transparent file encryption in git
+  - [git-crypt](https://github.com/xendarboh/git-crypt): \[fork\] Transparent file encryption in git
   - [git-filter-repo](https://github.com/newren/git-filter-repo): Quickly rewrite git repository history (filter-branch replacement)
     - gfr-bfg-ish: A re-implementation of most of BFG Repo Cleaner, with new features and bug fixes
     - gfr-clean-ignore: Delete files from history which match current gitignore rules
