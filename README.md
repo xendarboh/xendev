@@ -239,6 +239,7 @@ cp -a conf.local-example conf.local
 - `conf.local/directory_map.txt` list of "from:to" directory mappings for
   preserving current working directory in new tmux windows (since tmux does
   not handle symlinked directories well).
+- `conf.local/lvim.lua` sourced by lunarvim's `config.lua`
 
 ### vim CoC (autocompletion)
 

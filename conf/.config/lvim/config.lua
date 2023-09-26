@@ -97,3 +97,11 @@ vim.keymap.set('n', '<C-h>', require('smart-splits').move_cursor_left)
 vim.keymap.set('n', '<C-j>', require('smart-splits').move_cursor_down)
 vim.keymap.set('n', '<C-k>', require('smart-splits').move_cursor_up)
 vim.keymap.set('n', '<C-l>', require('smart-splits').move_cursor_right)
+
+-- Load local configuration file if it exists
+local conf = os.getenv("XENDEV_DIR") .. "/conf.local/lvim.lua"
+local f = io.open(conf)
+if f then
+  io.close(f)
+  dofile(conf)
+end
