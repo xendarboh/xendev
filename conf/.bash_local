@@ -42,6 +42,10 @@ export GTAGSLABEL=pygments
 
 ls ~/.bash/*.sh &>/dev/null && source ~/.bash/*.sh
 
+# wakatime: symlink config if it exists
+F="${XENDEV_DIR}/conf.local/wakatime.cfg"
+test ! -f ~/.wakatime.cfg && test -f ${F} && ln -s ${F} ~/.wakatime.cfg
+
 # (re)init nvim rplugin.vim if older than xendev build
 # ensure current and create if new container volume map from host
 test ~/.local/share/nvim/rplugin.vim -ot /etc/xendev-release \

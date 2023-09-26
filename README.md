@@ -241,6 +241,23 @@ cp -a conf.local-example conf.local
   not handle symlinked directories well).
 - `conf.local/lvim.lua` sourced by lunarvim's `config.lua`
 
+#### wakatime
+
+As a top level file of the user's home directory, `~/.wakatime.cfg` does not
+map well from the docker container host. To use wakatime or
+[wakapi](https://github.com/muety/wakapi), place the config file at
+`conf.local/wakatime.cfg`. If the file is present, it will be symlinked within
+the container at run time.
+
+To enable [vim-wakatime](https://github.com/wakatime/vim-wakatime) plugin
+within lunarvim, place the following in `.conf/local/lvim.lua`:
+
+```lua
+table.insert(lvim.plugins, {
+  "wakatime/vim-wakatime",
+})
+```
+
 ### vim CoC (autocompletion)
 
 | Configuration Location                                                                             | Purpose                             |
