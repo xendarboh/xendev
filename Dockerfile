@@ -227,7 +227,10 @@ RUN cd /tmp \
   && apt install --no-install-recommends -y -q -f \
   && rm -rf /var/lib/apt/lists/* \
   && rm -f watchman_*.deb \
-  && watchman version
+  && watchman version \
+  # install pywatchman which installs watchman-* utilities
+  # [pywatchman raises SystemError on Python 3.10](https://github.com/facebook/watchman/issues/970#issuecomment-1002054941)
+  && pip install -i https://test.pypi.org/simple/ pywatchman==1.4.2.dev1
 
 # add example local watchman config file
 RUN echo -e \

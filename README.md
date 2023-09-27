@@ -94,6 +94,9 @@ make build
   - [tmux-window-name](https://github.com/ofirgall/tmux-window-name): A plugin to name your tmux windows smartly
 - [ts-lehre](https://github.com/heavenshell/ts-lehre): Generate document block(JsDoc, EsDoc, TsDoc) from source code
 - [watchman](https://github.com/facebook/watchman): Watches files and records, or triggers actions, when they change
+  - [watchman-make](https://facebook.github.io/watchman/docs/watchman-make): A convenience tool to automatically invoke a command in response to files changing
+  - [watchman-replicate-subscription](https://facebook.github.io/watchman/docs/watchman-replicate-subscription): Replicates an existing watchman subscription
+  - [watchman-wait](https://facebook.github.io/watchman/docs/watchman-wait): Waits for changes to files, suitable for waiting from shell scripts
 - [xclip](https://github.com/astrand/xclip): Command line interface to the X11 clipboard
 - [zoxide](https://github.com/ajeetdsouza/zoxide): A smarter cd command
 - and more... including numerous language-server-providers
