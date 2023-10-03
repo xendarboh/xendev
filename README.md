@@ -210,7 +210,8 @@ checks](https://github.com/mviereck/x11docker#privilege-checks).
 
 ## Preferences & Philosophy
 
-- modern latest greatest versions; from apt, PPA, install scripts, or built from source
+- modern latest greatest terminal utilities and versions
+- default to current LTS versions
 - [FROM ubuntu:latest](https://hub.docker.com/_/ubuntu)
 - vi-style key bindings
 - dark [gruvbox](https://github.com/morhetz/gruvbox) color scheme
