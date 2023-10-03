@@ -73,8 +73,6 @@ make build
 - [prettier](https://github.com/prettier/prettier): Prettier is an opinionated code formatter
 - [protobuf](https://github.com/protocolbuffers/protobuf): Protocol Buffers - Google's data interchange format (*INSTALL_PB*)
   - [buf](https://github.com/bufbuild/buf): A new way of working with Protocol Buffers
-  - [protoc-gen-go](https://github.com/protocolbuffers/protobuf-go): compiler plugin: Go support for Google's protocol buffers
-  - [protoc-gen-go-grpc](https://github.com/grpc/grpc-go): compiler plugin: The Go language implementation of gRPC. HTTP/2 based RPC
 - [ranger](https://github.com/ranger/ranger): A VIM-inspired filemanager for the console
 - [retype](https://github.com/retypeapp/retype): An ultra-high-performance static site generator that builds a website based on simple text files
 - [ripgrep](https://github.com/BurntSushi/ripgrep): recursively searches directories for a regex pattern while respecting your gitignore

@@ -510,9 +510,6 @@ RUN \
       -x readme.txt \
       -d ~/.local \
     && rm -f ${F} \
-    # install protocol buffer compiler plugins for go
-    && go install google.golang.org/protobuf/cmd/protoc-gen-go@latest \
-    && go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest \
     # install buf; also provides formatter and linter
     && go install github.com/bufbuild/buf/cmd/buf@latest \
     # clean up
