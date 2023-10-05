@@ -54,6 +54,17 @@ linters.setup {
 -- https://www.lunarvim.org/docs/configuration/plugins/user-plugins
 lvim.plugins = {
   {
+    "iamcco/markdown-preview.nvim",
+    build = "cd app && npm install",
+    ft = "markdown",
+    -- https://github.com/iamcco/markdown-preview.nvim#markdownpreview-config
+    config = function()
+      vim.g.mkdp_auto_start = 0       -- set to 1, nvim will open the preview window after entering the markdown buffer
+      vim.g.mkdp_echo_preview_url = 1 -- set to 1, echo preview page url in command line when open preview page
+      vim.g.mkdp_port = '8899'        -- use a custom port to start server or empty for random
+    end,
+  },
+  {
     "karb94/neoscroll.nvim",
     event = "WinScrolled",
     config = function()

@@ -27,6 +27,7 @@ make build
 - [Neovim](https://github.com/neovim/neovim): Vim-fork focused on extensibility and usability
   - [LunarVim](https://github.com/LunarVim/LunarVim): An IDE layer for Neovim. Completely free and community driven (_INSTALL_LUNARVIM_)
     - [better-escape.nvim](https://github.com/max397574/better-escape.nvim): Escape from insert mode without delay when typing
+    - [markdown-preview.nvim](https://github.com/iamcco/markdown-preview.nvim): Markdown preview plugin for (neo)vim
     - [neoscroll.nvim](https://github.com/karb94/neoscroll.nvim): Smooth scrolling neovim plugin written in lua
     - [smart-splits.nvim](https://github.com/mrjones2014/smart-splits.nvim): Smart, seamless, directional navigation and resizing of Neovim + terminal multiplexer splits
   - [SpaceVim](https://github.com/SpaceVim/SpaceVim): A community-driven modular vim/neovim distribution - The ultimate vimrc (_INSTALL_SPACEVIM_)
@@ -235,6 +236,12 @@ capabilities, etc.
 By default, watchman will watch all files and this can cause issue (such as vim
 lsp/coc types failing), for example if watching `node_modules`, so configure it
 per project as needed. See `/usr/share/.watchmanconfig` for an example.
+
+### Lunarvim
+
+- markdown-preview
+  - `:MarkdownPreview` start the preview, see URL
+  - `:MarkdownPreviewStop` stop the preview
 
 ### Local (machine-specific) Configuration
 
