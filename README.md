@@ -25,11 +25,11 @@ make build
 ## Tools
 
 - [Neovim](https://github.com/neovim/neovim): Vim-fork focused on extensibility and usability
-  - [LunarVim](https://github.com/LunarVim/LunarVim): An IDE layer for Neovim. Completely free and community driven (*INSTALL_LUNARVIM*)
-    - [karb94/neoscroll.nvim](https://github.com/karb94/neoscroll.nvim): Smooth scrolling neovim plugin written in lua
-    - [max397574/better-escape.nvim](https://github.com/max397574/better-escape.nvim): Escape from insert mode without delay when typing
-    - [mrjones2014/smart-splits.nvim](https://github.com/mrjones2014/smart-splits.nvim): Smart, seamless, directional navigation and resizing of Neovim + terminal multiplexer splits
-  - [SpaceVim](https://github.com/SpaceVim/SpaceVim): A community-driven modular vim/neovim distribution - The ultimate vimrc (*INSTALL_SPACEVIM*)
+  - [LunarVim](https://github.com/LunarVim/LunarVim): An IDE layer for Neovim. Completely free and community driven (_INSTALL_LUNARVIM_)
+    - [better-escape.nvim](https://github.com/max397574/better-escape.nvim): Escape from insert mode without delay when typing
+    - [neoscroll.nvim](https://github.com/karb94/neoscroll.nvim): Smooth scrolling neovim plugin written in lua
+    - [smart-splits.nvim](https://github.com/mrjones2014/smart-splits.nvim): Smart, seamless, directional navigation and resizing of Neovim + terminal multiplexer splits
+  - [SpaceVim](https://github.com/SpaceVim/SpaceVim): A community-driven modular vim/neovim distribution - The ultimate vimrc (_INSTALL_SPACEVIM_)
     - [coc.nvim](https://github.com/neoclide/coc.nvim): Conquer of Completion; Make your Vim/Neovim as smart as VSCode
   - [neovim-remote](https://github.com/mhinz/neovim-remote): Support for --remote and friends
 - [Node.js](https://github.com/nodejs/node): Node.js JavaScript runtime
@@ -37,11 +37,11 @@ make build
   - [yarn](https://github.com/yarnpkg/yarn): Fast, reliable, and secure dependency management
   - [npm-check](https://github.com/dylang/npm-check): Check for outdated, incorrect, and unused dependencies
   - [npm-check-updates](https://github.com/raineorshine/npm-check-updates): Find newer versions of package dependencies than what your package.json allows
-- [Tomb](https://github.com/dyne/Tomb): the Crypto Undertaker (*INSTALL_TOMB*)
-- [circom](https://github.com/iden3/circom): zkSnark circuit compiler (*INSTALL_CIRCOM*)
+- [Tomb](https://github.com/dyne/Tomb): the Crypto Undertaker (_INSTALL_TOMB_)
+- [circom](https://github.com/iden3/circom): zkSnark circuit compiler (_INSTALL_CIRCOM_)
 - [codemod](https://github.com/facebookarchive/codemod): A tool/library to assist with large-scale codebase refactors
 - [cpanminus](https://github.com/miyagawa/cpanminus): get, unpack, build and install modules from CPAN
-- [cypress](https://github.com/cypress-io/cypress): (deps) Fast, easy and reliable testing for anything that runs in a browser (*INSTALL_CYPRESS_DEPS*)
+- [cypress](https://github.com/cypress-io/cypress): (deps) Fast, easy and reliable testing for anything that runs in a browser (_INSTALL_CYPRESS_DEPS_)
 - [deno](https://github.com/denoland/deno): A modern runtime for JavaScript and TypeScript
 - [diff-so-fancy](https://github.com/so-fancy/diff-so-fancy): Good-lookin' diffs. Actually… nah… The best-lookin' diffs
 - [exa](https://github.com/ogham/exa): A modern replacement for ‘ls’
@@ -66,12 +66,12 @@ make build
 - [import-js](https://github.com/galooshi/import-js): A tool to simplify importing JS modules
 - [jq](https://github.com/stedolan/jq): Command-line JSON processor
 - [kpcli](http://kpcli.sourceforge.net/): A command line interface for KeePass
-- [llvm-project](https://github.com/llvm/llvm-project): (clang) A collection of modular and reusable compiler and toolchain technologies (*INSTALL_LLVM*)
+- [llvm-project](https://github.com/llvm/llvm-project): (clang) A collection of modular and reusable compiler and toolchain technologies (_INSTALL_LLVM_)
 - [ncdu](https://code.blicky.net/yorhel/ncdu): NCurses Disk Usage
 - [ninja-build](https://github.com/ninja-build/ninja): A small build system with a focus on speed
 - [platformio-core](https://github.com/platformio/platformio-core): A professional collaborative platform for embedded development
 - [prettier](https://github.com/prettier/prettier): Prettier is an opinionated code formatter
-- [protobuf](https://github.com/protocolbuffers/protobuf): Protocol Buffers - Google's data interchange format (*INSTALL_PB*)
+- [protobuf](https://github.com/protocolbuffers/protobuf): Protocol Buffers - Google's data interchange format (_INSTALL_PB_)
   - [buf](https://github.com/bufbuild/buf): A new way of working with Protocol Buffers
 - [ranger](https://github.com/ranger/ranger): A VIM-inspired filemanager for the console
 - [retype](https://github.com/retypeapp/retype): An ultra-high-performance static site generator that builds a website based on simple text files
