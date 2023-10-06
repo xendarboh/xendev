@@ -28,6 +28,7 @@ make build
   - [LunarVim](https://github.com/LunarVim/LunarVim): An IDE layer for Neovim. Completely free and community driven (_INSTALL_LUNARVIM_)
     - [better-escape.nvim](https://github.com/max397574/better-escape.nvim): Escape from insert mode without delay when typing
     - [markdown-preview.nvim](https://github.com/iamcco/markdown-preview.nvim): Markdown preview plugin for (neo)vim
+    - [marksman](https://github.com/artempyanykh/marksman): Write Markdown with code assist and intelligence in the comfort of your favourite editor
     - [neoscroll.nvim](https://github.com/karb94/neoscroll.nvim): Smooth scrolling neovim plugin written in lua
     - [smart-splits.nvim](https://github.com/mrjones2014/smart-splits.nvim): Smart, seamless, directional navigation and resizing of Neovim + terminal multiplexer splits
   - [SpaceVim](https://github.com/SpaceVim/SpaceVim): A community-driven modular vim/neovim distribution - The ultimate vimrc (_INSTALL_SPACEVIM_)

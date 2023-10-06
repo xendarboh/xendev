@@ -125,6 +125,7 @@ require('mason-lspconfig').setup_handlers({
   end
 })
 
+require("lvim.lsp.manager").setup("marksman")
 
 -- Load local configuration file if it exists
 local conf = os.getenv("XENDEV_DIR") .. "/conf.local/lvim.lua"

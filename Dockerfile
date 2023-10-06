@@ -730,6 +730,11 @@ RUN \
         --no-install-dependencies \
         --yes \
     && rm -rf /tmp/lv \
+    # install extra lunarvim things
+    && lvim --headless \
+      +'MasonInstall marksman' \
+      +qall \
+    \
   ; fi
 
 
