@@ -34,6 +34,7 @@ make build
   - [SpaceVim](https://github.com/SpaceVim/SpaceVim): A community-driven modular vim/neovim distribution - The ultimate vimrc (_INSTALL_SPACEVIM_)
     - [coc.nvim](https://github.com/neoclide/coc.nvim): Conquer of Completion; Make your Vim/Neovim as smart as VSCode
   - [neovim-remote](https://github.com/mhinz/neovim-remote): Support for --remote and friends
+- [Nix](https://github.com/NixOS/nix): Nix, the purely functional package manager (_INSTALL_NIX_)
 - [Node.js](https://github.com/nodejs/node): Node.js JavaScript runtime
   - [pnpm](https://github.com/pnpm/pnpm): Fast, disk space efficient package manager
   - [yarn](https://github.com/yarnpkg/yarn): Fast, reliable, and secure dependency management

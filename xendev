@@ -4,9 +4,6 @@ name="${1:-xendev}"
 docker='docker'
 image='xen/dev'
 
-# pass args after name ($1) to x11docker
-shift 1 ; x11docker_args="${@}"
-
 if (docker inspect ${name} >/dev/null 2>&1)
 then
   echo "${name} already running, entering existing container"
@@ -14,6 +11,20 @@ then
 else
   # NOTE: host user should not be "xendev"
   U=$(whoami)
+
+  # source .env for configuration
+  script_dir=$(realpath $(basename $0))
+  test -e ${script_dir}/.env && source ${script_dir}/.env
+
+  # pass args after name ($1) to x11docker
+  shift 1 ; x11docker_args="${@}"
+
+  # nix needs systemd for non-root usage
+  # Note: this option degrades container isolation
+  # https://github.com/mviereck/x11docker/wiki/Init-systems#init-in-docker-container
+  if [ "${INSTALL_NIX}" = "1" ]; then
+   x11docker_args="--init=systemd ${x11docker_args}"
+  fi
 
   # ensure volume directories exist
   mkdir -p /home/${U}/.config/git

@@ -239,6 +239,26 @@ RUN echo -e \
 }'\
 > /usr/share/.watchmanconfig
 
+# install nix
+# https://github.com/DeterminateSystems/nix-installer#in-a-container
+# https://github.com/mviereck/x11docker/wiki/dependencies#dependencies-in-image
+# https://github.com/DeterminateSystems/nix-installer/issues/670
+ARG INSTALL_NIX=0
+RUN \
+  if [ "${INSTALL_NIX}" = "1" ]; then \
+    apt update \
+      && apt install --no-install-recommends -y -q \
+        systemd-sysv \
+      && rm -rf /var/lib/apt/lists/* \
+      && curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix \
+        | sh -s -- install linux \
+        --extra-conf "sandbox = false" \
+        --init none \
+        # TODO: --no-start-daemon \
+        --no-confirm \
+  ; fi
+# ?: ENV PATH="${PATH}:/nix/var/nix/profiles/default/bin"
+
 # install node
 ARG VERSION_NODE
 RUN \
