@@ -144,6 +144,21 @@ RUN cd /tmp \
     done \
   && rm -rf /tmp/git-filter-repo-*
 
+# install latest github cli
+RUN cd /tmp \
+  && export V=$( \
+    curl -L -s https://api.github.com/repos/cli/cli/releases/latest \
+    | sed -n -e 's/"tag_name": "\(.*\)",/\1/p' \
+    | sed -e 's/^.*v//' \
+  ) \
+  && export F="gh_${V}_linux_amd64.deb" \
+  && wget "https://github.com/cli/cli/releases/download/v${V}/${F}" \
+  && apt update \
+  && (dpkg -i ${F} || true) \
+  && apt install --no-install-recommends -y -q -f \
+  && rm -rf /var/lib/apt/lists/* \
+  && rm -f ${F}
+
 # install latest clang tools
 # https://apt.llvm.org/
 ARG INSTALL_LLVM=0

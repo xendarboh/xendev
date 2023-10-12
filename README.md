@@ -54,6 +54,7 @@ make build
   - [fish-nx](https://github.com/xendarboh/fish-nx): Fish completions for Nx
 - [fzf](https://github.com/junegunn/fzf): A command-line fuzzy finder
 - [git](https://github.com/git/git) (latest stable version)
+  - [gh](https://github.com/cli/cli): GitHub’s official command line tool
   - [git-absorb](https://github.com/tummychow/git-absorb): git commit --fixup, but automatic
   - [git-crypt](https://github.com/xendarboh/git-crypt): \[fork\] Transparent file encryption in git
   - [git-filter-repo](https://github.com/newren/git-filter-repo): Quickly rewrite git repository history (filter-branch replacement)
