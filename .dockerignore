@@ -1,3 +1,4 @@
+.env
 .git
 Dockerfile
 Dockerfile.x11
