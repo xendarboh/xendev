@@ -373,11 +373,6 @@ RUN update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 60 \
 # http://docs.platformio.org/en/latest/installation.html#python-package-manager
 RUN pip install --upgrade platformio
 
-# install codemod
-# https://github.com/facebook/codemod
-# 20210201: consider replace/supplement with https://github.com/facebookincubator/fastmod
-RUN pip install codemod
-
 # install spacevim things
 ARG INSTALL_SPACEVIM=0
 RUN \
@@ -487,6 +482,7 @@ RUN cargo install \
   # 2023-01-31: install exa this way vs apt to avoid:
   # exa: Options --git and --git-ignore can't be used because `git` feature was disabled in this build of exa
   exa \
+  fastmod \
   git-absorb \
   spacer
 

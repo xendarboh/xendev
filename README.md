@@ -41,12 +41,12 @@ make build
   - [npm-check-updates](https://github.com/raineorshine/npm-check-updates): Find newer versions of package dependencies than what your package.json allows
 - [Tomb](https://github.com/dyne/Tomb): the Crypto Undertaker (_INSTALL_TOMB_)
 - [circom](https://github.com/iden3/circom): zkSnark circuit compiler (_INSTALL_CIRCOM_)
-- [codemod](https://github.com/facebookarchive/codemod): A tool/library to assist with large-scale codebase refactors
 - [cpanminus](https://github.com/miyagawa/cpanminus): get, unpack, build and install modules from CPAN
 - [cypress](https://github.com/cypress-io/cypress): (deps) Fast, easy and reliable testing for anything that runs in a browser (_INSTALL_CYPRESS_DEPS_)
 - [deno](https://github.com/denoland/deno): A modern runtime for JavaScript and TypeScript
 - [diff-so-fancy](https://github.com/so-fancy/diff-so-fancy): Good-lookin' diffs. Actually… nah… The best-lookin' diffs
 - [exa](https://github.com/ogham/exa): A modern replacement for ‘ls’
+- [fastmod](https://github.com/facebookincubator/fastmod): A tool to assist with large-scale codebase refactors
 - [fish-shell](https://github.com/fish-shell/fish-shell): The user-friendly command line shell
   - [fisher](https://github.com/jorgebucaran/fisher): A plugin manager for Fish
   - [fish-exa](https://github.com/gazorby/fish-exa): exa aliases for fish
