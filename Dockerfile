@@ -618,14 +618,6 @@ RUN \
 # enable local bash configuration
 RUN /bin/echo -e "\ntest -f ~/.bash_local && . ~/.bash_local\n" >> .bashrc
 
-# install tmux plugins (to avoid slight delay in tmux startup)
-RUN mkdir -p ~/.tmux/plugins \
-  && cd ~/.tmux/plugins \
-  && git clone --depth 1 https://github.com/egel/tmux-gruvbox.git \
-  && git clone --depth 1 https://github.com/ofirgall/tmux-window-name.git \
-  && git clone --depth 1 https://github.com/tmux-plugins/tmux-resurrect.git \
-  && git clone --depth 1 https://github.com/tmux-plugins/tpm.git
-
 # tmux things that need something extra
 RUN \
   # tmux-window-name deps
