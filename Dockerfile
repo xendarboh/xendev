@@ -62,7 +62,6 @@ RUN apt update \
     units \
     unzip \
     wget \
-    whiptail \
     xsel \
     zip \
     # https://github.com/mapbox/node-sqlite3/issues/1443
