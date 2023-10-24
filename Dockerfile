@@ -721,6 +721,9 @@ RUN \
       fd-find \
       ripgrep \
     \
+    # change default lunarvim runtime for ~/.local/share volume map to work
+    && export LUNARVIM_RUNTIME_DIR=~/.local/run/lunarvim \
+    && mkdir -p ~/.local/run \
     # run lunarvim install script
     # https://github.com/LunarVim/LunarVim/blob/master/utils/installer/install.sh
     && mkdir /tmp/lv && cd /tmp/lv \
@@ -732,11 +735,6 @@ RUN \
         --no-install-dependencies \
         --yes \
     && rm -rf /tmp/lv \
-    # install extra lunarvim things
-    && lvim --headless \
-      +'MasonInstall marksman' \
-      +qall \
-    \
   ; fi
 
 
