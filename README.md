@@ -18,6 +18,7 @@ Note: Developed on and for Linux; other host compatibility is unknown.
 git clone https://github.com/xendarboh/xendev.git
 cd xendev
 cp .env-example .env
+# edit .env to enable optionals or set specific versions
 make build
 ./xendev
 ```
@@ -180,11 +181,12 @@ x11docker --desktop --gpu --clipboard --network -- xen/dev
 #### Without X11
 
 This is the mode of minimal host requirements, only `docker|podman`. It will
-work on a headless server, for example.
+work on a headless server, for example. Refer to [xendev.tty](./xendev.tty) as
+an example for mapping volumes from the host.
 
 ```sh
 make build-tty
-docker run -ti --rm xen/dev /bin/bash
+./xendev.tty
 ```
 
 This also works with `make build`, just larger docker image.
