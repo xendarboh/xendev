@@ -35,6 +35,7 @@ make build
   - [SpaceVim](https://github.com/SpaceVim/SpaceVim): A community-driven modular vim/neovim distribution - The ultimate vimrc (_INSTALL_SPACEVIM_)
     - [coc.nvim](https://github.com/neoclide/coc.nvim): Conquer of Completion; Make your Vim/Neovim as smart as VSCode
   - [neovim-remote](https://github.com/mhinz/neovim-remote): Support for --remote and friends
+- [Nix](https://github.com/NixOS/nix): Nix, the purely functional package manager (_INSTALL_NIX_)
 - [Node.js](https://github.com/nodejs/node): Node.js JavaScript runtime
   - [pnpm](https://github.com/pnpm/pnpm): Fast, disk space efficient package manager
   - [yarn](https://github.com/yarnpkg/yarn): Fast, reliable, and secure dependency management
@@ -53,6 +54,7 @@ make build
   - [fish-exa](https://github.com/gazorby/fish-exa): exa aliases for fish
   - [fish-gruvbox](https://github.com/Jomik/fish-gruvbox): gruvbox theme for fish
   - [fish-nx](https://github.com/xendarboh/fish-nx): Fish completions for Nx
+  - [nix-env.fish](https://github.com/lilyball/nix-env.fish): Nix environment setup for the fish shell (_INSTALL_NIX_)
 - [fzf](https://github.com/junegunn/fzf): A command-line fuzzy finder
 - [git](https://github.com/git/git) (latest stable version)
   - [gh](https://github.com/cli/cli): GitHub’s official command line tool

@@ -594,6 +594,16 @@ RUN curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/function
     jorgebucaran/fisher
 SHELL ["/bin/bash", "--login", "-c"]
 
+# install nix; single-user mode
+# https://nixos.wiki/wiki/Nix_Installation_Guide
+ARG INSTALL_NIX=0
+RUN \
+  if [ "${INSTALL_NIX}" = "1" ]; then \
+    sudo install -d -m755 -o $(id -u) -g $(id -g) /nix \
+    && curl -L https://nixos.org/nix/install | sh \
+    && /bin/fish --login -c 'fisher install lilyball/nix-env.fish' \
+  ; fi
+
 # copy configuration files so that links to them work during docker build
 RUN mkdir -p ${XENDEV_DIR}
 COPY --chown=${_USER}:${_USER} . ${XENDEV_DIR}
