@@ -28,6 +28,8 @@ make build
 - [Neovim](https://github.com/neovim/neovim): Vim-fork focused on extensibility and usability
   - [LunarVim](https://github.com/LunarVim/LunarVim): An IDE layer for Neovim. Completely free and community driven (_INSTALL_LUNARVIM_)
     - [better-escape.nvim](https://github.com/max397574/better-escape.nvim): Escape from insert mode without delay when typing
+    - [copilot-cmp](https://github.com/zbirenbaum/copilot-cmp): Lua plugin to turn github copilot into a cmp source
+    - [copilot.lua](https://github.com/zbirenbaum/copilot.lua): Fully featured & enhanced replacement for copilot.vim complete with API for interacting with Github Copilot
     - [markdown-preview.nvim](https://github.com/iamcco/markdown-preview.nvim): Markdown preview plugin for (neo)vim
     - [marksman](https://github.com/artempyanykh/marksman): Write Markdown with code assist and intelligence in the comfort of your favourite editor
     - [neoscroll.nvim](https://github.com/karb94/neoscroll.nvim): Smooth scrolling neovim plugin written in lua

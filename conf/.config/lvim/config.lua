@@ -103,6 +103,25 @@ lvim.plugins = {
 }
 
 
+------------------------------------------------------------------------
+-- copilot
+-- https://www.lunarvim.org/docs/configuration/plugins/example-configurations#copilotlua-and-copilot-cmp
+-- run `:Lazy load copilot-cmp` followed by `:Copilot auth` once the plugin is installed
+------------------------------------------------------------------------
+
+table.insert(lvim.plugins, {
+  "zbirenbaum/copilot-cmp",
+  event = "InsertEnter",
+  dependencies = { "zbirenbaum/copilot.lua" },
+  config = function()
+    vim.defer_fn(function()
+      require("copilot").setup()     -- https://github.com/zbirenbaum/copilot.lua/blob/master/README.md#setup-and-configuration
+      require("copilot_cmp").setup() -- https://github.com/zbirenbaum/copilot-cmp/blob/master/README.md#configuration
+    end, 100)
+  end,
+})
+
+
 -- mrjones2014/smart-splits.nvim
 -- https://github.com/mrjones2014/smart-splits.nvim#key-mappings
 -- these keymaps will also accept a range, for example `10<A-h>` will `resize_left` by `(10 * config.default_amount)`
