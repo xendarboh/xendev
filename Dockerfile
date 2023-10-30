@@ -624,8 +624,8 @@ RUN \
     --verbose \
     conf
 
-# enable local bash configuration
-RUN /bin/echo -e "\ntest -f ~/.bash_local && . ~/.bash_local\n" >> .bashrc
+# source bash configuration
+RUN /bin/echo -e "\ntest -f ~/.bash_xendev && . ~/.bash_xendev\n" >> .bashrc
 
 # tmux things that need something extra
 RUN \
