@@ -82,6 +82,9 @@ dirmap() {
 }
 dirmap
 
+# source bash config from mapped volume at run-time
+F="${XENDEV_DIR}/conf.local/bash.sh"
+test -f ${F} && source ${F}
 
 ####################################
 # drop into fish shell

@@ -253,12 +253,16 @@ per project as needed. See `/usr/share/.watchmanconfig` for an example.
 
 ### Local (machine-specific) Configuration
 
+This configuration remains outside the image and is volume-mapped into the
+container at runtime.
+
 ```sh
 cp -a conf.local-example conf.local
 ```
 
-- `conf.local/directory_map.txt` list of "from:to" directory mappings for
-  preserving current working directory in new tmux windows (since tmux does
+- `conf.local/bash.sh` sourced by bash; set custom environment like `GH_TOKEN`
+- `conf.local/directory_map.txt` list of `from:to` directory mappings to
+  preserve current working directory in new tmux windows (since tmux does
   not handle symlinked directories well).
 - `conf.local/lvim.lua` sourced by lunarvim's `config.lua`
 
