@@ -238,6 +238,18 @@ capabilities, etc.
 
 See [conf/](conf/) files.
 
+### git
+
+To include xendev git config without replacing the local, add the following to `~/.config/git/config`:
+
+```
+[includeIf "gitdir:/home/xendev"]
+  path = ~/src/xendev/conf/gitconfig
+```
+
+- facilitates same git config on host and within [xendev](./xendev) container
+- only applied to git commands run within `/home/xendev/`
+- recommendation is to share source between host/container with volume-mapped `~/src/`
 
 ### Watchman
 
