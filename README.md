@@ -15,6 +15,7 @@ Note: Developed on and for Linux; other host compatibility is unknown.
 ## Quickstart
 
 ```sh
+mkdir ~/src && cd ~/src
 git clone https://github.com/xendarboh/xendev.git
 cd xendev
 cp .env-example .env
