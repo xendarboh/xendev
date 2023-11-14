@@ -234,11 +234,10 @@ See the shell scripts within the [test](test/) directory for tests to confirm
 host-mapped gpg support, terminal font rendering (truecolor, glyphs, italics)
 capabilities, etc.
 
-## Customization
+## Customization & Notes
 
-- See [conf/](conf/) files
+See [conf/](conf/) files.
 
-## Notes
 
 ### Watchman
 
@@ -261,30 +260,24 @@ container at runtime.
 cp -a conf.local-example conf.local
 ```
 
-- `conf.local/bash.sh` sourced by bash; set custom environment like `GH_TOKEN`
-- `conf.local/directory_map.txt` list of `from:to` directory mappings to
-  preserve current working directory in new tmux windows (since tmux does
-  not handle symlinked directories well).
-- `conf.local/lvim.lua` sourced by lunarvim's `config.lua`
+- `conf.local/bash.sh`
+  - sourced by bash; use to set custom environment like `GH_TOKEN`
+- `conf.local/directory_map.txt`
+  - a list of `from:to` directory mappings to preserve current working directory
+    in new tmux windows (since tmux does not handle symlinked directories well)
+- `conf.local/lvim.lua`
+  - sourced by lunarvim's `config.lua`
+- `conf.local/wakatime.cfg`
+  - for wakatime or [wakapi](https://github.com/muety/wakapi)
+  - to enable [vim-wakatime](https://github.com/wakatime/vim-wakatime) plugin
+    within lunarvim, place the following in `.conf/local/lvim.lua`:
+    ```lua
+    table.insert(lvim.plugins, {
+      "wakatime/vim-wakatime",
+    })
+    ```
 
-#### wakatime
-
-As a top level file of the user's home directory, `~/.wakatime.cfg` does not
-map well from the docker container host. To use wakatime or
-[wakapi](https://github.com/muety/wakapi), place the config file at
-`conf.local/wakatime.cfg`. If the file is present, it will be symlinked within
-the container at run time.
-
-To enable [vim-wakatime](https://github.com/wakatime/vim-wakatime) plugin
-within lunarvim, place the following in `.conf/local/lvim.lua`:
-
-```lua
-table.insert(lvim.plugins, {
-  "wakatime/vim-wakatime",
-})
-```
-
-### vim CoC (autocompletion)
+### SpaceVim + CoC (autocompletion)
 
 | Configuration Location                                                                             | Purpose                             |
 | -------------------------------------------------------------------------------------------------- | ----------------------------------- |
