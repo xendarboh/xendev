@@ -28,7 +28,9 @@ lvim.format_on_save.enabled = true
 lvim.format_on_save.pattern = {
   "*.go",
   "*.lua",
+  "*.md",
   "*.proto",
+  "*.tsx",
 }
 
 -- https://www.lunarvim.org/docs/configuration/language-features/linting-and-formatting
