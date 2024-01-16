@@ -63,6 +63,10 @@ test -d ~/.local/run/lunarvim \
     +qall \
   && echo
 
+# init dir for nvim spell file(s)
+spelldir=~/.local/share/nvim/spell
+test ! -f ${spelldir} && mkdir -p ${spelldir}
+
 # Workaround issue whereby tmux new window using current pwd does not respect symlinks.
 # This reads and applies a file of directory mappings of the format "from:to".
 dirmap() {
