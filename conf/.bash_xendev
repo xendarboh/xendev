@@ -1,11 +1,9 @@
 export GOPATH=~/go
 export PNPM_HOME=~/.pnpm
-export NPM_CONFIG_PREFIX=~/.npm-global
 export LUNARVIM_RUNTIME_DIR=~/.local/run/lunarvim
 
 export PATH=~/.local/bin:${PATH}
 export PATH=~/.go/bin:${GOPATH}/bin:${PATH}
-export PATH=${NPM_CONFIG_PREFIX}/bin:${PATH}
 export PATH=${PNPM_HOME}:${PATH}
 export PATH=~/.yarn/bin:${PATH}
 export PATH=./node_modules/.bin:${PATH}
@@ -44,6 +42,11 @@ export _ZO_ECHO=1
 export GTAGSLABEL=pygments
 
 ls ~/.bash/*.sh &>/dev/null && source ~/.bash/*.sh
+
+# load node version manager (nvm)
+export NVM_DIR="${XDG_CONFIG_HOME}/nvm"
+test -s "${NVM_DIR}/nvm.sh" && \. "${NVM_DIR}/nvm.sh" --no-use
+test -s "${NVM_DIR}/bash_completion" && \. "${NVM_DIR}/bash_completion"
 
 # wakatime: symlink config if it exists
 F="${XENDEV_DIR}/conf.local/wakatime.cfg"

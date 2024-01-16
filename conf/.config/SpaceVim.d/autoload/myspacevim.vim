@@ -12,11 +12,6 @@ function! myspacevim#before() abort
   " 2023-03 Set spellfile to more "local" directory (default ~/.config/SpaceVim.d/spell)
   set spellfile=~/.local/share/nvim/spell/en.utf-8.add
 
-  " 2022-08-16 FIX error: Cannot find the "neovim" node package.
-  " Command to start the Node host. Setting this makes startup faster.
-  " https://github.com/neovim/neovim/commit/0093c25dd3795972b953f9914cc33fc38c5d9dbc
-  let g:node_host_prog = expand($NPM_CONFIG_PREFIX).'/bin/neovim-node-host'
-
 
   """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   " CoC

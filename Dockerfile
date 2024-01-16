@@ -291,7 +291,7 @@ RUN \
   && rm -f ${F}
 
 # install yarn and pnpm
-RUN npm install --location=global \
+RUN npm install --global \
     corepack
 
 # install latest deno
@@ -413,10 +413,21 @@ SHELL ["/bin/bash", "--login", "-c"]
 USER ${_USER}
 WORKDIR /home/${_USER}
 
+# install node version manager (nvm)
+RUN \
+  export V=$( \
+    curl -L -s https://api.github.com/repos/nvm-sh/nvm/releases/latest \
+      | sed -n -e 's/"tag_name": "\(.*\)",/\1/p' \
+      | sed -e 's/^.*v//' \
+  ) \
+  && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v${V}/install.sh \
+    | \
+      NVM_DIR=${XDG_CONFIG_HOME}/nvm \
+      # instruct installer to not edit shell config
+      PROFILE=/dev/null \
+    bash
 # install node things
-# https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally
-ENV NPM_CONFIG_PREFIX=/home/${_USER}/.npm-global
-RUN npm install --location=global \
+RUN sudo npm install --global \
   diff-so-fancy \
   eslint-cli \
   import-js \
@@ -432,7 +443,7 @@ RUN npm install --location=global \
   typescript
 
 # install node things for LSP
-RUN npm install --location=global \
+RUN sudo npm install --global \
   # docker_compose_language_service:
   @microsoft/compose-language-service \
   # prismals:
@@ -704,7 +715,7 @@ RUN \
       +qall \
     \
     # install spacevim node things
-    && npm install --location=global \
+    && sudo npm install --global \
       # for spacevim layer lang#typescript:
       lehre \
   ; fi
@@ -718,7 +729,7 @@ ARG VERSION_LUNARVIM
 RUN \
   if [ "${INSTALL_LUNARVIM}" = "1" ]; then \
     # install npm deps
-    npm install --location=global \
+    sudo npm install --global \
       neovim \
       tree-sitter-cli \
     \

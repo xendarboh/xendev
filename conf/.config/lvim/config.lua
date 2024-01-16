@@ -7,6 +7,9 @@ vim.opt.relativenumber = true -- relative line numbers
 vim.opt.undofile = false      -- persistent undo
 vim.opt.whichwrap = "b,s"     -- allow left/right cursor keys to move prev/next
 
+-- https://www.lunarvim.org/docs/troubleshooting#are-you-using-fish
+vim.opt.shell = "/bin/sh"
+
 vim.opt.spellfile = os.getenv("HOME") .. "/.local/share/nvim/spell/en.utf-8.add"
 
 -- https://www.lunarvim.org/docs/configuration/appearance/statusline
