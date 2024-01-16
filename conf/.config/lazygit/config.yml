@@ -16,3 +16,4 @@ os:
   # editAtLineAndWait: 'lvim +{{line}} -- {{filename}}'
   # editInTerminal: true
   # openDirInEditor: 'lvim -- {{dir}}'
+promptToReturnFromSubprocess: false # display confirmation when subprocess terminates
