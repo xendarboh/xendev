@@ -294,6 +294,40 @@ RUN \
 RUN npm install --global \
     corepack
 
+# install node things
+RUN npm install --global \
+    diff-so-fancy \
+    eslint-cli \
+    import-js \
+    npm-check \
+    npm-check-updates \
+    prettier \
+    prettier-plugin-solidity \
+    retypeapp \
+    solc \
+    taskbook \
+    tern \
+    typescript
+
+# install node things for LSP
+RUN npm install --global \
+    # docker_compose_language_service:
+    @microsoft/compose-language-service \
+    # prismals:
+    @prisma/language-server \
+    # tailwindcss:
+    @tailwindcss/language-server \
+    # bashls:
+    bash-language-server \
+    # dockerls:
+    dockerfile-language-server-nodejs \
+    # nxls:
+    nxls \
+    # tsserver:
+    typescript-language-server \
+    # cssls, eslint, html, jsonls:
+    vscode-langservers-extracted
+
 # install latest deno
 RUN curl -fsSL https://deno.land/install.sh | DENO_INSTALL=/usr/local sh
 
@@ -426,40 +460,6 @@ RUN \
       # instruct installer to not edit shell config
       PROFILE=/dev/null \
     bash
-# install node things
-RUN sudo npm install --global \
-  diff-so-fancy \
-  eslint-cli \
-  import-js \
-  neovim \
-  npm-check \
-  npm-check-updates \
-  prettier \
-  prettier-plugin-solidity \
-  retypeapp \
-  solc \
-  taskbook \
-  tern \
-  typescript
-
-# install node things for LSP
-RUN sudo npm install --global \
-  # docker_compose_language_service:
-  @microsoft/compose-language-service \
-  # prismals:
-  @prisma/language-server \
-  # tailwindcss:
-  @tailwindcss/language-server \
-  # bashls:
-  bash-language-server \
-  # dockerls:
-  dockerfile-language-server-nodejs \
-  # nxls:
-  nxls \
-  # tsserver:
-  typescript-language-server \
-  # cssls, eslint, html, jsonls:
-  vscode-langservers-extracted
 
 # install latest go
 # Note: 2023-08: go_installer fails with:
@@ -718,6 +718,8 @@ RUN \
     && sudo npm install --global \
       # for spacevim layer lang#typescript:
       lehre \
+      # nodejs provider:
+      neovim \
   ; fi
 
 
