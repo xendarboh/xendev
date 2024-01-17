@@ -493,6 +493,7 @@ RUN cargo install \
   # exa: Options --git and --git-ignore can't be used because `git` feature was disabled in this build of exa
   exa \
   fastmod \
+  fnm \
   git-absorb \
   spacer
 

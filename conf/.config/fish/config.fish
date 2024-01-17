@@ -3,6 +3,8 @@ if status is-interactive
 end
 
 buf completion fish | source
+fnm completions --shell fish | source
+fnm env | source
 git-absorb --gen-completions fish | source
 starship init fish | source
 ~/.local/bin/zoxide init fish | source
