@@ -12,6 +12,8 @@ vim.opt.shell = "/bin/sh"
 
 vim.opt.spellfile = os.getenv("HOME") .. "/.local/share/nvim/spell/en.utf-8.add"
 
+vim.g.node_host_prog = "/usr/local/bin/neovim-node-host"
+
 -- https://www.lunarvim.org/docs/configuration/appearance/statusline
 -- https://github.com/nvim-lualine/lualine.nvim/blob/master/README.md
 -- lvim.builtin.lualine.options.component_separators = { left = '', right = '' }
