@@ -84,7 +84,6 @@ make build
 - [protobuf](https://github.com/protocolbuffers/protobuf): Protocol Buffers - Google's data interchange format (_INSTALL_PB_)
   - [buf](https://github.com/bufbuild/buf): A new way of working with Protocol Buffers
 - [ranger](https://github.com/ranger/ranger): A VIM-inspired filemanager for the console
-- [retype](https://github.com/retypeapp/retype): An ultra-high-performance static site generator that builds a website based on simple text files
 - [ripgrep](https://github.com/BurntSushi/ripgrep): recursively searches directories for a regex pattern while respecting your gitignore
 - [rustup](https://github.com/rust-lang/rustup): The Rust toolchain installer
 - [silversearcher-ag](https://github.com/ggreer/the_silver_searcher): A code-searching tool similar to ack, but faster

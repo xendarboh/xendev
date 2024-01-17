@@ -303,7 +303,6 @@ RUN npm install --global \
     npm-check-updates \
     prettier \
     prettier-plugin-solidity \
-    retypeapp \
     solc \
     taskbook \
     tern \
