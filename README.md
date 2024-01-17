@@ -59,6 +59,7 @@ make build
   - [fish-gruvbox](https://github.com/Jomik/fish-gruvbox): gruvbox theme for fish
   - [fish-nx](https://github.com/xendarboh/fish-nx): Fish completions for Nx
   - [nix-env.fish](https://github.com/lilyball/nix-env.fish): Nix environment setup for the fish shell (_INSTALL_NIX_)
+- [fleek-cli](https://github.com/fleekhq/fleek-cli): Use Fleek to deploy websites and apps on the open web: permissionless, trustless, censorship resistant, and free of centralized gatekeepers
 - [fzf](https://github.com/junegunn/fzf): A command-line fuzzy finder
 - [git](https://github.com/git/git) (latest stable version)
   - [gh](https://github.com/cli/cli): GitHub’s official command line tool
