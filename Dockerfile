@@ -447,20 +447,6 @@ SHELL ["/bin/bash", "--login", "-c"]
 USER ${_USER}
 WORKDIR /home/${_USER}
 
-# install node version manager (nvm)
-RUN \
-  export V=$( \
-    curl -L -s https://api.github.com/repos/nvm-sh/nvm/releases/latest \
-      | sed -n -e 's/"tag_name": "\(.*\)",/\1/p' \
-      | sed -e 's/^.*v//' \
-  ) \
-  && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v${V}/install.sh \
-    | \
-      NVM_DIR=${XDG_CONFIG_HOME}/nvm \
-      # instruct installer to not edit shell config
-      PROFILE=/dev/null \
-    bash
-
 # install latest go
 # Note: 2023-08: go_installer fails with:
 #   Downloading Go from 400 Bad Request failed with HTTP status %!s(MISSING)

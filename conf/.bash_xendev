@@ -45,11 +45,6 @@ export GTAGSLABEL=pygments
 
 ls ~/.bash/*.sh &>/dev/null && source ~/.bash/*.sh
 
-# load node version manager (nvm)
-export NVM_DIR="${XDG_CONFIG_HOME}/nvm"
-test -s "${NVM_DIR}/nvm.sh" && \. "${NVM_DIR}/nvm.sh" --no-use
-test -s "${NVM_DIR}/bash_completion" && \. "${NVM_DIR}/bash_completion"
-
 # wakatime: symlink config if it exists
 F="${XENDEV_DIR}/conf.local/wakatime.cfg"
 test ! -f ~/.wakatime.cfg && test -f ${F} && ln -s ${F} ~/.wakatime.cfg
