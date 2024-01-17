@@ -12,6 +12,9 @@ function! myspacevim#before() abort
   " 2023-03 Set spellfile to more "local" directory (default ~/.config/SpaceVim.d/spell)
   set spellfile=~/.local/share/nvim/spell/en.utf-8.add
 
+  " Command to start the Node host. Setting this makes startup faster.
+  let g:node_host_prog = '/usr/local/bin/neovim-node-host'
+
 
   """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   " CoC
