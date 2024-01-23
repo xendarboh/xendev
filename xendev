@@ -1,11 +1,32 @@
 #!/bin/bash
 
-name="${1:-xendev}"
+# docker or podman or ...
 docker='docker'
-image='xen/dev'
 
-# pass args after name ($1) to x11docker
-shift 1 ; x11docker_args="${@}"
+# overrideable defaults
+name="${1:-xendev}"
+default_image_args="xen/dev kitty -T ${name}"
+
+# like x11docker, extract args into sets separated by '--'
+shift 1
+args_x11docker=()
+args_docker=()
+args_image=()
+arg_set=1
+for arg in "$@"; do
+  if [ "$arg" == '--' ]; then
+    arg_set=$((arg_set + 1))
+  else
+    case $arg_set in
+      1) args_x11docker+=("$arg");;
+      2) args_docker+=("$arg");;
+      3) args_image+=("$arg");;
+    esac
+  fi
+done
+
+# if no image args, use defaults
+args_image=("${args_image[@]:-${default_image_args}}")
 
 if (docker inspect ${name} >/dev/null 2>&1)
 then
@@ -31,15 +52,14 @@ else
     --share /srv \
     --share ~/.gnupg \
     --share ~/.ssh \
-    ${x11docker_args} \
+    ${args_x11docker[@]} \
     -- \
     --tmpfs /tmp:exec \
     --volume /home/${U}/.config/git:/home/xendev/.config/git \
     --volume /home/${U}/.local/share/xendev:/home/xendev/.local/share \
     --volume /home/${U}/src:/home/xendev/src \
     --hostname $(hostname)-${name} \
+    ${args_docker[@]} \
     -- \
-    ${image} \
-    kitty \
-      -T ${name}
+    ${args_image[@]}
 fi
