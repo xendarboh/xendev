@@ -32,9 +32,12 @@ lvim.builtin.which_key.mappings["l"]["f"] = {
 lvim.format_on_save.enabled = true
 lvim.format_on_save.pattern = {
   "*.go",
+  "*.js",
+  "*.jsx",
   "*.lua",
   "*.md",
   "*.proto",
+  "*.ts",
   "*.tsx",
 }
 
