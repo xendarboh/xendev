@@ -440,7 +440,7 @@ RUN useradd -m -s /bin/bash -u ${_USER_ID} -G ${_USER_GROUPS} ${_USER} \
 # switch to user
 ########################################################################
 ENV HOME=/home/${_USER} USER=${_USER} LC_ALL=${_LOCALE} LANG=${_LOCALE}
-ENV PATH=/home/${_USER}/bin:/home/${_USER}/.yarn/bin:/home/${_USER}/.go/bin:/home/${_USER}/go:/home/${_USER}/perl5/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/${_USER}/.fzf/bin
+ENV PATH=/home/${_USER}/bin:/home/${_USER}/.go/bin:/home/${_USER}/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 ENV SHELL=/bin/bash
 ENV XDG_CONFIG_HOME=/home/${_USER}/.config
 SHELL ["/bin/bash", "--login", "-c"]
@@ -533,8 +533,7 @@ RUN mkdir bin \
   && perl -I perl5/lib/perl5/ -Mlocal::lib >> .bashrc
 
 # install neovim perl provider dependencies (according to :checkhealth)
-RUN eval $(perl -I ~/perl5/lib/perl5/ -Mlocal::lib) \
-  && bin/cpanm --quiet --notest \
+RUN cpanm --quiet --notest \
     Neovim::Ext \
     App::cpanminus \
   && rm -rf .cpanm
@@ -543,8 +542,7 @@ RUN eval $(perl -I ~/perl5/lib/perl5/ -Mlocal::lib) \
 ARG VERSION_KPCLI
 RUN wget -O bin/kpcli https://downloads.sourceforge.net/project/kpcli/kpcli-${VERSION_KPCLI}.pl \
   && chmod +x bin/kpcli \
-  && eval $(perl -I ~/perl5/lib/perl5/ -Mlocal::lib) \
-  && bin/cpanm --quiet --notest \
+  && cpanm --quiet --notest \
     Authen::OATH \
     Capture::Tiny \
     Clipboard \
