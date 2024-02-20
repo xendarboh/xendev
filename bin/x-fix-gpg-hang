@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# https://unix.stackexchange.com/questions/382279/gpg-hangs-when-private-keys-are-accessed/432468#432468
+pkill -9 gpg-agent
+
+# kill this one too in case it lingers
+pkill -9 pinentry
