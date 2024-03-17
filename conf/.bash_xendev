@@ -56,12 +56,13 @@ test ~/.local/share/nvim/rplugin.vim -ot /etc/xendev-release \
     &>/dev/null
 
 # install extra lunarvim things in mapped volume at run-time
-test -d ~/.local/run/lunarvim \
-  && test ! -f ~/.local/share/lvim/mason/bin/marksman \
-  && lvim --headless \
-    +'MasonInstall marksman' \
-    +qall \
-  && echo
+function mason_install {
+  m=~/.local/share/lvim/mason/bin
+  test ! -f ${m}/${1} && lvim --headless +"MasonInstall ${1}" +qall
+}
+if [ -d ~/.local/run/lunarvim ]; then
+  mason_install marksman
+fi
 
 # init dir for nvim spell file(s)
 spelldir=~/.local/share/nvim/spell
