@@ -2,7 +2,7 @@ if status is-interactive
     # Commands to run in interactive sessions can go here
 end
 
-buf completion fish | source
+command -q buf && buf completion fish | source
 fnm completions --shell fish | source
 fnm env | source
 git-absorb --gen-completions fish | source
