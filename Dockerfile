@@ -69,6 +69,7 @@ RUN apt update \
     # for kpcli:
     libreadline-dev \
     xclip \
+    zlib1g-dev \
   && rm -rf /var/lib/apt/lists/*
 
 # set locale
@@ -470,6 +471,9 @@ RUN go install \
     github.com/jesseduffield/lazygit@latest \
   && go clean --cache
 
+# 2024-03-17: Fix: error: could not amend shell profile: '/home/xendev/.config/fish/conf.d/rustup.fish': could not write rcfile file: '/home/xendev/.config/fish/conf.d/rustup.fish': No such file or directory (os error 2)
+# TODO: remove post upstream resolve: https://github.com/rust-lang/rustup/issues/3706
+RUN mkdir -p ~/.config/fish/conf.d/
 # install rust
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
@@ -550,7 +554,8 @@ RUN wget -O bin/kpcli https://downloads.sourceforge.net/project/kpcli/kpcli-${VE
     Convert::Base32 \
     Crypt::Rijndael \
     Data::Password \
-    Data::Password::passwdqc \
+    Data::Password::zxcvbn \
+    File::KDBX \
     File::KeePass \
     Math::Random::ISAAC \
     Sort::Naturally \
