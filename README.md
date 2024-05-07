@@ -45,6 +45,9 @@ make build
   - [fnm](https://github.com/Schniz/fnm): Fast and simple Node.js version manager, built in Rust
   - [npm-check-updates](https://github.com/raineorshine/npm-check-updates): Find newer versions of package dependencies than what your package.json allows
   - [npm-check](https://github.com/dylang/npm-check): Check for outdated, incorrect, and unused dependencies
+- [AWS CLI v2](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html): enables interaction with AWS services. (_INSTALL_DEVOPS_)
+- [Ansible](https://github.com/ansible/ansible): a radically simple IT automation system (_INSTALL_DEVOPS_)
+- [OpenTofu](https://github.com/opentofu/opentofu): declaratively manage your cloud infrastructure (_INSTALL_DEVOPS_)
 - [Tomb](https://github.com/dyne/Tomb): the Crypto Undertaker (_INSTALL_TOMB_)
 - [circom](https://github.com/iden3/circom): zkSnark circuit compiler (_INSTALL_CIRCOM_)
 - [cpanminus](https://github.com/miyagawa/cpanminus): get, unpack, build and install modules from CPAN
@@ -107,7 +110,6 @@ make build
   - [watchman-wait](https://facebook.github.io/watchman/docs/watchman-wait): Waits for changes to files, suitable for waiting from shell scripts
 - [xclip](https://github.com/astrand/xclip): Command line interface to the X11 clipboard
 - [zoxide](https://github.com/ajeetdsouza/zoxide): A smarter cd command
-- and more... including numerous language-server-providers
 
 Additionally (and optionally), the following are within the X11 base image:
 

@@ -605,6 +605,35 @@ RUN \
     && /bin/fish --login -c 'fisher install lilyball/nix-env.fish' \
   ; fi
 
+ARG INSTALL_DEVOPS=0
+RUN \
+  if [ "${INSTALL_DEVOPS}" = "1" ]; then \
+    # install ansible
+    pip install --upgrade ansible \
+    # install awscli
+    && cd /tmp \
+    && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
+    && unzip awscliv2.zip \
+    && sudo ./aws/install \
+    && rm -rf ./aws* \
+    # install opentofu
+    # https://opentofu.org/docs/intro/install/deb/#installing-using-the-installer
+    && curl --proto '=https' --tlsv1.2 -fsSL https://get.opentofu.org/install-opentofu.sh -o install-opentofu.sh \
+    && chmod +x install-opentofu.sh \
+    && ./install-opentofu.sh --install-method deb \
+    && rm install-opentofu.sh \
+    && ln -s /usr/bin/tofu ~/.local/bin/terraform \
+    # install terraform
+    # && wget -O - https://apt.releases.hashicorp.com/gpg \
+    #   | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg \
+    # && echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" \
+    #   | sudo tee /etc/apt/sources.list.d/hashicorp.list \
+    # && sudo apt update \
+    # && sudo apt install --no-install-recommends -y -q \
+    #   terraform \
+    && sudo rm -rf /var/lib/apt/lists/* \
+  ; fi
+
 # copy configuration files so that links to them work during docker build
 RUN mkdir -p ${XENDEV_DIR}
 COPY --chown=${_USER}:${_USER} . ${XENDEV_DIR}
