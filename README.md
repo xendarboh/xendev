@@ -49,6 +49,7 @@ make build
 - [Ansible](https://github.com/ansible/ansible): a radically simple IT automation system (_INSTALL_DEVOPS_)
 - [OpenTofu](https://github.com/opentofu/opentofu): declaratively manage your cloud infrastructure (_INSTALL_DEVOPS_)
 - [Tomb](https://github.com/dyne/Tomb): the Crypto Undertaker (_INSTALL_TOMB_)
+- [aicommits](https://github.com/Nutlope/aicommits): A CLI that writes your git commit messages for you with AI
 - [circom](https://github.com/iden3/circom): zkSnark circuit compiler (_INSTALL_CIRCOM_)
 - [cpanminus](https://github.com/miyagawa/cpanminus): get, unpack, build and install modules from CPAN
 - [cypress](https://github.com/cypress-io/cypress): (deps) Fast, easy and reliable testing for anything that runs in a browser (_INSTALL_CYPRESS_DEPS_)
@@ -282,7 +283,10 @@ cp -a conf.local-example conf.local
     in new tmux windows (since tmux does not handle symlinked directories well)
 - `conf.local/lvim.lua`
   - sourced by lunarvim's `config.lua`
+- `conf.local/aicommits`
+  - if exists, symlinked to `~/.aicommits`
 - `conf.local/wakatime.cfg`
+  - if exists, symlinked to `~/.wakatime.cfg`
   - for wakatime or [wakapi](https://github.com/muety/wakapi)
   - to enable [vim-wakatime](https://github.com/wakatime/vim-wakatime) plugin
     within lunarvim, place the following in `.conf/local/lvim.lua`:

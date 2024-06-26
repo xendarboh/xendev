@@ -45,6 +45,10 @@ export GTAGSLABEL=pygments
 
 ls ~/.bash/*.sh &>/dev/null && source ~/.bash/*.sh
 
+# aicommits: symlink config if it exists
+F="${XENDEV_DIR}/conf.local/aicommits"
+test ! -f ~/.aicommits && test -f ${F} && ln -s ${F} ~/.aicommits
+
 # wakatime: symlink config if it exists
 F="${XENDEV_DIR}/conf.local/wakatime.cfg"
 test ! -f ~/.wakatime.cfg && test -f ${F} && ln -s ${F} ~/.wakatime.cfg
