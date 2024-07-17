@@ -297,7 +297,7 @@ RUN npm install --global \
 
 # install node things
 RUN npm install --global \
-    @fleekhq/fleek-cli \
+    @fleek-platform/cli \
     aicommits \
     diff-so-fancy \
     eslint-cli \
