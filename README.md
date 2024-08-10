@@ -2,7 +2,7 @@
 
 [![GPLv3 License](https://img.shields.io/badge/license-GPLv3-blue.svg)](LICENSE)
 
-A modern portable sandboxed terminal-based vim-centric development environment.
+A modern portable sandboxed (dockerized) terminal-based vim-centric development environment.
 
 Overpowered "dotfiles" intended to run in a number of ways; either within a:
 
@@ -229,8 +229,9 @@ checks](https://github.com/mviereck/x11docker#privilege-checks).
 ## Preferences & Philosophy
 
 - modern latest greatest terminal utilities and versions
+- reproducible personal development environment
 - default to current LTS versions
-- [FROM ubuntu:latest](https://hub.docker.com/_/ubuntu)
+- [FROM ubuntu](https://hub.docker.com/_/ubuntu)
 - vi-style key bindings
 - dark [gruvbox](https://github.com/morhetz/gruvbox) color scheme
 - `LOCALE=en_US.UTF-8` (overridden by x11docker)
@@ -280,25 +281,21 @@ container at runtime.
 cp -a conf.local-example conf.local
 ```
 
-- `conf.local/bash.sh`
-  - sourced by bash; use to set custom environment like `GH_TOKEN`
-- `conf.local/directory_map.txt`
+With the exception of `conf.local/xendev/`, the "dotfiles" of `conf.local` are [stow](https://github.com/aspiers/stowstow)'d in the user's homedir. For example, `conf.local/.xyz` gets symlinked from `~/.xyz`.
+
+Notable local conf files may include:
+
+- `conf.local/xendev/bash.sh`: use to set custom config like `GH_TOKEN` or `FLEEK_API_KEY`
+- `conf.local/xendev/directory_map.txt`
   - a list of `from:to` directory mappings to preserve current working directory
-    in new tmux windows (since tmux does not handle symlinked directories well)
-- `conf.local/lvim.lua`
-  - sourced by lunarvim's `config.lua`
-- `conf.local/aicommits`
-  - if exists, symlinked to `~/.aicommits`
-- `conf.local/wakatime.cfg`
-  - if exists, symlinked to `~/.wakatime.cfg`
-  - for wakatime or [wakapi](https://github.com/muety/wakapi)
-  - to enable [vim-wakatime](https://github.com/wakatime/vim-wakatime) plugin
-    within lunarvim, place the following in `.conf/local/lvim.lua`:
-    ```lua
-    table.insert(lvim.plugins, {
-      "wakatime/vim-wakatime",
-    })
-    ```
+    in new windows (since tmux/kitty does not handle preserved symlinked directories)
+  - you likely want a directory mapping for `/home/xendev:/home/<USER>`
+- `conf.local/xendev/lvim.lua`: sourced by lunarvim's `config.lua`
+- `conf.local/.aicommits`: aicommits configuration
+- `conf.local/.wakatime.cfg`
+  - wakatime or [wakapi](https://github.com/muety/wakapi) configuration
+  - see [conf.local-example/xendev/lvim.lua](conf.local-example/xendev/lvim.lua) for how to enable wakatime plugin in lunarvim
+- `conf.local/.aws`: preserve local aws credentials... or anything else in this mannar
 
 ### SpaceVim + CoC (autocompletion)
 

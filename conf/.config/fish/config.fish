@@ -43,7 +43,7 @@ function fish_greeting
 end
 
 function dirmap
-    set F "$XENDEV_DIR/conf.local/directory_map.txt"
+    set F "$XENDEV_DIR/conf.local/xendev/directory_map.txt"
     test -f "$F" || return
     for line in (cat "$F")
         set from (echo "$line" | cut -d':' -f1)

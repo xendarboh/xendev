@@ -43,15 +43,14 @@ export _ZO_ECHO=1
 # https://spacevim.org/layers/gtags/
 export GTAGSLABEL=pygments
 
+# stow the local conf files
+stow \
+  --ignore=xendev \
+  --target=/home/$(whoami)/ \
+  --dir=${XENDEV_DIR} \
+  conf.local
+
 ls ~/.bash/*.sh &>/dev/null && source ~/.bash/*.sh
-
-# aicommits: symlink config if it exists
-F="${XENDEV_DIR}/conf.local/aicommits"
-test ! -f ~/.aicommits && test -f ${F} && ln -s ${F} ~/.aicommits
-
-# wakatime: symlink config if it exists
-F="${XENDEV_DIR}/conf.local/wakatime.cfg"
-test ! -f ~/.wakatime.cfg && test -f ${F} && ln -s ${F} ~/.wakatime.cfg
 
 # (re)init nvim rplugin.vim if older than xendev build
 # ensure current and create if new container volume map from host
@@ -75,7 +74,7 @@ test ! -f ${spelldir} && mkdir -p ${spelldir}
 # Workaround issue whereby tmux new window using current pwd does not respect symlinks.
 # This reads and applies a file of directory mappings of the format "from:to".
 dirmap() {
-  F="${XENDEV_DIR}/conf.local/directory_map.txt"
+  F="${XENDEV_DIR}/conf.local/xendev/directory_map.txt"
   test -f "${F}" || return
   for line in $(cat "${F}")
   do
@@ -92,7 +91,7 @@ dirmap() {
 dirmap
 
 # source bash config from mapped volume at run-time
-F="${XENDEV_DIR}/conf.local/bash.sh"
+F="${XENDEV_DIR}/conf.local/xendev/bash.sh"
 test -f ${F} && source ${F}
 
 ####################################
