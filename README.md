@@ -45,10 +45,6 @@ make build
   - [fnm](https://github.com/Schniz/fnm): Fast and simple Node.js version manager, built in Rust
   - [npm-check-updates](https://github.com/raineorshine/npm-check-updates): Find newer versions of package dependencies than what your package.json allows
   - [npm-check](https://github.com/dylang/npm-check): Check for outdated, incorrect, and unused dependencies
-- [AWS CLI v2](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html): enables interaction with AWS services (_INSTALL_DEVOPS_)
-- [Ansible](https://github.com/ansible/ansible): a radically simple IT automation system (_INSTALL_DEVOPS_)
-- [OpenTofu](https://github.com/opentofu/opentofu): declaratively manage your cloud infrastructure (_INSTALL_DEVOPS_)
-- [Packer](https://github.com/hashicorp/packer): a tool for creating identical machine images for multiple platforms from a single source configuration (_INSTALL_DEVOPS_)
 - [Tomb](https://github.com/dyne/Tomb): the Crypto Undertaker (_INSTALL_TOMB_)
 - [aicommits](https://github.com/Nutlope/aicommits): A CLI that writes your git commit messages for you with AI
 - [circom](https://github.com/iden3/circom): zkSnark circuit compiler (_INSTALL_CIRCOM_)
@@ -112,6 +108,13 @@ make build
   - [watchman-wait](https://facebook.github.io/watchman/docs/watchman-wait): Waits for changes to files, suitable for waiting from shell scripts
 - [xclip](https://github.com/astrand/xclip): Command line interface to the X11 clipboard
 - [zoxide](https://github.com/ajeetdsouza/zoxide): A smarter cd command
+- _INSTALL_DEVOPS_
+  - [AWS CLI v2](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html): enables interaction with AWS services
+  - [Ansible](https://github.com/ansible/ansible): a radically simple IT automation system
+  - [OpenTofu](https://github.com/opentofu/opentofu): declaratively manage your cloud infrastructure
+  - [Packer](https://github.com/hashicorp/packer): a tool for creating identical machine images for multiple platforms from a single source configuration
+  - [Terraform](https://github.com/hashicorp/terraform): enables you to safely and predictably create, change, and improve infrastructure.
+  - [terraform-local](https://github.com/localstack/terraform-local): Terraform CLI wrapper to deploy your Terraform applications directly to LocalStack
 
 Additionally (and optionally), the following are within the X11 base image:
 
