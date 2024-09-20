@@ -135,6 +135,17 @@ table.insert(lvim.plugins, {
 	end,
 })
 
+------------------------------------------------------------------------
+-- menus
+------------------------------------------------------------------------
+lvim.builtin.which_key.mappings["x"] = {
+	name = "xendev",
+	-- https://stackoverflow.com/a/69298743
+	-- https://github.com/neovim/neovim/pull/16057
+	-- https://neovim.io/doc/user/diagnostic.html#vim.diagnostic.open_float()
+	d = { "<cmd>lua vim.diagnostic.open_float()<CR>", "Diagnostics Float" },
+}
+
 -- mrjones2014/smart-splits.nvim
 -- https://github.com/mrjones2014/smart-splits.nvim#key-mappings
 -- these keymaps will also accept a range, for example `10<A-h>` will `resize_left` by `(10 * config.default_amount)`
