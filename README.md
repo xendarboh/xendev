@@ -128,7 +128,6 @@ Additionally (and optionally), the following are within the X11 base image:
 Powered-by:
 
 - [x11docker](https://github.com/mviereck/x11docker): Run GUI applications and desktops in docker and podman containers. Focus on security.
-- [Xendarboh](https://github.com/xendarboh): An Elven Tech Wizard
 
 ## Build
 
