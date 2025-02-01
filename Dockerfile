@@ -553,6 +553,7 @@ RUN wget -O bin/kpcli https://downloads.sourceforge.net/project/kpcli/kpcli-${VE
     Clipboard \
     Clone \
     Convert::Base32 \
+    Crypt::Argon2 \
     Crypt::Rijndael \
     Data::Password \
     Data::Password::zxcvbn \
