@@ -25,6 +25,12 @@ build: ## build docker image with X11 support
 		--build-arg IMAGE_BASE=xen/x11 \
 		xen-dev
 
+.PHONY: retag
+retag:
+	docker rmi xen/dev:prev xen/x11:prev
+	docker image tag xen/dev:latest xen/dev:prev
+	docker image tag xen/x11:latest xen/x11:prev
+
 .PHONY: rebuild
 rebuild: ## rebuild docker image with X11 support
 	time docker pull ${IMAGE_BASE}
