@@ -24,6 +24,7 @@ services:
         - INSTALL_NIX
         - INSTALL_PB
         - INSTALL_SPACEVIM
+        - INSTALL_TAURI
         - INSTALL_TOMB
         - VERSION_KPCLI
         - VERSION_LLVM

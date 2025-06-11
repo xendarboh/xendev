@@ -640,6 +640,25 @@ RUN \
     && sudo rm -rf /var/lib/apt/lists/* \
   ; fi
 
+# https://v2.tauri.app/start/prerequisites/#linux
+ARG INSTALL_TAURI=0
+RUN \
+  if [ "${INSTALL_TAURI}" = "1" ]; then \
+    sudo apt update \
+    && sudo apt install --no-install-recommends -y -q \
+      build-essential \
+      curl \
+      file \
+      libayatana-appindicator3-dev \
+      librsvg2-dev \
+      libssl-dev \
+      libwebkit2gtk-4.1-dev \
+      libxdo-dev \
+      wget \
+    && sudo rm -rf /var/lib/apt/lists/* \
+    && cargo install tauri-cli \
+  ; fi
+
 # copy configuration files so that links to them work during docker build
 RUN mkdir -p ${XENDEV_DIR}
 COPY --chown=${_USER}:${_USER} . ${XENDEV_DIR}

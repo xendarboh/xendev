@@ -95,6 +95,7 @@ make build
 - [sqlite](https://github.com/sqlite/sqlite): a small, fast, self-contained, high-reliability, full-featured, SQL database engine
 - [starship](https://github.com/starship/starship): The minimal, blazing-fast, and infinitely customizable prompt for any shell!
 - [stow](https://github.com/aspiers/stow): a symlink farm manager
+- [tauri-cli](https://github.com/tauri-apps/tauri): Build smaller, faster, and more secure desktop and mobile applications with a web frontend (_INSTALL_TAURI_)
 - [taskbook](https://github.com/klaussinani/taskbook): Tasks, boards & notes for the command-line habitat
 - [tmux](https://github.com/tmux/tmux): A terminal multiplexer
   - [tpm](https://github.com/tmux-plugins/tpm): Tmux Plugin Manager
