@@ -106,6 +106,7 @@ make build
   - [watchman-make](https://facebook.github.io/watchman/docs/watchman-make): A convenience tool to automatically invoke a command in response to files changing
   - [watchman-replicate-subscription](https://facebook.github.io/watchman/docs/watchman-replicate-subscription): Replicates an existing watchman subscription
   - [watchman-wait](https://facebook.github.io/watchman/docs/watchman-wait): Waits for changes to files, suitable for waiting from shell scripts
+- [websocat](https://github.com/vi/websocat): Command-line client for WebSockets, like netcat (or curl) for ws:// with advanced socat-like functions
 - [xclip](https://github.com/astrand/xclip): Command line interface to the X11 clipboard
 - [zoxide](https://github.com/ajeetdsouza/zoxide): A smarter cd command
 - _INSTALL_DEVOPS_

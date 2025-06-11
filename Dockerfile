@@ -486,7 +486,8 @@ RUN cargo install \
   fastmod \
   fnm \
   git-absorb \
-  spacer
+  spacer \
+  websocat
 
 # install latest circom release
 # https://docs.circom.io/getting-started/installation/#installing-dependencies
