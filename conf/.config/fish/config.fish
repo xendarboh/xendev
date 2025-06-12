@@ -81,6 +81,9 @@ abbr s 'git status'
 abbr gl 'git log --show-signature'
 abbr lz lazygit
 
+# INSTALL_BRAVE
+abbr brave-browser 'brave-browser --no-sandbox'
+
 abbr kt-clip 'kitty +kitten clipboard'
 abbr kt-diff 'kitty +kitten diff'
 abbr kt-icat 'kitty +kitten icat'

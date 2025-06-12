@@ -45,6 +45,7 @@ make build
   - [fnm](https://github.com/Schniz/fnm): Fast and simple Node.js version manager, built in Rust
   - [npm-check-updates](https://github.com/raineorshine/npm-check-updates): Find newer versions of package dependencies than what your package.json allows
   - [npm-check](https://github.com/dylang/npm-check): Check for outdated, incorrect, and unused dependencies
+- [Brave Browser](https://github.com/brave/brave-browser) (_INSTALL_BRAVE_)
 - [Tomb](https://github.com/dyne/Tomb): the Crypto Undertaker (_INSTALL_TOMB_)
 - [aicommits](https://github.com/Nutlope/aicommits): A CLI that writes your git commit messages for you with AI
 - [circom](https://github.com/iden3/circom): zkSnark circuit compiler (_INSTALL_CIRCOM_)

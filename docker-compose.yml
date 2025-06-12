@@ -12,6 +12,7 @@ services:
       context: ./
       args:
         - IMAGE_BASE
+        - INSTALL_BRAVE
         - INSTALL_CIRCOM
         - INSTALL_CYPRESS_DEPS
         - INSTALL_DEVOPS

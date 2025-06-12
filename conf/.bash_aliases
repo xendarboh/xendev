@@ -25,6 +25,9 @@ alias less='less -F -i -J -M -R -W -x4 -X -z-4'
 
 alias x="cd ${XENDEV_DIR} && vim"
 
+# INSTALL_BRAVE
+alias brave-browser='brave-browser --no-sandbox'
+
 # platformio shortcuts
 pioe() { cat ./platformio.ini | sed -nre 's/^\[env:(.*)\]/\1/p'; }
 piol() { pio device list; }
