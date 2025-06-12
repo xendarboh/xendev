@@ -84,6 +84,9 @@ abbr lz lazygit
 # INSTALL_BRAVE
 abbr brave-browser 'brave-browser --no-sandbox'
 
+# INSTALL_CHROMIUM
+abbr chromium-browser 'chromium-browser --no-sandbox'
+
 abbr kt-clip 'kitty +kitten clipboard'
 abbr kt-diff 'kitty +kitten diff'
 abbr kt-icat 'kitty +kitten icat'

@@ -183,3 +183,18 @@ RUN \
     && rm -f ./install.sh* \
     && rm -rf /var/lib/apt/lists/* \
   ; fi
+
+ARG INSTALL_CHROMIUM=0
+RUN \
+  if [ "${INSTALL_CHROMIUM}" = "1" ]; then \
+    apt-update \
+    && apt install --no-install-recommends -y -q \
+      apt-transport-https \
+      gnupg \
+      software-properties-common \
+    && add-apt-repository -y ppa:savoury1/chromium \
+    && apt update \
+    && apt install -y -q --no-install-recommends \
+      chromium-browser \
+    && rm -rf /var/lib/apt/lists/* \
+  ; fi

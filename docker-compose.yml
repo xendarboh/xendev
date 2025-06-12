@@ -13,6 +13,7 @@ services:
       args:
         - IMAGE_BASE
         - INSTALL_BRAVE
+        - INSTALL_CHROMIUM
         - INSTALL_CIRCOM
         - INSTALL_CYPRESS_DEPS
         - INSTALL_DEVOPS

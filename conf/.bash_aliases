@@ -28,6 +28,9 @@ alias x="cd ${XENDEV_DIR} && vim"
 # INSTALL_BRAVE
 alias brave-browser='brave-browser --no-sandbox'
 
+# INSTALL_CHROMIUM
+alias chromium-browser='chromium-browser --no-sandbox'
+
 # platformio shortcuts
 pioe() { cat ./platformio.ini | sed -nre 's/^\[env:(.*)\]/\1/p'; }
 piol() { pio device list; }
