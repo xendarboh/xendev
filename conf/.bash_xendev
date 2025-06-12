@@ -40,9 +40,6 @@ eval "$(zoxide init bash)"
 # zoxide: When set to 1, z will print the matched directory before navigating to it.
 export _ZO_ECHO=1
 
-# https://spacevim.org/layers/gtags/
-export GTAGSLABEL=pygments
-
 # stow the local conf files
 stow \
   --ignore=xendev \

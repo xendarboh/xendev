@@ -25,7 +25,6 @@ services:
         - INSTALL_NEOVIM_FROM_SRC
         - INSTALL_NIX
         - INSTALL_PB
-        - INSTALL_SPACEVIM
         - INSTALL_TAURI
         - INSTALL_TOMB
         - VERSION_KPCLI
