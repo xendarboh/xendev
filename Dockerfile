@@ -297,6 +297,7 @@ RUN npm install --global \
 
 # install node things
 RUN npm install --global \
+    @anthropic-ai/claude-code \
     @fleek-platform/cli \
     aicommits \
     diff-so-fancy \
