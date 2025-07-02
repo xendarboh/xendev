@@ -61,6 +61,7 @@ function mason_install {
   test ! -f ${m}/${1} && lvim --headless +"MasonInstall ${1}" +qall
 }
 if [ -d ~/.local/run/lunarvim ]; then
+  mason_install golines
   mason_install marksman
 fi
 
