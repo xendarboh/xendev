@@ -17,6 +17,7 @@ services:
         - INSTALL_CIRCOM
         - INSTALL_CYPRESS_DEPS
         - INSTALL_DEVOPS
+        - INSTALL_DOCKER
         - INSTALL_DOCS
         - INSTALL_LLVM
         - INSTALL_LUNARVIM

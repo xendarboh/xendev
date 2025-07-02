@@ -414,9 +414,32 @@ RUN pip install pipenv # necessary?
 # install starship cross-shell prompt
 RUN curl -sS https://starship.rs/install.sh | sh -s -- --yes
 
+# install docker cli
+ARG INSTALL_DOCKER=0
+# the group of volume-mounted docker socket from host, actual gid could vary
+ARG DOCKER_HOST_GID=999
+RUN \
+  if [ "${INSTALL_DOCKER}" = "1" ]; then \
+    # https://docs.docker.com/engine/install/ubuntu/
+    mkdir -p /etc/apt/keyrings \
+    && curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
+      | gpg --dearmor -o /etc/apt/keyrings/docker.gpg \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
+      | tee /etc/apt/sources.list.d/docker.list > /dev/null \
+    && apt update \
+    && apt install --no-install-recommends -y -q \
+      containerd.io \
+      docker-buildx-plugin \
+      docker-ce-cli \
+      docker-compose-plugin \
+    && rm -rf /var/lib/apt/lists/* \
+    && groupadd -g ${DOCKER_HOST_GID} docker \
+  ; fi
+
 # create user, grant sudo access
 # NOTE: _USER_GROUPS is not working to have an affect with x11docker
 RUN \
+  test "${INSTALL_DOCKER}" -eq "1" && _USER_GROUPS="${_USER_GROUPS},docker" ; \
   useradd -m -s /bin/bash -u ${_USER_ID} -G ${_USER_GROUPS} ${_USER} \
   && echo "${_USER}:${_USER}" | chpasswd \
   && echo "${_USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${_USER} \

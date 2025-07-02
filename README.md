@@ -262,6 +262,17 @@ To include xendev git config without replacing the local, add the following to `
 - only applied to git commands run within `/home/xendev/`
 - recommendation is to share source between host/container with volume-mapped `~/src/`
 
+### docker in docker
+
+An optional hack... for limited interaction with the host's docker. Violates some security features provided by x11docker.
+
+To enable within xendev shell for regular user:
+
+```sh
+sudo usermod -a -G docker $(whoami)
+su $(whoami)
+```
+
 ### Watchman
 
 By default, watchman will watch all files and this can cause issue (such as vim
