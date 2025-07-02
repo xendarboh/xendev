@@ -44,7 +44,7 @@ lvim.format_on_save.pattern = {
 -- https://www.lunarvim.org/docs/configuration/language-features/linting-and-formatting
 local formatters = require("lvim.lsp.null-ls.formatters")
 formatters.setup({
-	{ name = "buf" },
+	-- { name = "buf" },
 	-- { name = "golines" },
 	{
 		name = "prettier",
@@ -64,7 +64,7 @@ formatters.setup({
 
 local linters = require("lvim.lsp.null-ls.linters")
 linters.setup({
-	{ name = "buf" },
+	-- { name = "buf" },
 })
 
 -- https://www.lunarvim.org/docs/configuration/plugins/user-plugins
