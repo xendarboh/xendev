@@ -415,11 +415,12 @@ RUN pip install pipenv # necessary?
 RUN curl -sS https://starship.rs/install.sh | sh -s -- --yes
 
 # create user, grant sudo access
-RUN useradd -m -s /bin/bash -u ${_USER_ID} -G ${_USER_GROUPS} ${_USER} \
+# NOTE: _USER_GROUPS is not working to have an affect with x11docker
+RUN \
+  useradd -m -s /bin/bash -u ${_USER_ID} -G ${_USER_GROUPS} ${_USER} \
   && echo "${_USER}:${_USER}" | chpasswd \
   && echo "${_USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${_USER} \
   && chmod 0440 /etc/sudoers.d/${_USER}
-
 
 ########################################################################
 # switch to user
