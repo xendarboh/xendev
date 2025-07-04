@@ -5,6 +5,8 @@ services:
       dockerfile: Dockerfile.x11
       args:
         - IMAGE_BASE=${IMAGE_BASE}
+        - INSTALL_BRAVE
+        - INSTALL_CHROMIUM
     image: xen/x11
 
   xen-dev:
