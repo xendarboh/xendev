@@ -114,8 +114,11 @@ CMD start
 RUN apt update \
   && apt install --no-install-recommends -y -q \
     # base
+    apt-transport-https \
     ca-certificates \
     curl \
+    gnupg \
+    software-properties-common \
     unzip \
     # fonts
     fonts-hack \
@@ -188,12 +191,7 @@ RUN \
 ARG INSTALL_BROWSER_CHROMIUM=0
 RUN \
   if [ "${INSTALL_BROWSER_CHROMIUM}" = "1" ]; then \
-    apt update \
-    && apt install --no-install-recommends -y -q \
-      apt-transport-https \
-      gnupg \
-      software-properties-common \
-    && add-apt-repository -y ppa:savoury1/chromium \
+    add-apt-repository -y ppa:savoury1/chromium \
     && apt update \
     && apt install -y -q --no-install-recommends \
       chromium-browser \
