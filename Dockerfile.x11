@@ -171,9 +171,9 @@ RUN \
 COPY ./conf/.config/kitty/kitty.conf /etc/skel/.config/kitty/kitty.conf
 
 # https://brave.com/linux/
-ARG INSTALL_BRAVE=0
+ARG INSTALL_BROWSER_BRAVE=0
 RUN \
-  if [ "${INSTALL_BRAVE}" = "1" ]; then \
+  if [ "${INSTALL_BROWSER_BRAVE}" = "1" ]; then \
     curl -fsSLO "https://dl.brave.com/install.sh{,.asc}" \
     && gpg \
       --keyserver hkps://keys.openpgp.org \
@@ -185,9 +185,9 @@ RUN \
     && rm -rf /var/lib/apt/lists/* \
   ; fi
 
-ARG INSTALL_CHROMIUM=0
+ARG INSTALL_BROWSER_CHROMIUM=0
 RUN \
-  if [ "${INSTALL_CHROMIUM}" = "1" ]; then \
+  if [ "${INSTALL_BROWSER_CHROMIUM}" = "1" ]; then \
     apt update \
     && apt install --no-install-recommends -y -q \
       apt-transport-https \

@@ -5,8 +5,8 @@ services:
       dockerfile: Dockerfile.x11
       args:
         - IMAGE_BASE=${IMAGE_BASE}
-        - INSTALL_BRAVE
-        - INSTALL_CHROMIUM
+        - INSTALL_BROWSER_BRAVE
+        - INSTALL_BROWSER_CHROMIUM
     image: xen/x11
 
   xen-dev:
@@ -14,8 +14,8 @@ services:
       context: ./
       args:
         - IMAGE_BASE
-        - INSTALL_BRAVE
-        - INSTALL_CHROMIUM
+        - INSTALL_BROWSER_BRAVE
+        - INSTALL_BROWSER_CHROMIUM
         - INSTALL_CIRCOM
         - INSTALL_CYPRESS_DEPS
         - INSTALL_DEVOPS

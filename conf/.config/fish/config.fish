@@ -81,11 +81,11 @@ abbr s 'git status'
 abbr gl 'git log --show-signature'
 abbr lz lazygit
 
-# INSTALL_BRAVE
-abbr brave-browser 'brave-browser --no-sandbox'
+# INSTALL_BROWSER_BRAVE
+command -v brave-browser >/dev/null && abbr brave-browser 'brave-browser --no-sandbox'
 
-# INSTALL_CHROMIUM
-abbr chromium-browser 'chromium-browser --no-sandbox'
+# INSTALL_BROWSER_CHROMIUM
+command -v chromium-browser >/dev/null && abbr chromium-browser 'chromium-browser --no-sandbox'
 
 abbr kt-clip 'kitty +kitten clipboard'
 abbr kt-diff 'kitty +kitten diff'
