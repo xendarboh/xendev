@@ -7,7 +7,7 @@ fnm completions --shell fish | source
 fnm env | source
 git-absorb --gen-completions fish | source
 starship init fish | source
-~/.local/bin/zoxide init fish | source
+zoxide init fish | source
 
 theme_gruvbox dark hard
 

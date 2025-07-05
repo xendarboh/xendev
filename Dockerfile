@@ -412,9 +412,6 @@ RUN pip install --upgrade platformio
 
 RUN pip install pipenv # necessary?
 
-# install starship cross-shell prompt
-RUN curl -sS https://starship.rs/install.sh | sh -s -- --yes
-
 # create user, grant sudo access
 # NOTE: _USER_GROUPS is not working to have an affect with x11docker
 RUN \
@@ -464,15 +461,26 @@ RUN mkdir -p ~/.config/fish/conf.d/
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 # install rust things
-RUN cargo install \
-  # 2023-01-31: install exa this way vs apt to avoid:
-  # exa: Options --git and --git-ignore can't be used because `git` feature was disabled in this build of exa
-  exa \
-  fastmod \
-  fnm \
-  git-absorb \
-  spacer \
-  websocat
+ENV CARGO_HOME=/home/${_USER}/.cargo
+ENV CARGO_TARGET_DIR=${CARGO_HOME}/target
+RUN \
+  --mount=type=cache,id=cargo-registry,target=${CARGO_HOME}/registry,uid=${_USER_ID} \
+  --mount=type=cache,id=cargo-target,target=$CARGO_TARGET_DIR,uid=${_USER_ID} \
+  curl -L --proto '=https' --tlsv1.2 -sSf \
+    https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash \
+  && cargo binstall \
+    --continue-on-failure \
+    --disable-telemetry \
+    --locked \
+    exa \
+    fastmod \
+    fnm \
+    git-absorb \
+    spacer \
+    starship \
+    websocat \
+    zoxide \
+  && true
 
 # install latest circom release
 # https://docs.circom.io/getting-started/installation/#installing-dependencies
@@ -565,9 +573,6 @@ RUN git clone \
   && ~/.fzf/install \
     --all \
     --no-zsh
-
-# install zoxide
-RUN curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
 
 # install extra bash things
 RUN mkdir ~/.bash
