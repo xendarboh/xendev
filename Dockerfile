@@ -77,7 +77,8 @@ RUN locale-gen ${_LOCALE} \
   && update-locale LANG=${_LOCALE} LC_ALL=${_LOCALE}
 
 # install latest fish
-RUN apt-add-repository ppa:fish-shell/release-4 \
+ARG VERSION_FISH
+RUN apt-add-repository ppa:fish-shell/${VERSION_FISH} \
   && apt update \
   && apt install --no-install-recommends -y -q \
     fish \

@@ -29,6 +29,7 @@ services:
         - INSTALL_PB
         - INSTALL_TAURI
         - INSTALL_TOMB
+        - VERSION_FISH
         - VERSION_KPCLI
         - VERSION_LLVM
         - VERSION_LUNARVIM
