@@ -8,14 +8,14 @@ ARG _USER_GROUPS=audio,dialout,video
 ARG _USER_ID=1000
 
 # persist _USER for use in inheriting images
-ENV XENDEV_USER ${_USER}
+ENV XENDEV_USER=${_USER}
 
 # xendev source directory volume mount point when running container
 # used for configuration files as symlinks
-ENV XENDEV_DIR /home/${_USER}/src/xendev
+ENV XENDEV_DIR=/home/${_USER}/src/xendev
 
 # use the "noninteractive" debconf frontend
-ENV DEBIAN_FRONTEND noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 
 # use bash for RUN commands
 SHELL ["/bin/bash", "--login", "-c"]
