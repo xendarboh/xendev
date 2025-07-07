@@ -2,18 +2,6 @@ gui:
   nerdFontsVersion: "3"
   showFileTree: false # for rendering changes files in a tree format
   timeFormat: "2006-01-02 15:04:05" # https://pkg.go.dev/time#Time.Format
-# https://github.com/jesseduffield/lazygit/blob/master/pkg/config/editor_presets.go#L54C5-L54C5
-# 2024-01 editPreset=nvim(-remote) does not work... so manual lvim replace nvim
 os:
-  # editPreset: 'nvim-remote'
-  edit: 'lvim --server "$NVIM" --remote-tab {{filename}}'
-  editAtLine: 'lvim --server "$NVIM" --remote-tab {{filename}}; [ -z "$NVIM" ] || lvim --server "$NVIM" --remote-send ":{{line}}<CR>"'
-  editAtLineAndWait: 'lvim +{{line}} -- {{filename}}'
-  openDirInEditor: 'lvim --server "$NVIM" --remote-tab {{dir}}'
-  # editPreset: "lvim"
-  # edit: 'lvim -- {{filename}}'
-  # editAtLine: 'lvim +{{line}} -- {{filename}}'
-  # editAtLineAndWait: 'lvim +{{line}} -- {{filename}}'
-  # editInTerminal: true
-  # openDirInEditor: 'lvim -- {{dir}}'
+  editPreset: "nvim-remote"
 promptToReturnFromSubprocess: false # display confirmation when subprocess terminates
