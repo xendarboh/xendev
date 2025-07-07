@@ -460,9 +460,6 @@ RUN go install \
     github.com/jesseduffield/lazygit@latest \
   && go clean --cache
 
-# 2024-03-17: Fix: error: could not amend shell profile: '/home/xendev/.config/fish/conf.d/rustup.fish': could not write rcfile file: '/home/xendev/.config/fish/conf.d/rustup.fish': No such file or directory (os error 2)
-# TODO: remove post upstream resolve: https://github.com/rust-lang/rustup/issues/3706
-RUN mkdir -p ~/.config/fish/conf.d/
 # install rust
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
@@ -652,7 +649,11 @@ RUN \
       libxdo-dev \
       wget \
     && sudo rm -rf /var/lib/apt/lists/* \
-    && cargo install tauri-cli \
+    && cargo binstall \
+      --continue-on-failure \
+      --disable-telemetry \
+      --locked \
+      tauri-cli \
   ; fi
 
 # copy configuration files so that links to them work during docker build
@@ -711,7 +712,10 @@ RUN \
       pynvim \
     \
     # install rust deps
-    && cargo install \
+    && cargo binstall \
+      --continue-on-failure \
+      --disable-telemetry \
+      --locked \
       fd-find \
       ripgrep \
     \
