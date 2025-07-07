@@ -92,6 +92,20 @@ RUN apt-add-repository ppa:git-core/ppa \
     git-lfs \
   && rm -rf /var/lib/apt/lists/*
 
+# create user, grant sudo access
+# NOTE: _USER_GROUPS does not have an affect with x11docker
+RUN \
+  groupadd -g ${_USER_ID} ${_USER} \
+  && useradd -m \
+    -s /bin/bash \
+    -u ${_USER_ID} \
+    -g ${_USER_ID} \
+    -G ${_USER_GROUPS} \
+    ${_USER} \
+  && echo "${_USER}:${_USER}" | chpasswd \
+  && echo "${_USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${_USER} \
+  && chmod 0440 /etc/sudoers.d/${_USER}
+
 # install git-crypt
 RUN \
   # install deps
@@ -411,14 +425,6 @@ RUN update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 60 \
 RUN pip install --upgrade platformio
 
 RUN pip install pipenv # necessary?
-
-# create user, grant sudo access
-# NOTE: _USER_GROUPS is not working to have an affect with x11docker
-RUN \
-  useradd -m -s /bin/bash -u ${_USER_ID} -G ${_USER_GROUPS} ${_USER} \
-  && echo "${_USER}:${_USER}" | chpasswd \
-  && echo "${_USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${_USER} \
-  && chmod 0440 /etc/sudoers.d/${_USER}
 
 ########################################################################
 # switch to user
@@ -750,8 +756,9 @@ RUN \
     && rm -rf /var/lib/apt/lists/* \
   ; fi
 
+########################################################################
+# switch to user
+########################################################################
 USER ${_USER}
 
-
-########################################################################
 CMD ["/bin/bash", "-c", "command -v start &>/dev/null && start || /bin/bash -l"]
