@@ -15,7 +15,7 @@ alias vimdiff='nvim -d'
 alias view='nvim -R'
 
 # edit files of specified git status, for example "vimgit M" to open all modified files
-vimgit () { nvim ${@:2} $(git status --porcelain | grep "$1 " | awk '{print $2}'); }
+vimgit() { nvim ${@:2} $(git status --porcelain | grep "$1 " | awk '{print $2}'); }
 
 # taskbook: set custom home dir, enforce color (for pipe to less)
 alias tb='clear; HOME=~/src/ tb --color=always'
@@ -25,10 +25,10 @@ alias less='less -F -i -J -M -R -W -x4 -X -z-4'
 
 alias x="cd ${XENDEV_DIR} && vim"
 
-# INSTALL_BROWSER_BRAVE
+# ~INSTALL_BROWSER_BRAVE
 command -v brave-browser >/dev/null && alias brave-browser='brave-browser --no-sandbox'
 
-# INSTALL_BROWSER_CHROMIUM
+# ~INSTALL_BROWSER_CHROMIUM
 command -v chromium-browser >/dev/null && alias chromium-browser='chromium-browser --no-sandbox'
 
 # platformio shortcuts
