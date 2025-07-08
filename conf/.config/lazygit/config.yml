@@ -1,3 +1,5 @@
+git:
+  autoFetch: false # If true, periodically fetch from remote
 gui:
   nerdFontsVersion: "3"
   showFileTree: false # for rendering changes files in a tree format
