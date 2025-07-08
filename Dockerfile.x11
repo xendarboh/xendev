@@ -130,6 +130,8 @@ RUN apt update \
     librsvg2-bin \
     libxkbcommon-x11-0 \
     xz-utils \
+    # NOTE: this enables nvim-invoked lazygit gpg signing to work
+    pinentry-gtk2 \
   && rm -rf /var/lib/apt/lists/*
 
 # https://sw.kovidgoyal.net/kitty/binary/#desktop-integration-on-linux

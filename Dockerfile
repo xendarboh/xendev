@@ -43,6 +43,7 @@ RUN apt update \
     man-db \
     ncdu \
     openssh-client \
+    pinentry-curses \
     pkg-config \
     psmisc \
     python3-pip \
