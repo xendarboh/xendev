@@ -464,7 +464,9 @@ RUN go install \
   && go clean --cache
 
 # install rust
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
+  && rustup component add \
+    rust-analyzer
 
 # install rust things
 ENV CARGO_HOME=/home/${_USER}/.cargo
