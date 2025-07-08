@@ -5,3 +5,9 @@ gui:
 os:
   editPreset: "nvim-remote"
 promptToReturnFromSubprocess: false # display confirmation when subprocess terminates
+customCommands:
+  - key: <c-a>
+    description: Choose AI-generated commit
+    command: aicommits --generate 3
+    context: files
+    output: terminal
