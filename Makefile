@@ -27,7 +27,7 @@ build: ## build docker image with X11 support
 
 .PHONY: retag
 retag:
-	docker rmi xen/dev:prev xen/x11:prev
+	docker rmi xen/dev:prev xen/x11:prev || true
 	docker image tag xen/dev:latest xen/dev:prev
 	docker image tag xen/x11:latest xen/x11:prev
 
