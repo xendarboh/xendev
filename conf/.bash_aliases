@@ -31,14 +31,17 @@ command -v brave-browser >/dev/null && alias brave-browser='brave-browser --no-s
 # ~INSTALL_BROWSER_CHROMIUM
 command -v chromium-browser >/dev/null && alias chromium-browser='chromium-browser --no-sandbox'
 
-# platformio shortcuts
-pioe() { cat ./platformio.ini | sed -nre 's/^\[env:(.*)\]/\1/p'; }
-piol() { pio device list; }
-piom() { pio device monitor -b 115200 -p /dev/ttyUSB${1:-0} ${@:2}; }
-piou() { pio run -t upload --upload-port /dev/ttyUSB${1:-0} ${@:2}; }
-piot() {
-  pio test \
-    --upload-port /dev/ttyUSB${1:-0} \
-    --test-port /dev/ttyUSB${1:-0} \
-    ${@:2};
-}
+# ~INSTALL_PLATFORMIO
+if command -v platformio >/dev/null; then
+  # platformio shortcuts
+  pioe() { cat ./platformio.ini | sed -nre 's/^\[env:(.*)\]/\1/p'; }
+  piol() { pio device list; }
+  piom() { pio device monitor -b 115200 -p /dev/ttyUSB${1:-0} ${@:2}; }
+  piou() { pio run -t upload --upload-port /dev/ttyUSB${1:-0} ${@:2}; }
+  piot() {
+    pio test \
+      --upload-port /dev/ttyUSB${1:-0} \
+      --test-port /dev/ttyUSB${1:-0} \
+      ${@:2}
+  }
+fi

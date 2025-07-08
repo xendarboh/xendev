@@ -82,7 +82,7 @@ make build
 - [llvm-project](https://github.com/llvm/llvm-project): (clang) A collection of modular and reusable compiler and toolchain technologies (_INSTALL_LLVM_)
 - [ncdu](https://code.blicky.net/yorhel/ncdu): NCurses Disk Usage
 - [ninja-build](https://github.com/ninja-build/ninja): A small build system with a focus on speed
-- [platformio-core](https://github.com/platformio/platformio-core): A professional collaborative platform for embedded development
+- [platformio-core](https://github.com/platformio/platformio-core): A professional collaborative platform for embedded development (_INSTALL_PLATFORMIO_)
 - [prettier](https://github.com/prettier/prettier): Prettier is an opinionated code formatter
 - [protobuf](https://github.com/protocolbuffers/protobuf): Protocol Buffers - Google's data interchange format (_INSTALL_PB_)
   - [buf](https://github.com/bufbuild/buf): A new way of working with Protocol Buffers

@@ -423,9 +423,11 @@ RUN update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 60 \
 
 # install PlatformIO (stable version)
 # http://docs.platformio.org/en/latest/installation.html#python-package-manager
-RUN pip install --upgrade platformio
-
-RUN pip install pipenv # necessary?
+ARG INSTALL_PLATFORMIO=0
+RUN \
+  if [ "${INSTALL_PLATFORMIO}" = "1" ]; then \
+    pip install --upgrade platformio \
+  ; fi
 
 ########################################################################
 # switch to user

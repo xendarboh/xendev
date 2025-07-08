@@ -30,9 +30,12 @@ command -v buf >/dev/null && eval "$(buf completion bash)"
 
 eval "$(fnm completions --shell bash)"
 
-# http://docs.platformio.org/en/stable/faq.html#bash-completion
-eval "$(_PLATFORMIO_COMPLETE=source platformio)"
-eval "$(_PIO_COMPLETE=source pio)"
+# ~INSTALL_PLATFORMIO
+if command -v platformio >/dev/null; then
+  # http://docs.platformio.org/en/stable/faq.html#bash-completion
+  eval "$(_PLATFORMIO_COMPLETE=source platformio)"
+  eval "$(_PIO_COMPLETE=source pio)"
+fi
 
 # https://github.com/ajeetdsouza/zoxide#step-2-add-zoxide-to-your-shell
 eval "$(zoxide init bash)"
