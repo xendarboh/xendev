@@ -3,3 +3,5 @@
 -- Add any additional options here
 
 vim.opt.undofile = false
+
+vim.opt.spellfile = os.getenv("HOME") .. "/.local/share/nvim/spell/en.utf-8.add"
