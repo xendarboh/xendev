@@ -42,6 +42,7 @@ RUN apt update \
     locales \
     man-db \
     ncdu \
+    ninja-build \
     openssh-client \
     pinentry-curses \
     pkg-config \
@@ -318,16 +319,11 @@ RUN npm install --global \
     @fleek-platform/cli \
     aicommits \
     diff-so-fancy \
-    eslint-cli \
-    import-js \
     neovim \
     npm-check \
     npm-check-updates \
     prettier \
     prettier-plugin-solidity \
-    solc \
-    taskbook \
-    tern \
     typescript
 
 # install latest deno

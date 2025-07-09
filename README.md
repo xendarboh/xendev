@@ -50,6 +50,7 @@ make build
 - [diff-so-fancy](https://github.com/so-fancy/diff-so-fancy): Good-lookin' diffs. Actually… nah… The best-lookin' diffs
 - [exa](https://github.com/ogham/exa): A modern replacement for ‘ls’
 - [fastmod](https://github.com/facebookincubator/fastmod): A tool to assist with large-scale codebase refactors
+- [fd](https://github.com/sharkdp/fd): A simple, fast and user-friendly alternative to 'find'
 - [fish-shell](https://github.com/fish-shell/fish-shell): The user-friendly command line shell
   - [fisher](https://github.com/jorgebucaran/fisher): A plugin manager for Fish
   - [fish-exa](https://github.com/gazorby/fish-exa): exa aliases for fish
@@ -71,7 +72,6 @@ make build
   - [git-lfs](https://github.com/git-lfs/git-lfs): Git extension for versioning large files
   - [lazygit](https://github.com/jesseduffield/lazygit): Simple terminal UI for git commands
 - [go](https://github.com/golang/go): The Go programming language
-- [import-js](https://github.com/galooshi/import-js): A tool to simplify importing JS modules
 - [jq](https://github.com/stedolan/jq): Command-line JSON processor
 - [kpcli](http://kpcli.sourceforge.net/): A command line interface for KeePass
 - [llvm-project](https://github.com/llvm/llvm-project): (clang) A collection of modular and reusable compiler and toolchain technologies (_INSTALL_LLVM_)
@@ -86,19 +86,16 @@ make build
 - [rustup](https://github.com/rust-lang/rustup): The Rust toolchain installer
 - [silversearcher-ag](https://github.com/ggreer/the_silver_searcher): A code-searching tool similar to ack, but faster
 - [solidity](https://github.com/ethereum/solidity): Solidity, the Smart Contract Programming Language
-  - [solc-js](https://github.com/ethereum/solc-js): Javascript bindings for the Solidity compiler
 - [spacer](https://github.com/samwho/spacer): CLI tool to insert spacers when command output stops
 - [sqlite](https://github.com/sqlite/sqlite): a small, fast, self-contained, high-reliability, full-featured, SQL database engine
 - [starship](https://github.com/starship/starship): The minimal, blazing-fast, and infinitely customizable prompt for any shell!
 - [stow](https://github.com/aspiers/stow): a symlink farm manager
 - [tauri-cli](https://github.com/tauri-apps/tauri): Build smaller, faster, and more secure desktop and mobile applications with a web frontend (_INSTALL_TAURI_)
-- [taskbook](https://github.com/klaussinani/taskbook): Tasks, boards & notes for the command-line habitat
 - [tmux](https://github.com/tmux/tmux): A terminal multiplexer
   - [tpm](https://github.com/tmux-plugins/tpm): Tmux Plugin Manager
   - [tmux-gruvbox](https://github.com/egel/tmux-gruvbox): Gruvbox color scheme for Tmux
   - [tmux-resurrect](https://github.com/tmux-plugins/tmux-resurrect): Persists tmux environment across system restarts
   - [tmux-window-name](https://github.com/ofirgall/tmux-window-name): A plugin to name your tmux windows smartly
-- [ts-lehre](https://github.com/heavenshell/ts-lehre): Generate document block(JsDoc, EsDoc, TsDoc) from source code
 - [watchman](https://github.com/facebook/watchman): Watches files and records, or triggers actions, when they change
   - [watchman-make](https://facebook.github.io/watchman/docs/watchman-make): A convenience tool to automatically invoke a command in response to files changing
   - [watchman-replicate-subscription](https://facebook.github.io/watchman/docs/watchman-replicate-subscription): Replicates an existing watchman subscription
