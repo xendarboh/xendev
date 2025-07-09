@@ -50,7 +50,6 @@ RUN apt update \
     python3-pygments \
     rake \
     ranger \
-    ripgrep \
     rsync \
     silversearcher-ag \
     sqlite3 \
@@ -467,6 +466,7 @@ RUN \
     fd-find \
     fnm \
     git-absorb \
+    ripgrep \
     spacer \
     starship \
     websocat \
