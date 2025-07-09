@@ -319,6 +319,7 @@ RUN npm install --global \
     diff-so-fancy \
     eslint-cli \
     import-js \
+    neovim \
     npm-check \
     npm-check-updates \
     prettier \
@@ -327,25 +328,6 @@ RUN npm install --global \
     taskbook \
     tern \
     typescript
-
-# install node things for LSP
-RUN npm install --global \
-    # docker_compose_language_service:
-    @microsoft/compose-language-service \
-    # prismals:
-    @prisma/language-server \
-    # tailwindcss:
-    @tailwindcss/language-server \
-    # bashls:
-    bash-language-server \
-    # dockerls:
-    dockerfile-language-server-nodejs \
-    # nxls:
-    nxls \
-    # tsserver:
-    typescript-language-server \
-    # cssls, eslint, html, jsonls:
-    vscode-langservers-extracted
 
 # install latest deno
 RUN curl -fsSL https://deno.land/install.sh | DENO_INSTALL=/usr/local sh
@@ -482,6 +464,7 @@ RUN \
     --locked \
     exa \
     fastmod \
+    fd-find \
     fnm \
     git-absorb \
     spacer \
@@ -672,7 +655,6 @@ RUN \
   # create dirs so stow symlinks files and not dirs
   && mkdir -p \
     /home/${_USER}/.config/lazygit \
-    /home/${_USER}/.config/lvim \
   # stow the conf files!
   && stow \
     --dir=${XENDEV_DIR} \
@@ -690,7 +672,7 @@ RUN \
   pip install --user libtmux
 
 # install smart-splits Kitty multiplexer support
-# Kitty conf expects the kittens so don't wait for lunarvim lazy load
+# Kitty conf expects the kittens so don't wait for nvim lazy load
 RUN cd /tmp \
   && git clone \
     --depth 1 \
@@ -698,47 +680,6 @@ RUN cd /tmp \
   && cd smart-splits.nvim \
   && ./kitty/install-kittens.bash \
   && rm -rf /tmp/smart-splits.nvim
-
-
-####################################
-# install lunarvim
-####################################
-ARG INSTALL_LUNARVIM=0
-ARG VERSION_LUNARVIM
-RUN \
-  if [ "${INSTALL_LUNARVIM}" = "1" ]; then \
-    # install npm deps
-    sudo npm install --global \
-      neovim \
-      tree-sitter-cli \
-    \
-    # install pip deps
-    && pip install \
-      pynvim \
-    \
-    # install rust deps
-    && cargo binstall \
-      --continue-on-failure \
-      --disable-telemetry \
-      --locked \
-      fd-find \
-      ripgrep \
-    \
-    # change default lunarvim runtime for ~/.local/share volume map to work
-    && export LUNARVIM_RUNTIME_DIR=~/.local/run/lunarvim \
-    && mkdir -p ~/.local/run \
-    # run lunarvim install script
-    # https://github.com/LunarVim/LunarVim/blob/master/utils/installer/install.sh
-    && mkdir /tmp/lv && cd /tmp/lv \
-    && curl -LOs "https://raw.githubusercontent.com/LunarVim/LunarVim/${VERSION_LUNARVIM}/utils/installer/install.sh" \
-    && chmod u+x install.sh \
-    && \
-      LV_BRANCH=${VERSION_LUNARVIM} \
-      ./install.sh \
-        --no-install-dependencies \
-        --yes \
-    && rm -rf /tmp/lv \
-  ; fi
 
 
 ########################################################################

@@ -1,6 +1,5 @@
 export GOPATH=~/go
 export PNPM_HOME=~/.pnpm
-export LUNARVIM_RUNTIME_DIR=~/.local/run/lunarvim
 
 export PATH=~/.local/bin:${PATH}
 export PATH=~/.go/bin:${GOPATH}/bin:${PATH}
@@ -51,22 +50,6 @@ stow \
   conf.local
 
 ls ~/.bash/*.sh &>/dev/null && source ~/.bash/*.sh
-
-# (re)init nvim rplugin.vim if older than xendev build
-# ensure current and create if new container volume map from host
-test ~/.local/share/nvim/rplugin.vim -ot /etc/xendev-release \
-  && nvim --headless +UpdateRemotePlugins +qall \
-    &>/dev/null
-
-# install extra lunarvim things in mapped volume at run-time
-function mason_install {
-  m=~/.local/share/lvim/mason/bin
-  test ! -f ${m}/${1} && lvim --headless +"MasonInstall ${1}" +qall
-}
-if [ -d ~/.local/run/lunarvim ]; then
-  mason_install golines
-  mason_install marksman
-fi
 
 # init dir for nvim spell file(s)
 spelldir=~/.local/share/nvim/spell

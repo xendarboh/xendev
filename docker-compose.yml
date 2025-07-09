@@ -21,7 +21,6 @@ services:
         - INSTALL_DEVOPS
         - INSTALL_DOCS
         - INSTALL_LLVM
-        - INSTALL_LUNARVIM
         - INSTALL_NEOVIM_FROM_PPA_STABLE
         - INSTALL_NEOVIM_FROM_PPA_UNSTABLE
         - INSTALL_NEOVIM_FROM_SRC
@@ -33,7 +32,6 @@ services:
         - VERSION_FISH
         - VERSION_KPCLI
         - VERSION_LLVM
-        - VERSION_LUNARVIM
         - VERSION_NEOVIM_FROM_SRC
         - VERSION_NODE
         - VERSION_TOMB
