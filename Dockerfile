@@ -443,9 +443,7 @@ RUN go install \
   && go clean --cache
 
 # install rust
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
-  && rustup component add \
-    rust-analyzer
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 # install rust things
 ENV CARGO_HOME=/home/${_USER}/.cargo
@@ -469,7 +467,8 @@ RUN \
     starship \
     websocat \
     zoxide \
-  && true
+  && rustup component add \
+    rust-analyzer
 
 # install latest circom release
 # https://docs.circom.io/getting-started/installation/#installing-dependencies
