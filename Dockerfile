@@ -307,8 +307,10 @@ RUN \
   && rm -f ${F}
 
 # install yarn and pnpm
-RUN npm install --global \
-    corepack
+RUN npm install --global corepack
+
+# stop corepack from prompting
+ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 
 # install node things
 RUN npm install --global \
