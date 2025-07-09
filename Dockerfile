@@ -577,7 +577,7 @@ RUN curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/function
   && fisher install \
     gazorby/fish-exa \
     jomik/fish-gruvbox \
-    xendarboh/fish-nx \
+    jukben/fish-nx \
     jorgebucaran/fisher
 SHELL ["/bin/bash", "--login", "-c"]
 
