@@ -683,6 +683,9 @@ RUN cd /tmp \
   && ./kitty/install-kittens.bash \
   && rm -rf /tmp/smart-splits.nvim
 
+# set nvim distribution
+ARG OPT_NVIM_APPNAME
+ENV NVIM_APPNAME=${OPT_NVIM_APPNAME}
 
 ########################################################################
 # temporarily switch back to root user

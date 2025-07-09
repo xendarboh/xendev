@@ -29,6 +29,7 @@ services:
         - INSTALL_PLATFORMIO
         - INSTALL_TAURI
         - INSTALL_TOMB
+        - OPT_NVIM_APPNAME
         - VERSION_FISH
         - VERSION_KPCLI
         - VERSION_LLVM
