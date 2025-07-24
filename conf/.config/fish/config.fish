@@ -59,6 +59,13 @@ function dirmap
 end
 dirmap
 
+# 20250724: fix pesky issue where all nx commands b0rk the terminal prompt
+function nx
+    command nx $argv
+    commandline -f repaint
+    commandline -f execute
+end
+
 function on_variable_pwd --on-variable PWD
     # update tmux-window-name upon directory change (iff running tmux)
     test ! -z "$TMUX_PLUGIN_MANAGER_PATH" \
