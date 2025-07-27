@@ -43,6 +43,7 @@ make build
   - [npm-check-updates](https://github.com/raineorshine/npm-check-updates): Find newer versions of package dependencies than what your package.json allows
   - [npm-check](https://github.com/dylang/npm-check): Check for outdated, incorrect, and unused dependencies
 - [Rust](https://github.com/rust-lang/rust): Empowering everyone to build reliable and efficient software
+  - [cargo-edit](https://github.com/killercup/cargo-edit): A utility for managing cargo dependencies from the command line
   - [rust-analyzer](https://github.com/rust-lang/rust-analyzer): A Rust compiler front-end for IDEs
   - [rustup](https://github.com/rust-lang/rustup): The Rust toolchain installer
 - [Brave Browser](https://github.com/brave/brave-browser) (_INSTALL_BROWSER_BRAVE_)

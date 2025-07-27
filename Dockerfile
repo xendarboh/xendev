@@ -457,6 +457,7 @@ RUN \
     --continue-on-failure \
     --disable-telemetry \
     --locked \
+    cargo-edit \
     exa \
     fastmod \
     fd-find \
