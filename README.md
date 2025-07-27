@@ -42,6 +42,9 @@ make build
   - [fnm](https://github.com/Schniz/fnm): Fast and simple Node.js version manager, built in Rust
   - [npm-check-updates](https://github.com/raineorshine/npm-check-updates): Find newer versions of package dependencies than what your package.json allows
   - [npm-check](https://github.com/dylang/npm-check): Check for outdated, incorrect, and unused dependencies
+- [Rust](https://github.com/rust-lang/rust): Empowering everyone to build reliable and efficient software
+  - [rust-analyzer](https://github.com/rust-lang/rust-analyzer): A Rust compiler front-end for IDEs
+  - [rustup](https://github.com/rust-lang/rustup): The Rust toolchain installer
 - [Brave Browser](https://github.com/brave/brave-browser) (_INSTALL_BROWSER_BRAVE_)
 - [Chromium Browser](https://github.com/chromium/chromium): an open-source browser project that aims to build a safer, faster, and more stable way for all users to experience the web (_INSTALL_BROWSER_CHROMIUM_)
 - [Tomb](https://github.com/dyne/Tomb): the Crypto Undertaker (_INSTALL_TOMB_)
@@ -87,7 +90,6 @@ make build
   - [buf](https://github.com/bufbuild/buf): A new way of working with Protocol Buffers
 - [ranger](https://github.com/ranger/ranger): A VIM-inspired filemanager for the console
 - [ripgrep](https://github.com/BurntSushi/ripgrep): recursively searches directories for a regex pattern while respecting your gitignore
-- [rustup](https://github.com/rust-lang/rustup): The Rust toolchain installer
 - [silversearcher-ag](https://github.com/ggreer/the_silver_searcher): A code-searching tool similar to ack, but faster
 - [solidity](https://github.com/ethereum/solidity): Solidity, the Smart Contract Programming Language
 - [spacer](https://github.com/samwho/spacer): CLI tool to insert spacers when command output stops
