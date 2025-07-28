@@ -31,6 +31,7 @@ make build
     - [avante.nvim](https://github.com/yetone/avante.nvim): Use your Neovim like using Cursor AI IDE!
     - [better-escape.nvim](https://github.com/max397574/better-escape.nvim): Escape from insert mode without delay when typing
     - [markdown-preview.nvim](https://github.com/iamcco/markdown-preview.nvim): markdown preview plugin for (neo)vim
+    - [noir.nvim](https://github.com/noir-lang/noir-nvim): A NeoVim plugin providing syntax highlighting and LSP support for Noir
     - [nx.vmim](https://github.com/Equilibris/nx.nvim): A simple tool providing the same features as the NX console does for vs-code
     - [smart-splits.nvim](https://github.com/mrjones2014/smart-splits.nvim): Smart, seamless, directional navigation and resizing of Neovim + terminal multiplexer splits
     - [wakatime.nvim](https://github.com/wakatime/vim-wakatime): Vim plugin for automatic time tracking and metrics generated from your programming activity
