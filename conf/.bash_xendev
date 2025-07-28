@@ -29,6 +29,13 @@ command -v buf >/dev/null && eval "$(buf completion bash)"
 
 eval "$(fnm completions --shell bash)"
 
+# ~INSTALL_NOIR
+if [ -d ${NARGO_HOME} ]; then
+  export PATH="${PATH}:${NARGO_HOME}/bin"
+  export PATH="${PATH}:~/.bb"
+  eval "$(nargo generate-completion-script bash)"
+fi
+
 # ~INSTALL_PLATFORMIO
 if command -v platformio >/dev/null; then
   # http://docs.platformio.org/en/stable/faq.html#bash-completion

@@ -3,6 +3,7 @@ if status is-interactive
 end
 
 command -q buf && buf completion fish | source
+command -q nargo && nargo generate-completion-script fish | source
 fnm completions --shell fish | source
 fnm env | source
 git-absorb --gen-completions fish | source

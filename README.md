@@ -46,6 +46,7 @@ make build
   - [cargo-edit](https://github.com/killercup/cargo-edit): A utility for managing cargo dependencies from the command line
   - [rust-analyzer](https://github.com/rust-lang/rust-analyzer): A Rust compiler front-end for IDEs
   - [rustup](https://github.com/rust-lang/rustup): The Rust toolchain installer
+- [Noir](https://github.com/noir-lang/noir): Noir is a domain specific language for zero knowledge proofs (_INSTALL_NOIR_)
 - [Brave Browser](https://github.com/brave/brave-browser) (_INSTALL_BROWSER_BRAVE_)
 - [Chromium Browser](https://github.com/chromium/chromium): an open-source browser project that aims to build a safer, faster, and more stable way for all users to experience the web (_INSTALL_BROWSER_CHROMIUM_)
 - [Tomb](https://github.com/dyne/Tomb): the Crypto Undertaker (_INSTALL_TOMB_)

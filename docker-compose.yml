@@ -25,6 +25,7 @@ services:
         - INSTALL_NEOVIM_FROM_PPA_UNSTABLE
         - INSTALL_NEOVIM_FROM_SRC
         - INSTALL_NIX
+        - INSTALL_NOIR
         - INSTALL_PB
         - INSTALL_PLATFORMIO
         - INSTALL_TAURI

@@ -490,6 +490,19 @@ RUN \
     && rm -rf /usr/local/src/circom \
   ; fi
 
+# install noir
+# https://noir-lang.org/docs/getting_started/quick_start
+ARG INSTALL_NOIR=0
+ENV NARGO_HOME=/home/${_USER}/.nargo
+RUN \
+  if [ "${INSTALL_NOIR}" = "1" ]; then \
+    curl -L https://raw.githubusercontent.com/noir-lang/noirup/refs/heads/main/install | bash \
+    && ${NARGO_HOME}/bin/noirup \
+    # # NOTE: bb installed this way works on ubuntu 24, but not 22 (cuz glibc)
+    # && curl -L https://raw.githubusercontent.com/AztecProtocol/aztec-packages/refs/heads/master/barretenberg/bbup/install | bash
+    # && ~/.bb/bbup
+  ; fi
+
 # install Protocol Buffers
 ARG INSTALL_PB=0
 RUN \
