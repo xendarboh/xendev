@@ -354,9 +354,8 @@ RUN \
   ; fi
 
 # install python support for neovim
-# https://github.com/zchee/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
-# :help python-provider
-RUN pip install --upgrade neovim pynvim
+ENV PIP_BREAK_SYSTEM_PACKAGES=1
+RUN pip install --upgrade pynvim
 
 # use neovim for editor alternatives
 # reference: https://github.com/neovim/neovim/wiki/Installing-Neovim#install-from-source
