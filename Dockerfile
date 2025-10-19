@@ -96,7 +96,9 @@ RUN apt-add-repository ppa:git-core/ppa \
 # create user, grant sudo access
 # NOTE: _USER_GROUPS does not have an affect with x11docker
 RUN \
-  groupadd -g ${_USER_ID} ${_USER} \
+  # remove ubuntu (1000:1000) user/group if it exists to replace it
+  (userdel -r ubuntu) || true && (groupdel ubuntu) || true \
+  && groupadd -g ${_USER_ID} ${_USER} \
   && useradd -m \
     -s /bin/bash \
     -u ${_USER_ID} \
