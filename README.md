@@ -105,10 +105,6 @@ make build
   - [tmux-gruvbox](https://github.com/egel/tmux-gruvbox): Gruvbox color scheme for Tmux
   - [tmux-resurrect](https://github.com/tmux-plugins/tmux-resurrect): Persists tmux environment across system restarts
   - [tmux-window-name](https://github.com/ofirgall/tmux-window-name): A plugin to name your tmux windows smartly
-- [watchman](https://github.com/facebook/watchman): Watches files and records, or triggers actions, when they change
-  - [watchman-make](https://facebook.github.io/watchman/docs/watchman-make): A convenience tool to automatically invoke a command in response to files changing
-  - [watchman-replicate-subscription](https://facebook.github.io/watchman/docs/watchman-replicate-subscription): Replicates an existing watchman subscription
-  - [watchman-wait](https://facebook.github.io/watchman/docs/watchman-wait): Waits for changes to files, suitable for waiting from shell scripts
 - [websocat](https://github.com/vi/websocat): Command-line client for WebSockets, like netcat (or curl) for ws:// with advanced socat-like functions
 - [xclip](https://github.com/astrand/xclip): Command line interface to the X11 clipboard
 - [zoxide](https://github.com/ajeetdsouza/zoxide): A smarter cd command
@@ -262,12 +258,6 @@ To include xendev git config without replacing the local, add the following to `
 - facilitates same git config on host and within [xendev](./xendev) container
 - only applied to git commands run within `/home/xendev/`
 - recommendation is to share source between host/container with volume-mapped `~/src/`
-
-### Watchman
-
-By default, watchman will watch all files and this can cause issue (such as vim
-lsp/coc types failing), for example if watching `node_modules`, so configure it
-per project as needed. See `/usr/share/.watchmanconfig` for an example.
 
 ### Local (machine-specific) Configuration
 

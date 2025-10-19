@@ -241,35 +241,6 @@ RUN \
     && rm -rf /usr/local/src/tomb \
   ; fi
 
-# install watchman
-ARG VERSION_WATCHMAN
-RUN cd /tmp \
-  && if [ "${VERSION_WATCHMAN}" = "LATEST" ]; then \
-    wget $( \
-      curl -Ls https://api.github.com/repos/facebook/watchman/releases/latest \
-      | grep -Eo "https://(.*)watchman_ubuntu$(lsb_release -rs)_(.*).deb" \
-    ) \
-  ; else \
-    export F="${VERSION_WATCHMAN}/watchman_ubuntu$(lsb_release -rs)_${VERSION_WATCHMAN}.deb" \
-    && wget "https://github.com/facebook/watchman/releases/download/${F}" \
-  ; fi \
-  && apt update \
-  && (dpkg -i watchman_*.deb || true) \
-  && apt install --no-install-recommends -y -q -f \
-  && rm -rf /var/lib/apt/lists/* \
-  && rm -f watchman_*.deb \
-  && watchman version \
-  # install pywatchman which installs watchman-* utilities
-  # [pywatchman raises SystemError on Python 3.10](https://github.com/facebook/watchman/issues/970#issuecomment-1002054941)
-  && pip install -i https://test.pypi.org/simple/ pywatchman==1.4.2.dev1
-
-# add example local watchman config file
-RUN echo -e \
-'{\n\
-  "ignore_dirs": ["node_modules"]\n\
-}'\
-> /usr/share/.watchmanconfig
-
 # install node
 ARG VERSION_NODE
 RUN \
