@@ -358,10 +358,6 @@ RUN \
 # :help python-provider
 RUN pip install --upgrade neovim pynvim
 
-# install additional neovim tools
-RUN pip install --upgrade \
-  neovim-remote
-
 # use neovim for editor alternatives
 # reference: https://github.com/neovim/neovim/wiki/Installing-Neovim#install-from-source
 RUN update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 60 \

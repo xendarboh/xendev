@@ -35,7 +35,6 @@ make build
     - [nx.vmim](https://github.com/Equilibris/nx.nvim): A simple tool providing the same features as the NX console does for vs-code
     - [smart-splits.nvim](https://github.com/mrjones2014/smart-splits.nvim): Smart, seamless, directional navigation and resizing of Neovim + terminal multiplexer splits
     - [wakatime.nvim](https://github.com/wakatime/vim-wakatime): Vim plugin for automatic time tracking and metrics generated from your programming activity
-  - [neovim-remote](https://github.com/mhinz/neovim-remote): Support for --remote and friends
 - [Nix](https://github.com/NixOS/nix): Nix, the purely functional package manager (_INSTALL_NIX_)
 - [Node.js](https://github.com/nodejs/node): Node.js JavaScript runtime
   - [pnpm](https://github.com/pnpm/pnpm): Fast, disk space efficient package manager
