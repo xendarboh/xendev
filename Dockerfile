@@ -468,9 +468,9 @@ RUN \
   if [ "${INSTALL_NOIR}" = "1" ]; then \
     curl -L https://raw.githubusercontent.com/noir-lang/noirup/refs/heads/main/install | bash \
     && ${NARGO_HOME}/bin/noirup \
-    # # NOTE: bb installed this way works on ubuntu 24, but not 22 (cuz glibc)
-    # && curl -L https://raw.githubusercontent.com/AztecProtocol/aztec-packages/refs/heads/master/barretenberg/bbup/install | bash
-    # && ~/.bb/bbup
+    # NOTE: bb installed this way works on ubuntu 24, but not 22 (cuz glibc)
+    && curl -L https://raw.githubusercontent.com/AztecProtocol/aztec-packages/refs/heads/next/barretenberg/bbup/install | bash \
+    && PATH="${NARGO_HOME}/bin:$PATH" SHELL=/bin/bash ~/.bb/bbup \
   ; fi
 
 # install Protocol Buffers
