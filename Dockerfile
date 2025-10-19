@@ -433,6 +433,7 @@ RUN \
     ripgrep \
     spacer \
     starship \
+    tree-sitter-cli \
     watchexec-cli \
     websocat \
     zoxide \
