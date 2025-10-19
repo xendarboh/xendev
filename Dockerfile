@@ -437,6 +437,7 @@ RUN \
     ripgrep \
     spacer \
     starship \
+    watchexec-cli \
     websocat \
     zoxide \
   && rustup component add \

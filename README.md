@@ -105,6 +105,7 @@ make build
   - [tmux-gruvbox](https://github.com/egel/tmux-gruvbox): Gruvbox color scheme for Tmux
   - [tmux-resurrect](https://github.com/tmux-plugins/tmux-resurrect): Persists tmux environment across system restarts
   - [tmux-window-name](https://github.com/ofirgall/tmux-window-name): A plugin to name your tmux windows smartly
+- [watchexec](https://github.com/watchexec/watchexec): Executes commands in response to file modifications
 - [websocat](https://github.com/vi/websocat): Command-line client for WebSockets, like netcat (or curl) for ws:// with advanced socat-like functions
 - [xclip](https://github.com/astrand/xclip): Command line interface to the X11 clipboard
 - [zoxide](https://github.com/ajeetdsouza/zoxide): A smarter cd command
