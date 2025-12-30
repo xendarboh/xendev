@@ -18,9 +18,9 @@ for arg in "$@"; do
     arg_set=$((arg_set + 1))
   else
     case $arg_set in
-      1) args_x11docker+=("$arg");;
-      2) args_docker+=("$arg");;
-      3) args_image+=("$arg");;
+    1) args_x11docker+=("$arg") ;;
+    2) args_docker+=("$arg") ;;
+    3) args_image+=("$arg") ;;
     esac
   fi
 done
@@ -28,8 +28,7 @@ done
 # if no image args, use defaults
 args_image=("${args_image[@]:-${default_image_args}}")
 
-if (docker inspect ${name} >/dev/null 2>&1)
-then
+if (docker inspect ${name} >/dev/null 2>&1); then
   echo "${name} already running, entering existing container"
   ${docker} exec -ti ${name} /bin/bash
 else
