@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  app=$(basename $0)
+  cat <<EOF
+Usage:
+  $app OLD_PREFIX NEW_PREFIX [ROOT] [--apply]
+
+Examples:
+  # dry-run
+  $app /home/user-removed /home/user-now /data
+
+  # apply changes
+  $app /home/user-removed /home/user-now /data --apply
+
+Notes:
+  - Only rewrites symlinks whose stored target is absolute and starts with OLD_PREFIX.
+  - Only processes broken symlinks (find -xtype l).
+EOF
+}
+
+if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+  usage
+  exit 0
+fi
+
+if [[ $# -lt 2 ]]; then
+  usage >&2
+  exit 2
+fi
+
+OLD_PREFIX="$1"
+NEW_PREFIX="$2"
+ROOT="${3:-.}"
+APPLY="${4:-}"
+
+# Normalize prefixes: strip trailing slash (except if the prefix is "/")
+strip_trailing_slash() {
+  local p="$1"
+  if [[ "$p" != "/" ]]; then
+    p="${p%/}"
+  fi
+  printf '%s' "$p"
+}
+OLD_PREFIX="$(strip_trailing_slash "$OLD_PREFIX")"
+NEW_PREFIX="$(strip_trailing_slash "$NEW_PREFIX")"
+
+mode="DRY-RUN"
+[[ "$APPLY" == "--apply" ]] && mode="APPLY"
+
+echo "Mode: $mode"
+echo "Root: $ROOT"
+echo "Rewrite: $OLD_PREFIX -> $NEW_PREFIX"
+echo
+
+# Find broken symlinks safely (-print0 for NUL delim)
+find "$ROOT" -xtype l -print0 |
+  while IFS= read -r -d '' link; do
+    target="$(readlink -- "$link")"
+
+    # Only rewrite absolute targets that match OLD_PREFIX
+    case "$target" in
+    "$OLD_PREFIX"/*)
+      new_target="${NEW_PREFIX}${target#"$OLD_PREFIX"}"
+
+      echo "[broken] $link"
+      echo "  old -> $target"
+      echo "  new -> $new_target"
+
+      if [[ "$mode" == "APPLY" ]]; then
+        rm -- "$link"
+        ln -s -- "$new_target" "$link"
+        echo "  updated."
+      else
+        echo "  (dry-run)"
+      fi
+      echo
+      ;;
+    *)
+      # ignore other broken symlinks
+      :
+      ;;
+    esac
+  done
