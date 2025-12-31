@@ -9,6 +9,12 @@ services:
         - INSTALL_BROWSER_CHROMIUM
     image: xen/x11
 
+  xen-sys:
+    build:
+      context: ./
+      dockerfile: Dockerfile.sys
+    image: xen/sys
+
   xen-dev:
     build:
       context: ./

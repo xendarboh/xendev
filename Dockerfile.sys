@@ -1,0 +1,24 @@
+FROM xen/dev
+
+USER root
+
+# install docker
+RUN apt update \
+  # install iptables to avoid held packages error
+  && apt install -y -q \
+  --allow-change-held-packages \
+  --no-install-recommends \
+  iptables \
+  # https://docs.docker.com/engine/install/ubuntu/#install-using-the-convenience-script
+  && curl -fsSL https://get.docker.com -o install-docker.sh \
+  && sh ./install-docker.sh \
+  && rm -f ./install-docker.sh \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN usermod -aG docker ${XENDEV_USER}
+
+USER ${XENDEV_USER}
+
+CMD ["/bin/bash", "-c", "command -v start &>/dev/null && start || /bin/bash -l"]
+
+# vim: ft=dockerfile
