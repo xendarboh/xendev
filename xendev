@@ -34,6 +34,7 @@ if (docker inspect ${name} >/dev/null 2>&1); then
 else
   # NOTE: host user should not be "xendev"
   U=$(whoami)
+  UX="xendev"
 
   # ensure volume directories exist
   mkdir -p /home/${U}/.config/git
@@ -49,14 +50,15 @@ else
     --share /media \
     --share /mnt \
     --share /srv \
-    --share ~/.gnupg \
-    --share ~/.ssh \
+    --user=RETAIN \
     ${args_x11docker[@]} \
     -- \
     --tmpfs /tmp:exec \
-    --volume /home/${U}/.config/git:/home/xendev/.config/git \
-    --volume /home/${U}/.local/share/xendev:/home/xendev/.local/share \
-    --volume /home/${U}/src:/home/xendev/src \
+    --volume /home/${U}/.config/git:/home/${UX}/.config/git \
+    --volume /home/${U}/.gnupg:/home/${UX}/.gnupg \
+    --volume /home/${U}/.local/share/xendev:/home/${UX}/.local/share \
+    --volume /home/${U}/.ssh:/home/${UX}/.ssh \
+    --volume /home/${U}/src:/home/${UX}/src \
     --hostname $(hostname)-${name} \
     ${args_docker[@]} \
     -- \
