@@ -44,13 +44,16 @@ else
 
   x11docker \
     --clipboard \
+    --dbus \
     --gpu \
     --name ${name} \
     --network=host \
     --share /media \
     --share /mnt \
+    --share /run/dbus/system_bus_socket \
     --share /srv \
     --user=RETAIN \
+    --verbose \
     ${args_x11docker[@]} \
     -- \
     --tmpfs /tmp:exec \
