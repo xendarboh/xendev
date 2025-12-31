@@ -17,6 +17,10 @@ RUN apt update \
 
 RUN usermod -aG docker ${XENDEV_USER}
 
+# For sysbox compatibility, replace the docker binary with a script that
+# intercepts docker commands to strip off unsupported options.
+RUN install -m 755 ${XENDEV_DIR}/bin.sys/docker /usr/local/bin/docker
+
 USER ${XENDEV_USER}
 
 CMD ["/bin/bash", "-c", "command -v start &>/dev/null && start || /bin/bash -l"]

@@ -1,0 +1,31 @@
+#!/bin/bash
+# This script intercepts Docker commands to strip the --user flag
+# for compatibility with Sysbox environments.
+
+declare -a args
+skip_next=false
+
+for arg in "$@"; do
+  if [ "$skip_next" = true ]; then
+    skip_next=false
+    continue
+  fi
+
+  case "$arg" in
+  --user=* | -u=*)
+    # Matches --user=1000 or -u=1000
+    continue
+    ;;
+  --user | -u)
+    # Matches --user 1000 or -u 1000 (skips the next value)
+    skip_next=true
+    continue
+    ;;
+  *)
+    args+=("$arg")
+    ;;
+  esac
+done
+
+# Execute the original docker binary with the filtered arguments
+exec /usr/bin/docker "${args[@]}"
