@@ -1,0 +1,9 @@
+#!/bin/bash
+
+~/src/xendev/xendev xendev-gpu \
+  --gpu=direct \
+  --hostdisplay \
+  --sudouser \
+  -- \
+  -- \
+  ${@}

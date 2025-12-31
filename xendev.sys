@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# uses:
+#   sysbox for docker-in-docker
+# requires:
+#   ! --gpu=direct
+#   ! --network=host
+
+~/src/xendev/xendev xendev-sys \
+  --cap-default \
+  --gpu \
+  --hostdisplay \
+  --network \
+  --runtime=sysbox-runc \
+  --sudouser \
+  -- \
+  --cap-add NET_ADMIN \
+  --cap-add NET_RAW \
+  --cap-add SYS_ADMIN \
+  -- \
+  ${@:-xen/sys kitty -T xendev-sys}
+
+# vim: ft=sh
