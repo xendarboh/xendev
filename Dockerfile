@@ -109,6 +109,9 @@ RUN \
   && echo "${_USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${_USER} \
   && chmod 0440 /etc/sudoers.d/${_USER}
 
+# fix: "cannot find name for group ID 110"
+RUN groupadd -g 110 render
+
 # install git-crypt
 RUN \
   # install deps
