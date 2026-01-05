@@ -4,6 +4,7 @@
 
 declare -a args
 skip_next=false
+fix_user=false
 
 for arg in "$@"; do
   if [ "$skip_next" = true ]; then
@@ -14,10 +15,12 @@ for arg in "$@"; do
   case "$arg" in
   --user=* | -u=*)
     # Matches --user=1000 or -u=1000
+    fix_user=true
     continue
     ;;
   --user | -u)
     # Matches --user 1000 or -u 1000 (skips the next value)
+    fix_user=true
     skip_next=true
     continue
     ;;
@@ -28,4 +31,15 @@ for arg in "$@"; do
 done
 
 # Execute the original docker binary with the filtered arguments
-exec /usr/bin/docker "${args[@]}"
+start_time=$(date +%s)
+/usr/bin/docker "${args[@]}"
+exit_code=$?
+
+# Fix any root-owned files created during this docker run
+if [[ $(whoami) != "root" && "$fix_user" = true && "$PWD" != "$HOME" ]]; then
+  echo "[xendev] fixing file permissions..."
+  find . -maxdepth 5 -newermt "@${start_time}" -user root -exec sudo chown -c $(id -u):$(id -g) {} + 2>/dev/null
+  find ~/ -maxdepth 2 -newermt "@${start_time}" -user root -exec sudo chown -R $(id -u):$(id -g) {} + 2>/dev/null
+fi
+
+exit $exit_code
