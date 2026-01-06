@@ -94,7 +94,7 @@ RUN apt-add-repository ppa:git-core/ppa \
   && rm -rf /var/lib/apt/lists/*
 
 # create user, grant sudo access
-# NOTE: _USER_GROUPS does not have an affect with x11docker
+# NOTE: _USER_GROUPS are voided by x11docker without --user=RETAIN option
 RUN \
   # remove ubuntu (1000:1000) user/group if it exists to replace it
   (userdel -r ubuntu) || true && (groupdel ubuntu) || true \
@@ -443,6 +443,9 @@ RUN \
     zoxide \
   && rustup component add \
     rust-analyzer
+
+# install latest bun
+RUN curl -fsSL https://bun.sh/install | bash
 
 # install latest circom release
 # https://docs.circom.io/getting-started/installation/#installing-dependencies

@@ -52,6 +52,7 @@ make build
 - [Chromium Browser](https://github.com/chromium/chromium): an open-source browser project that aims to build a safer, faster, and more stable way for all users to experience the web (_INSTALL_BROWSER_CHROMIUM_)
 - [Tomb](https://github.com/dyne/Tomb): the Crypto Undertaker (_INSTALL_TOMB_)
 - [aicommits](https://github.com/Nutlope/aicommits): A CLI that writes your git commit messages for you with AI
+- [bun](https://github.com/oven-sh/bun): Incredibly fast JavaScript runtime, bundler, test runner, and package manager – all in one
 - [circom](https://github.com/iden3/circom): zkSnark circuit compiler (_INSTALL_CIRCOM_)
 - [claude-code](https://github.com/anthropics/claude-code): an agentic coding tool that lives in your terminal, understands your codebase, and helps you code faster by executing routine tasks, explaining complex code, and ...
 - [cpanminus](https://github.com/miyagawa/cpanminus): get, unpack, build and install modules from CPAN
