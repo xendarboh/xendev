@@ -1,3 +1,5 @@
+# A Dockerfile extending xen/dev with sysbox compatibility.
+
 FROM xen/dev
 
 USER root
@@ -21,8 +23,20 @@ RUN usermod -aG docker ${XENDEV_USER}
 # intercepts docker commands to strip off unsupported options.
 RUN install -m 755 ${XENDEV_DIR}/bin.sys/docker /usr/local/bin/docker
 
-USER ${XENDEV_USER}
+RUN \
+  if [ "${INSTALL_BROWSER_BRAVE}" = "1" ]; then \
+  export F="brave-browser-stable" \
+  && mv /usr/bin/${F} /usr/bin/${F}-original \
+  && install -m 755 ${XENDEV_DIR}/bin.sys/brave-browser /usr/bin/${F} \
+  ; fi
 
-CMD ["/bin/bash", "-c", "command -v start &>/dev/null && start || /bin/bash -l"]
+RUN \
+  if [ "${INSTALL_BROWSER_CHROMIUM}" = "1" ]; then \
+  export F="chromium-browser" \
+  && mv /usr/lib/${F}/${F} /usr/lib/${F}/${F}-original \
+  && install -m 755 ${XENDEV_DIR}/bin.sys/chromium-browser /usr/lib/${F}/${F} \
+  ; fi
+
+USER ${XENDEV_USER}
 
 # vim: ft=dockerfile

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+FLAGS=(
+  --no-sandbox
+  --disable-dev-shm-usage
+  --disable-gpu
+  --disable-gpu-compositing
+  --disable-software-rasterizer
+  # --in-process-gpu
+  # --use-gl=swiftshader
+)
+
+exec /usr/bin/brave-browser-stable-original "${FLAGS[@]}" "$@"

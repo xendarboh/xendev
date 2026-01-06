@@ -177,6 +177,7 @@ COPY ./conf/.config/kitty/kitty.conf /etc/skel/.config/kitty/kitty.conf
 
 # https://brave.com/linux/
 ARG INSTALL_BROWSER_BRAVE=0
+ENV INSTALL_BROWSER_BRAVE=${INSTALL_BROWSER_BRAVE}
 RUN \
   if [ "${INSTALL_BROWSER_BRAVE}" = "1" ]; then \
     curl -fsSLO "https://dl.brave.com/install.sh{,.asc}" \
@@ -191,6 +192,7 @@ RUN \
   ; fi
 
 ARG INSTALL_BROWSER_CHROMIUM=0
+ENV INSTALL_BROWSER_CHROMIUM=${INSTALL_BROWSER_CHROMIUM}
 RUN \
   if [ "${INSTALL_BROWSER_CHROMIUM}" = "1" ]; then \
     add-apt-repository -y ppa:savoury1/chromium \
