@@ -131,6 +131,7 @@ Additionally (and optionally), the following are within the X11 base image:
 Powered-by:
 
 - [x11docker](https://github.com/mviereck/x11docker): Run GUI applications and desktops in docker and podman containers. Focus on security.
+- [sysbox](https://github.com/nestybox/sysbox): Next-generation container runtime for secure, easy Docker-in-Docker (optional)
 
 ## Build
 
@@ -140,6 +141,7 @@ Powered-by:
 - docker compose
 - x11docker (not required for tty-only)
   - x11docker gpu support
+- sysbox (optional, for Docker-in-Docker via `xendev.sys`)
 - make (or manually run the commands in [Makefile](Makefile))
 
 ### Configure
@@ -171,62 +173,49 @@ build-tty            build tty-only docker image
 rebuild-tty          (re)build tty-only docker image with --no-cache --pull
 ```
 
-## Run Examples
+## Run
 
-### Within a gpu-accelerated terminal
+Launcher scripts provide ready-to-use configurations for common use cases. They share host directories (ssh, gpg, git config, `~/src`) with the container.
 
-This is the recommended mode of operation with balance of sandboxed environment
-and host integration for optimal DX.
+| Script                     | Description                                              |
+| -------------------------- | -------------------------------------------------------- |
+| [xendev](./xendev)         | Main launcher with x11docker, GPU, and clipboard support |
+| [xendev.gpu](./xendev.gpu) | Direct GPU access for maximum GPU performance            |
+| [xendev.sys](./xendev.sys) | Docker-in-Docker via sysbox runtime                      |
+| [xendev.tty](./xendev.tty) | TTY-only mode, no x11docker required                     |
 
-```sh
-x11docker --gpu --clipboard --network -- xen/dev kitty
-```
+### Other Examples
 
-### Within an x11docker-powered desktop
-
-This mode illustrates interesting capabilities provided by x11docker with a
-fullly operational sandboxed desktop running within a window on the host.
+x11docker desktop mode — fully sandboxed desktop in a window:
 
 ```sh
 x11docker --desktop --gpu --clipboard --network -- xen/dev
 ```
 
-### Within a terminal of your choice
-
-#### Without X11
-
-This is the mode of minimal host requirements, only `docker|podman`. It will
-work on a headless server, for example. Refer to [xendev.tty](./xendev.tty) as
-an example for mapping volumes from the host.
-
-```sh
-make build-tty
-./xendev.tty
-```
-
-This also works with `make build`, just larger docker image.
-
-#### with X11
-
-In this mode, host clipboard will work with enhanced security provided by `x11docker`.
+x11docker TTY mode — run in your terminal with clipboard support:
 
 ```sh
 x11docker --tty --interactive --clipboard --network -- xen/dev
 ```
 
-- Host terminal expectations, ideally:
-  - truecolor support (use scripts in [test/](test/) to test support inside `xendev`)
-  - patched font like one from [nerd-fonts](https://github.com/ryanoasis/nerd-fonts) with [powerline](https://github.com/powerline/fonts) symbols
+### Docker-in-Docker with Sysbox
 
-### With directories shared from the host
+For running Docker inside xendev (e.g., building images, running containers), use `./xendev.sys` with the [sysbox](https://github.com/nestybox/sysbox) runtime. Sysbox provides secure, rootless Docker-in-Docker without privileged mode.
 
-See the [xendev](xendev) launcher script for a functional example that shares
-the host user's ssh, gpg, and git config with the container and provides
-writeable access to `~/src`.
+**Installation**: Follow the [sysbox installation guide](https://github.com/nestybox/sysbox/blob/master/docs/user-guide/install-package.md#installing-sysbox).
 
-Note: Some applications need more privileges or capabilities than x11docker
-provides by default; refer to the x11docker docs on [privilege
-checks](https://github.com/mviereck/x11docker#privilege-checks).
+**Tradeoffs**:
+
+- No `--gpu=direct` (uses `--gpu` fallback)
+- No `--network=host` (uses bridged networking)
+- Secure Docker-in-Docker without `--privileged`
+- Persistent Docker storage at `~/.local/share/xendev/sysbox/var-lib-docker`
+
+### Notes
+
+- Host terminal ideally has truecolor support and a [nerd-fonts](https://github.com/ryanoasis/nerd-fonts) patched font (use scripts in [test/](test/) to verify)
+- Some applications need more privileges than x11docker provides by default; see x11docker [privilege checks](https://github.com/mviereck/x11docker#privilege-checks)
+- TTY-only mode (`xendev.tty`) works on headless servers with minimal requirements (`docker` or `podman` only)
 
 ## Preferences & Philosophy
 
