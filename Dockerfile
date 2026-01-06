@@ -552,6 +552,13 @@ RUN git clone \
     --all \
     --no-zsh
 
+# install opencode
+ARG INSTALL_OPENCODE=0
+RUN \
+  if [ "${INSTALL_OPENCODE}" = "1" ]; then \
+    curl -fsSL https://opencode.ai/install | bash \
+  ; fi
+
 # install extra bash things
 RUN mkdir ~/.bash
 

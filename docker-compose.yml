@@ -32,6 +32,7 @@ services:
         - INSTALL_NEOVIM_FROM_SRC
         - INSTALL_NIX
         - INSTALL_NOIR
+        - INSTALL_OPENCODE
         - INSTALL_PB
         - INSTALL_PLATFORMIO
         - INSTALL_TAURI
