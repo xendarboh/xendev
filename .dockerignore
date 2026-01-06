@@ -4,5 +4,7 @@ Dockerfile
 Dockerfile.x11
 Makefile
 README.md
+_/
 conf.local
 xendev
+xendev.*
