@@ -119,6 +119,10 @@ make build
   - [Terraform](https://github.com/hashicorp/terraform): enables you to safely and predictably create, change, and improve infrastructure.
   - [terraform-local](https://github.com/localstack/terraform-local): Terraform CLI wrapper to deploy your Terraform applications directly to LocalStack
 
+Optional runtime scripts in [setup.d/](setup.d/) can be run inside a container to install additional tools on-demand:
+
+- [Aztec](https://github.com/AztecProtocol/aztec-packages): Privacy-first L2 on Ethereum; installs CLI, local network, and related tooling ([xen/sys](#docker-in-docker-with-sysbox))
+
 Additionally (and optionally), the following are within the X11 base image:
 
 - [Xfce](https://gitlab.xfce.org/xfce): A lightweight desktop environment for UNIX-like operating systems. It aims to be fast and low on system resources, while still being visually appealing and user friendly.

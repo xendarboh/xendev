@@ -6,6 +6,7 @@ export PATH=~/.go/bin:${GOPATH}/bin:${PATH}
 export PATH=${PNPM_HOME}:${PATH}
 export PATH=~/.yarn/bin:${PATH}
 export PATH=./node_modules/.bin:${PATH}
+export PATH=~/.aztec/bin:${PATH}
 
 export GPG_TTY=$(tty)
 
