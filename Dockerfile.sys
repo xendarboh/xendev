@@ -19,6 +19,10 @@ RUN apt update \
 
 RUN usermod -aG docker ${XENDEV_USER}
 
+# Streamline dev of sys docker image without rebuilding base image(s)
+COPY --chown=${XENDEV_USER}:${XENDEV_USER} ./bin.sys ${XENDEV_DIR}/bin.sys
+COPY --chown=${XENDEV_USER}:${XENDEV_USER} ./setup.d ${XENDEV_DIR}/setup.d
+
 # For sysbox compatibility, replace the docker binary with a script that
 # intercepts docker commands to strip off unsupported options.
 RUN install -m 755 ${XENDEV_DIR}/bin.sys/docker /usr/local/bin/docker
