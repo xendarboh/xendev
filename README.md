@@ -123,6 +123,7 @@ make build
 Optional runtime scripts in [setup.d/](setup.d/) can be run inside a container to install additional tools on-demand:
 
 - [Aztec](https://github.com/AztecProtocol/aztec-packages): Privacy-first L2 on Ethereum; installs CLI, local network, and related tooling ([xen/sys](#docker-in-docker-with-sysbox))
+- [WhisperX](https://github.com/m-bain/whisperX): Automatic speech recognition with word-level timestamps and speaker diarization
 
 Additionally (and optionally), the following are within the X11 base image:
 
