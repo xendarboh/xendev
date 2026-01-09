@@ -6,6 +6,7 @@ FLAGS=(
   --disable-gpu
   --disable-gpu-compositing
   --disable-software-rasterizer
+  --force-dark-mode
   # --in-process-gpu
   # --use-gl=swiftshader
 )
