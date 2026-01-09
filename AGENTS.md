@@ -8,101 +8,75 @@ xendev is a dockerized terminal-based vim-centric development environment. It's 
 
 ## Build Commands (Human Operator Only)
 
-AI agents must NOT run `make` — builds are slow and typically unavailable in agent environments.
+**AI agents must NOT run `make`** — builds are slow and typically unavailable in agent environments.
 
 ```sh
-make build       # Build full image with X11 support (xen/x11, xen/dev, xen/sys)
-make rebuild     # Build from scratch without cache
+make build       # Build full image (xen/x11, xen/dev, xen/sys)
 make build-tty   # Build tty-only image (no X11, smaller)
-make retag       # Tag current images as :prev before rebuilding
+make rebuild     # Build from scratch without cache
 make help        # Show all make targets
 ```
 
 ## Testing
 
-There are no automated tests. Manual verification scripts exist in `test/`:
+No automated tests exist. Manual verification scripts in `test/`:
 
 ```sh
-# Verify GPG volume mapping works
-./test/gpg.sh
-
-# Test terminal capabilities
-./test/truecolor.sh    # Truecolor support
-./test/glyphs.sh       # Font glyph rendering
-./test/italics.sh      # Italic text rendering
-./test/test-fonts.sh   # General font tests
+./test/gpg.sh         # Verify GPG volume mapping
+./test/truecolor.sh   # Terminal truecolor support
+./test/glyphs.sh      # Font glyph rendering
+./test/italics.sh     # Italic text rendering
 ```
 
-## Running the Environment
+## Code Style
 
-```sh
-./xendev [name]      # Main launcher (x11docker, GPU, clipboard)
-./xendev.gpu         # Direct GPU access variant
-./xendev.sys         # Docker-in-docker via sysbox-runc
-./xendev.tty         # TTY-only, no x11docker
-```
-
-## Configuration
-
-- `.env`: Build options (INSTALL*\*, VERSION*\*, IMAGE_BASE)
-- `conf/`: Built-in dotfiles, stowed during Docker build
-- `conf.local/`: User-specific configs, stowed at runtime (gitignored)
-
-## Code Style Guidelines
-
-### General
+### General Rules
 
 - **Indentation**: 2 spaces (Bash, Lua, Dockerfile), 4 spaces (Fish)
 - **Line endings**: Unix (LF)
 - **Trailing whitespace**: Remove
+- **Vim modelines**: Use at file end when helpful (e.g., `# vim:syntax=sh`)
 
 ### Shell Scripts (Bash)
 
 ```bash
-#!/bin/bash                    # Use /bin/bash, not /usr/bin/env bash in this repo
-name="${1:-default}"           # Quote variables, use defaults
+#!/bin/bash                       # Use /bin/bash, not /usr/bin/env bash
+name="${1:-default}"              # Quote variables, provide defaults
 [ -f "$file" ] && source "$file"  # Guard file sources
 
-# Variables
-local_var="value"              # lowercase for local variables
-ENVIRONMENT_VAR="value"        # SCREAMING_SNAKE_CASE for exports/env vars
+local_var="value"                 # snake_case for local variables
+ENVIRONMENT_VAR="value"           # SCREAMING_SNAKE_CASE for exports
 
-# Functions
-my_function() {                # lowercase with underscores
-  local result=""              # Use local for function variables
+my_function() {                   # snake_case function names
+  local result=""                 # Use 'local' for function variables
   echo "$result"
 }
 
-# Chained commands
+# Chain commands with backslash continuation
 command1 \
   && command2 \
   && command3
-
-# Vim modeline at end of file (optional but common)
-# vim:syntax=sh
 ```
 
 ### Fish Shell
 
 ```fish
-# 4-space indent (see modeline in config.fish)
+# 4-space indent
 function my_function
     set local_var "value"
     echo $local_var
 end
 
-# Use abbr for interactive shortcuts, alias for scripts
-abbr s 'git status'
+abbr s 'git status'   # Use abbr for interactive shortcuts
 
 # vim:sw=4:ts=4:et:
 ```
 
 ### Lua (Neovim/LazyVim)
 
-Follows StyLua formatting (`conf/.config/nvim-lazyvim/stylua.toml`):
+Follows StyLua: 2-space indent, 120 column width (`conf/.config/nvim-lazyvim/stylua.toml`)
 
 ```lua
--- 2-space indent, 120 column width
 return {
   {
     "plugin/name",
@@ -113,24 +87,21 @@ return {
 }
 ```
 
-Plugin structure follows LazyVim conventions:
-
-- `lua/config/`: Core settings (options.lua, keymaps.lua, autocmds.lua)
-- `lua/plugins/`: One file per plugin or feature group
+Plugin structure: `lua/config/` for core settings, `lua/plugins/` for one file per plugin.
 
 ### Dockerfile
 
 ```dockerfile
-ARG VERSION_TOOL                # ARGs at top for versioning
+ARG VERSION_TOOL                  # ARGs at top for versioning
 
-# Chain RUN commands with && and cleanup in same layer
+# Chain RUN + cleanup in same layer
 RUN apt update \
   && apt install --no-install-recommends -y -q \
     package1 \
     package2 \
   && rm -rf /var/lib/apt/lists/*
 
-# Conditional installations via ARG
+# Conditional install pattern
 ARG INSTALL_FEATURE=0
 RUN \
   if [ "${INSTALL_FEATURE}" = "1" ]; then \
@@ -167,48 +138,47 @@ conf/                      # Built-in dotfiles (stowed during build)
   .bash_aliases            # Shell aliases
   .config/nvim-lazyvim/    # Neovim LazyVim distribution
   .config/fish/            # Fish shell config
-  .config/kitty/           # Kitty terminal config
   .tmux.conf               # Tmux configuration
 
-conf.local/                # User-specific overrides (gitignored)
+conf.local/                # User dotfiles (gitignored, stowed during runtime)
   xendev/bash.sh           # Custom env vars (GH_TOKEN, etc.)
-  xendev/directory_map.txt # PWD symlink mappings
 
-setup.d/                   # Optional setup scripts
+setup.d/                   # Optional runtime setup scripts
 test/                      # Manual verification scripts
 ```
 
 ## Important Notes
 
-1. **GNU Stow**: Config management uses stow for symlinks. Files in `conf/` become `~/.file`.
-
-2. **Shell behavior**: Bash auto-drops into Fish shell (see `.bash_xendev` lines 96-99).
-
+1. **GNU Stow**: Configs use stow for symlinks. Files in `conf/` become `~/.file`.
+2. **Shell behavior**: Bash auto-drops into Fish (see `.bash_xendev` lines 101-104).
 3. **x11docker**: Launcher scripts use `--user=RETAIN` to preserve host UID.
-
-4. **No package.json**: This is not a Node.js project. Build system is Make + Docker Compose.
-
-5. **Git config**: Use `[includeIf]` directive to include xendev gitconfig only within `/home/xendev/`.
-
-6. **No `make` for agents**: AI agents must not run build commands (see Build Commands section)
+4. **No package.json**: Build system is Make + Docker Compose.
+5. **No `make` for agents**: AI agents must not run build commands.
 
 ## Common Tasks
 
-**Add a new tool to the Docker image:**
+### Add a new tool to the Docker image
 
-1. Edit `Dockerfile` following existing patterns
-2. For optional tools, add `INSTALL_*` ARG and conditional block
-3. Update `.env-example` with the new `INSTALL_*` or `VERSION_*` variable
-4. Update `docker-compose.yml` to pass the new ARG to the build
-5. Update `README.md` — add the tool with its GitHub link and description, following existing format
+1. Edit `Dockerfile` following existing conditional install patterns
+2. For optional tools:
+   1. add `INSTALL_*` ARG and conditional block
+   2. Update `.env-example` with the new `INSTALL_*` or `VERSION_*` variable
+   3. Update `docker-compose.yml` to pass the new ARG to the build
+3. Update `README.md` — add tool with GitHub link, following existing format
 
-**Update latest versions:**
+### Update tool versions
 
 1. For each `VERSION_*` in `.env-example`:
-   1. Retrieve the latest version from its GitHub page (linked in `README.md`); release, tag, or branch name
-   2. Update its value in `.env-example`
+   - Check latest version from its GitHub page (linked in `README.md`)
+   - Update value in `.env-example`
 
-**Modify shell config:**
+### Modify shell config
 
-1. Edit files in `conf/` (.bash_xendev, .bash_aliases, config.fish)
-2. Changes take effect on next container start (configs are stowed at runtime)
+1. Edit files in `conf/` (`.bash_xendev`, `.bash_aliases`, `config.fish`)
+2. Changes take effect on next container start (stowed at runtime)
+
+### Add a Neovim plugin
+
+1. Create `conf/.config/nvim-lazyvim/lua/plugins/<plugin-name>.lua`
+2. Follow existing plugin patterns (return table with plugin spec)
+3. Update `README.md` if it's a notable addition
