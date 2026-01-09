@@ -42,6 +42,8 @@ make build
   - [fnm](https://github.com/Schniz/fnm): Fast and simple Node.js version manager, built in Rust
   - [npm-check-updates](https://github.com/raineorshine/npm-check-updates): Find newer versions of package dependencies than what your package.json allows
   - [npm-check](https://github.com/dylang/npm-check): Check for outdated, incorrect, and unused dependencies
+- [OpenCode](https://github.com/anomalyco/opencode): The open source coding agent. (_INSTALL_OPENCODE_)
+  - [oh-my-opencode](https://github.com/code-yeongyu/oh-my-opencode): The Best Agent Harness. Meet Sisyphus: The Batteries-Included Agent that codes like you
 - [Rust](https://github.com/rust-lang/rust): Empowering everyone to build reliable and efficient software
   - [cargo-edit](https://github.com/killercup/cargo-edit): A utility for managing cargo dependencies from the command line
   - [rust-analyzer](https://github.com/rust-lang/rust-analyzer): A Rust compiler front-end for IDEs
@@ -88,7 +90,6 @@ make build
 - [llvm-project](https://github.com/llvm/llvm-project): (clang) A collection of modular and reusable compiler and toolchain technologies (_INSTALL_LLVM_)
 - [ncdu](https://code.blicky.net/yorhel/ncdu): NCurses Disk Usage
 - [ninja-build](https://github.com/ninja-build/ninja): A small build system with a focus on speed
-- [opencode](https://github.com/anomalyco/opencode): The open source coding agent. (_INSTALL_OPENCODE_)
 - [platformio-core](https://github.com/platformio/platformio-core): A professional collaborative platform for embedded development (_INSTALL_PLATFORMIO_)
 - [prettier](https://github.com/prettier/prettier): Prettier is an opinionated code formatter
 - [protobuf](https://github.com/protocolbuffers/protobuf): Protocol Buffers - Google's data interchange format (_INSTALL_PB_)

@@ -50,6 +50,8 @@ eval "$(zoxide init bash)"
 # zoxide: When set to 1, z will print the matched directory before navigating to it.
 export _ZO_ECHO=1
 
+# ensure files exist for proper stow'ing
+D="${XENDEV_DIR}/conf.local/.config/opencode" && mkdir -p ${D} && touch ${D}/antigravity-accounts.json # ~INSTALL_OPENCODE
 # stow the local conf files
 stow \
   --ignore=xendev \

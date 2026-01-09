@@ -444,8 +444,9 @@ RUN \
   && rustup component add \
     rust-analyzer
 
-# install latest bun
+# install latest bun and make it available in PATH
 RUN curl -fsSL https://bun.sh/install | bash
+ENV PATH="/home/${_USER}/.bun/bin:${PATH}"
 
 # install latest circom release
 # https://docs.circom.io/getting-started/installation/#installing-dependencies
@@ -554,9 +555,12 @@ RUN git clone \
 
 # install opencode
 ARG INSTALL_OPENCODE=0
+ARG OPTIONS_OHMYOPENCODE
 RUN \
   if [ "${INSTALL_OPENCODE}" = "1" ]; then \
     curl -fsSL https://opencode.ai/install | bash \
+    && export PATH=/home/${_USER}/.opencode/bin:${PATH} \
+    && bunx oh-my-opencode install --no-tui ${OPTIONS_OHMYOPENCODE} \
   ; fi
 
 # install extra bash things
@@ -644,11 +648,15 @@ COPY --chown=${_USER}:${_USER} . ${XENDEV_DIR}
 
 # link configuration files so that a mounted volume may override at container execution time
 RUN \
-  # replace kitty.conf file (from standalone-able Dockerfile.x11) with symlink
-  rm -f /home/${_USER}/.config/kitty/kitty.conf \
+  # replace files with symlinks to our custom config files
+  rm -f \
+    /home/${_USER}/.config/kitty/kitty.conf \
+    /home/${_USER}/.config/opencode/oh-my-opencode.json \
+    /home/${_USER}/.config/opencode/opencode.json \
   # create dirs so stow symlinks files and not dirs
   && mkdir -p \
     /home/${_USER}/.config/lazygit \
+    /home/${_USER}/.config/opencode \
   # stow the conf files!
   && stow \
     --dir=${XENDEV_DIR} \
