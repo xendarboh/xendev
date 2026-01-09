@@ -360,6 +360,7 @@ RUN \
 
 # install python support for neovim
 ENV PIP_BREAK_SYSTEM_PACKAGES=1
+ENV PIP_NO_CACHE_DIR=1
 RUN pip install --upgrade pynvim
 
 # use neovim for editor alternatives
