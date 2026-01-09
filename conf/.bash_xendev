@@ -50,6 +50,9 @@ eval "$(zoxide init bash)"
 # zoxide: When set to 1, z will print the matched directory before navigating to it.
 export _ZO_ECHO=1
 
+# Workaround opencode's re-creation of file(s) that break stow symlinks
+F=~/.config/opencode/antigravity-accounts.json && test ! -L ${F} && rm -f ${F}
+
 # ensure files exist for proper stow'ing
 D="${XENDEV_DIR}/conf.local/.config/opencode" && mkdir -p ${D} && touch ${D}/antigravity-accounts.json # ~INSTALL_OPENCODE
 # stow the local conf files
