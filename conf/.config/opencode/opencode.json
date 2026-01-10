@@ -1,7 +1,8 @@
 {
   "plugin": [
     "oh-my-opencode",
-    "opencode-antigravity-auth@1.2.8",
+    "opencode-anthropic-auth",
+    "opencode-antigravity-auth",
     "opencode-openai-codex-auth"
   ],
   "provider": {
