@@ -1,0 +1,198 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+CONF_SELECTOR="${XENDEV_SELECTOR:-rofi}"
+CONTAINER_PREFIX="xendev"
+XENDEV_USER="xendev"
+
+# src:[dest]:[tag]
+MOUNTS=(
+  "$HOME/.config/git::priv"
+  "$HOME/.gnupg::priv"
+  "$HOME/.ssh::priv"
+  "$HOME/src.priv::priv"
+  "$HOME/src::core"
+  "$HOME/.local/share/xendev:/home/${XENDEV_USER}/.local/share:data"
+  "/media"
+  "/mnt"
+  "/srv"
+)
+
+# Mode Definitions
+base() {
+  RUNNER="x11docker"
+  IMAGE="xen/dev"
+  SHELL_CMD="kitty -T"
+  ARGS_X11DOCKER=(
+    --clipboard
+    --dbus
+    --gpu
+    --hostdisplay
+    --network
+    --share=/run/dbus/system_bus_socket
+    --sudouser
+    --user=RETAIN
+    --verbose
+  )
+  ARGS_DOCKER=(
+    --tmpfs=/tmp:exec
+  )
+  TAGS=(
+    "core"
+    "data"
+  )
+}
+
+mode_max() {
+  base
+  DESC="Full access, direct GPU acceleration"
+  ARGS_X11DOCKER+=(
+    --gpu=direct
+    --network=host
+  )
+  ARGS_DOCKER+=(
+  )
+  TAGS+=(
+    "priv"
+    "data"
+  )
+}
+
+# uses sysbox runtime for docker-in-docker
+# persists docker storage at ~/.local/share/xendev/sysbox/var-lib-docker
+# requires x11docker without --gpu=direct and --network=host
+mode_sys() {
+  base
+  DESC="Docker-in-Docker via sysbox"
+  IMAGE="xen/sys"
+  ARGS_X11DOCKER+=(
+    --cap-default
+    --runtime=sysbox-runc
+  )
+  ARGS_DOCKER+=(
+    --cap-add=NET_ADMIN
+    --cap-add=NET_RAW
+    --cap-add=SYS_ADMIN
+  )
+  MOUNTS+=(
+    "$HOME/.local/share/xendev/sysbox/var-lib-docker:/var/lib/docker:sys"
+  )
+  TAGS+=(
+    "sys"
+  )
+}
+
+mode_min() {
+  base
+  DESC="Minimal host access, max isolation"
+  ARGS_X11DOCKER=(
+    --gpu
+    --hostdisplay
+    --network
+    --user=RETAIN
+    --verbose
+  )
+  TAGS+=()
+}
+
+mode_tty() {
+  DESC="TTY-only, no X11"
+  RUNNER="docker"
+  IMAGE="xen/dev"
+  SHELL_CMD="/bin/bash -l"
+  ARGS_DOCKER=(
+    --network=host
+    --tmpfs=/tmp:exec
+  )
+  TAGS=("core")
+}
+
+ui() {
+  local prompt="$1"
+  local prefill="${2:-}"
+  if [[ "$CONF_SELECTOR" == "rofi" ]]; then
+    rofi -dmenu -i -p "$prompt" -filter "$prefill"
+  else
+    fzf --prompt "$prompt> " --reverse --height 40% --query "$prefill" --print-query | tail -1 || true
+  fi
+}
+
+main() {
+  # 1. Action Selection
+  mapfile -t options < <(
+    echo "+ New Instance"
+    docker ps --filter "name=^${CONTAINER_PREFIX}-" --format '{{.Names}} │ {{.Label "xendev.mode"}}' 2>/dev/null || true
+  )
+  sel=$(ui "xendev" <<<"$(printf '%s\n' "${options[@]}")")
+  [[ -z "$sel" ]] && exit 0
+  [[ "$sel" != "+ New Instance" ]] && { exec docker exec -it "${sel%% *}" /bin/bash; }
+
+  # 2. Mode Selection
+  modes=($(declare -F | grep "mode_" | cut -d_ -f2-))
+  m_sel=$(ui "Mode" <<<"$(for m in "${modes[@]}"; do (
+    "mode_$m"
+    printf "%-10s │ %s\n" "$m" "$DESC"
+  ); done)")
+  [[ -z "$m_sel" ]] && exit 0
+  mode="${m_sel%% *}"
+
+  # 3. Container Name Selection (pre-filled)
+  inst=$(ui "Container Name" "${CONTAINER_PREFIX}-$mode-" <<<"")
+  [[ -z "$inst" ]] && inst="${CONTAINER_PREFIX}-$mode"
+
+  # 4. Stateful Mount Selection Loop
+  "mode_$mode"
+  declare -A selected
+  for i in "${!MOUNTS[@]}"; do
+    IFS=':' read -r src dst tag <<<"${MOUNTS[$i]}"
+    for dt in "${TAGS[@]:-}"; do
+      [[ -n "$tag" && "$tag" == "$dt" ]] && selected[$i]=1
+    done
+  done
+
+  while true; do
+    menu_lines=("▶ LAUNCH")
+    for i in "${!MOUNTS[@]}"; do
+      state="[ ]"
+      [[ -n "${selected[$i]:-}" ]] && state="[x]"
+      IFS=':' read -r src dst tag <<<"${MOUNTS[$i]}"
+      printf -v line "%s %-40s%s" "$state" "$src" "${tag:+ │ :$tag}"
+      menu_lines+=("$line")
+    done
+
+    choice=$(ui "Mounts" <<<"$(printf '%s\n' "${menu_lines[@]}")")
+
+    [[ -z "$choice" ]] && exit 0
+    [[ "$choice" == "▶ LAUNCH" ]] && break
+
+    choice_path=$(echo "$choice" | sed 's/^\[.\] //; s/  *│.*//; s/ *$//')
+    for i in "${!MOUNTS[@]}"; do
+      IFS=':' read -r src dst tag <<<"${MOUNTS[$i]}"
+      if [[ "$src" == "$choice_path" ]]; then
+        if [[ -n "${selected[$i]:-}" ]]; then unset "selected[$i]"; else selected[$i]=1; fi
+        break
+      fi
+    done
+  done
+
+  # 5. Build & Launch
+  vol_args=()
+  for i in "${!selected[@]}"; do
+    IFS=':' read -r src dst tag <<<"${MOUNTS[$i]}"
+    dst="${dst:-/home/${XENDEV_USER}/${src#$HOME/}}"
+    [[ ! -d "$src" ]] && mkdir -p "$src"
+    vol_args+=("--volume" "$src:$dst")
+  done
+
+  "mode_$mode"
+  ARGS_DOCKER+=(--label xendev.mode=$mode)
+  [[ "$RUNNER" == "x11docker" ]] &&
+    cmd="x11docker --name $inst ${ARGS_X11DOCKER[*]} -- ${ARGS_DOCKER[*]} ${vol_args[*]} -- $IMAGE $SHELL_CMD $inst" ||
+    cmd="docker run -it --rm --name $inst ${ARGS_DOCKER[*]} ${vol_args[*]} $IMAGE $SHELL_CMD"
+
+  echo -e "\n\033[1;32mGenerated Command:\033[0m\n$cmd\n"
+  read -p "Launch? [Y/n] " confirm
+  [[ "${confirm,,}" == "y" || -z "$confirm" ]] && eval "$cmd"
+}
+
+main
