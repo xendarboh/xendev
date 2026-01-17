@@ -2,7 +2,7 @@
 
 # NOTE: requires docker (xen/sys)
 
-source $(readlink -f $(dirname $0))/../.env
+source $(readlink -f $(dirname $0))/../.env 2>/dev/null
 export VERSION=${VERSION_AZTEC:-$VERSION}
 
 test $(whoami) = "root" && echo "[xendev] ERROR: must not be root" && exit 1
