@@ -449,6 +449,10 @@ RUN \
 RUN curl -fsSL https://bun.sh/install | bash
 ENV PATH="/home/${_USER}/.bun/bin:${PATH}"
 
+# install bun things
+RUN bun add -g \
+    repomix
+
 # install latest circom release
 # https://docs.circom.io/getting-started/installation/#installing-dependencies
 ARG INSTALL_CIRCOM=0
