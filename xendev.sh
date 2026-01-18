@@ -1,9 +1,34 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-CONF_SELECTOR="${XENDEV_SELECTOR:-rofi}"
+SELECTOR_CHAIN="${XENDEV_SELECTOR:-rofi dmenu fzf}"
 CONTAINER_PREFIX="xendev"
 XENDEV_USER="xendev"
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+  -s | --selector)
+    SELECTOR_CHAIN="$2"
+    shift 2
+    ;;
+  *) break ;;
+  esac
+done
+
+for s in $SELECTOR_CHAIN; do command -v "$s" &>/dev/null && {
+  CONF_SELECTOR="$s"
+  break
+}; done
+[[ -z "${CONF_SELECTOR:-}" ]] && echo "No selector in: $SELECTOR_CHAIN" >&2 && exit 1
+
+ui() {
+  local p="$1" f="${2:-}"
+  case "$CONF_SELECTOR" in
+  rofi) rofi -dmenu -i -p "$p" -filter "$f" ;;
+  dmenu) dmenu -i -p "$p" ;;
+  fzf) fzf --prompt "$p> " --reverse --height 40% --query "$f" --print-query | tail -1 || true ;;
+  esac
+}
 
 # src:[dest]:[tag]
 MOUNTS=(
@@ -105,16 +130,6 @@ mode_tty() {
     --tmpfs=/tmp:exec
   )
   TAGS=("core")
-}
-
-ui() {
-  local prompt="$1"
-  local prefill="${2:-}"
-  if [[ "$CONF_SELECTOR" == "rofi" ]]; then
-    rofi -dmenu -i -p "$prompt" -filter "$prefill"
-  else
-    fzf --prompt "$prompt> " --reverse --height 40% --query "$prefill" --print-query | tail -1 || true
-  fi
 }
 
 main() {
