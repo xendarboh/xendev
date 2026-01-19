@@ -2,280 +2,286 @@
 
 [![GPLv3 License](https://img.shields.io/badge/license-GPLv3-blue.svg)](LICENSE)
 
-A modern portable sandboxed (dockerized) terminal-based vim-centric development environment.
+Overpowered dotfiles in a box. A sandboxed, GPU-accelerated, terminal-first development environment.
 
-Overpowered "dotfiles" intended to run in a number of ways; either within a:
+Run it as a:
 
-- customized sandboxed gpu-accelerated terminal (recommended)
-- x11docker-powered full, but minimal, desktop (interesting)
-- terminal of your choice (minimal requirements)
+- **TTY-only terminal** for headless servers
+- **GPU-accelerated terminal** with clipboard integration ← recommended
+- **Full desktop environment** in a window (x11docker)
+- **Docker-in-Docker environment** for nested containers (sysbox)
 
-Note: Developed on and for Linux; other host compatibility is unknown.
+> Developed on and for Linux. Other platforms untested.
 
 ## Quickstart
 
 ```sh
-mkdir ~/src && cd ~/src
-git clone https://github.com/xendarboh/xendev.git
-cd xendev
-cp .env-example .env
-# edit .env to enable optionals or set specific versions
+git clone https://github.com/xendarboh/xendev.git ~/src/xendev
+cd ~/src/xendev
+cp .env-example .env                 # edit to enable optional tools
+cp -a conf.local-example conf.local  # local overrides (see Customization)
 make build
 ./xendev
 ```
 
-## Tools
+## Philosophy
 
-- [Neovim](https://github.com/neovim/neovim): Vim-fork focused on extensibility and usability
-  - [LazyVim](https://github.com/LazyVim/LazyVim): Neovim config for the lazy (_INSTALL_NVIM_LAZYVIM_)
-    - [avante.nvim](https://github.com/yetone/avante.nvim): Use your Neovim like using Cursor AI IDE!
-    - [better-escape.nvim](https://github.com/max397574/better-escape.nvim): Escape from insert mode without delay when typing
-    - [markdown-preview.nvim](https://github.com/iamcco/markdown-preview.nvim): markdown preview plugin for (neo)vim
-    - [noir.nvim](https://github.com/noir-lang/noir-nvim): A NeoVim plugin providing syntax highlighting and LSP support for Noir
-    - [nx.vmim](https://github.com/Equilibris/nx.nvim): A simple tool providing the same features as the NX console does for vs-code
-    - [smart-splits.nvim](https://github.com/mrjones2014/smart-splits.nvim): Smart, seamless, directional navigation and resizing of Neovim + terminal multiplexer splits
-    - [wakatime.nvim](https://github.com/wakatime/vim-wakatime): Vim plugin for automatic time tracking and metrics generated from your programming activity
-- [Nix](https://github.com/NixOS/nix): Nix, the purely functional package manager (_INSTALL_NIX_)
-- [Node.js](https://github.com/nodejs/node): Node.js JavaScript runtime
-  - [pnpm](https://github.com/pnpm/pnpm): Fast, disk space efficient package manager
-  - [yarn](https://github.com/yarnpkg/yarn): Fast, reliable, and secure dependency management
-  - [fnm](https://github.com/Schniz/fnm): Fast and simple Node.js version manager, built in Rust
-  - [npm-check-updates](https://github.com/raineorshine/npm-check-updates): Find newer versions of package dependencies than what your package.json allows
-  - [npm-check](https://github.com/dylang/npm-check): Check for outdated, incorrect, and unused dependencies
-- [OpenCode](https://github.com/anomalyco/opencode): The open source coding agent. (_INSTALL_OPENCODE_)
-  - [oh-my-opencode](https://github.com/code-yeongyu/oh-my-opencode): The Best Agent Harness. Meet Sisyphus: The Batteries-Included Agent that codes like you
-- [Rust](https://github.com/rust-lang/rust): Empowering everyone to build reliable and efficient software
-  - [cargo-edit](https://github.com/killercup/cargo-edit): A utility for managing cargo dependencies from the command line
-  - [rust-analyzer](https://github.com/rust-lang/rust-analyzer): A Rust compiler front-end for IDEs
-  - [rustup](https://github.com/rust-lang/rustup): The Rust toolchain installer
-- [Noir](https://github.com/noir-lang/noir): Noir is a domain specific language for zero knowledge proofs (_INSTALL_NOIR_)
-  - [barretenberg](https://github.com/AztecProtocol/aztec-packages/blob/next/noir-projects): The ZK prover backend that provides succinct verifiability for Aztec. Also houses the Aztec VM
-- [Brave Browser](https://github.com/brave/brave-browser) (_INSTALL_BROWSER_BRAVE_)
-- [Chromium Browser](https://github.com/chromium/chromium): an open-source browser project that aims to build a safer, faster, and more stable way for all users to experience the web (_INSTALL_BROWSER_CHROMIUM_)
-- [Tomb](https://github.com/dyne/Tomb): the Crypto Undertaker (_INSTALL_TOMB_)
-- [aicommits](https://github.com/Nutlope/aicommits): A CLI that writes your git commit messages for you with AI
-- [bun](https://github.com/oven-sh/bun): Incredibly fast JavaScript runtime, bundler, test runner, and package manager – all in one
-  - [repomix](https://github.com/yamadashy/repomix): Pack your entire repository into a single, AI-friendly file
-- [circom](https://github.com/iden3/circom): zkSnark circuit compiler (_INSTALL_CIRCOM_)
-- [claude-code](https://github.com/anthropics/claude-code): an agentic coding tool that lives in your terminal, understands your codebase, and helps you code faster by executing routine tasks, explaining complex code, and ...
-- [cpanminus](https://github.com/miyagawa/cpanminus): get, unpack, build and install modules from CPAN
-- [cypress](https://github.com/cypress-io/cypress): (deps) Fast, easy and reliable testing for anything that runs in a browser (_INSTALL_CYPRESS_DEPS_)
-- [deno](https://github.com/denoland/deno): A modern runtime for JavaScript and TypeScript
-- [diff-so-fancy](https://github.com/so-fancy/diff-so-fancy): Good-lookin' diffs. Actually… nah… The best-lookin' diffs
-- [exa](https://github.com/ogham/exa): A modern replacement for ‘ls’
-- [fastmod](https://github.com/facebookincubator/fastmod): A tool to assist with large-scale codebase refactors
-- [fd](https://github.com/sharkdp/fd): A simple, fast and user-friendly alternative to 'find'
-- [fish-shell](https://github.com/fish-shell/fish-shell): The user-friendly command line shell
-  - [fisher](https://github.com/jorgebucaran/fisher): A plugin manager for Fish
-  - [fish-exa](https://github.com/gazorby/fish-exa): exa aliases for fish
-  - [fish-gruvbox](https://github.com/Jomik/fish-gruvbox): gruvbox theme for fish
-  - [fish-nx](https://github.com/jukben/fish-nx): Fish completions for Nx
-  - [nix-env.fish](https://github.com/lilyball/nix-env.fish): Nix environment setup for the fish shell (_INSTALL_NIX_)
-- [fleek-cli](https://github.com/fleekhq/fleek-cli): Use Fleek to deploy websites and apps on the open web: permissionless, trustless, censorship resistant, and free of centralized gatekeepers
-- [fzf](https://github.com/junegunn/fzf): A command-line fuzzy finder
-- [git](https://github.com/git/git) (latest stable version)
-  - [gh](https://github.com/cli/cli): GitHub’s official command line tool
-  - [git-absorb](https://github.com/tummychow/git-absorb): git commit --fixup, but automatic
-  - [git-crypt](https://github.com/xendarboh/git-crypt): \[fork\] Transparent file encryption in git
-  - [git-filter-repo](https://github.com/newren/git-filter-repo): Quickly rewrite git repository history (filter-branch replacement)
-    - gfr-bfg-ish: A re-implementation of most of BFG Repo Cleaner, with new features and bug fixes
-    - gfr-clean-ignore: Delete files from history which match current gitignore rules
-    - gfr-insert-beginning: Add a new file (e.g. LICENSE/COPYING) to the beginning of history
-    - gfr-lint-history: Run some lint command on all non-binary files in history
-    - gfr-signed-off-by: Add a Signed-off-by tag to a range of commits
-  - [git-lfs](https://github.com/git-lfs/git-lfs): Git extension for versioning large files
-  - [lazygit](https://github.com/jesseduffield/lazygit): Simple terminal UI for git commands
-- [go](https://github.com/golang/go): The Go programming language
-- [jq](https://github.com/stedolan/jq): Command-line JSON processor
-- [kpcli](http://kpcli.sourceforge.net/): A command line interface for KeePass
-- [llvm-project](https://github.com/llvm/llvm-project): (clang) A collection of modular and reusable compiler and toolchain technologies (_INSTALL_LLVM_)
-- [ncdu](https://code.blicky.net/yorhel/ncdu): NCurses Disk Usage
-- [ninja-build](https://github.com/ninja-build/ninja): A small build system with a focus on speed
-- [platformio-core](https://github.com/platformio/platformio-core): A professional collaborative platform for embedded development (_INSTALL_PLATFORMIO_)
-- [prettier](https://github.com/prettier/prettier): Prettier is an opinionated code formatter
-- [protobuf](https://github.com/protocolbuffers/protobuf): Protocol Buffers - Google's data interchange format (_INSTALL_PB_)
-  - [buf](https://github.com/bufbuild/buf): A new way of working with Protocol Buffers
-- [ranger](https://github.com/ranger/ranger): A VIM-inspired filemanager for the console
-- [ripgrep](https://github.com/BurntSushi/ripgrep): recursively searches directories for a regex pattern while respecting your gitignore
-- [silversearcher-ag](https://github.com/ggreer/the_silver_searcher): A code-searching tool similar to ack, but faster
-- [solidity](https://github.com/ethereum/solidity): Solidity, the Smart Contract Programming Language
-- [spacer](https://github.com/samwho/spacer): CLI tool to insert spacers when command output stops
-- [sqlite](https://github.com/sqlite/sqlite): a small, fast, self-contained, high-reliability, full-featured, SQL database engine
-- [starship](https://github.com/starship/starship): The minimal, blazing-fast, and infinitely customizable prompt for any shell!
-- [stow](https://github.com/aspiers/stow): a symlink farm manager
-- [tauri-cli](https://github.com/tauri-apps/tauri): Build smaller, faster, and more secure desktop and mobile applications with a web frontend (_INSTALL_TAURI_)
-- [tmux](https://github.com/tmux/tmux): A terminal multiplexer
-  - [tpm](https://github.com/tmux-plugins/tpm): Tmux Plugin Manager
-  - [tmux-gruvbox](https://github.com/egel/tmux-gruvbox): Gruvbox color scheme for Tmux
-  - [tmux-resurrect](https://github.com/tmux-plugins/tmux-resurrect): Persists tmux environment across system restarts
-  - [tmux-window-name](https://github.com/ofirgall/tmux-window-name): A plugin to name your tmux windows smartly
-- [watchexec](https://github.com/watchexec/watchexec): Executes commands in response to file modifications
-- [websocat](https://github.com/vi/websocat): Command-line client for WebSockets, like netcat (or curl) for ws:// with advanced socat-like functions
-- [xclip](https://github.com/astrand/xclip): Command line interface to the X11 clipboard
-- [zoxide](https://github.com/ajeetdsouza/zoxide): A smarter cd command
-- _INSTALL_DEVOPS_
-  - [AWS CLI v2](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html): enables interaction with AWS services
-  - [Ansible](https://github.com/ansible/ansible): a radically simple IT automation system
-  - [OpenTofu](https://github.com/opentofu/opentofu): declaratively manage your cloud infrastructure
-  - [Packer](https://github.com/hashicorp/packer): a tool for creating identical machine images for multiple platforms from a single source configuration
-  - [Terraform](https://github.com/hashicorp/terraform): enables you to safely and predictably create, change, and improve infrastructure.
-  - [terraform-local](https://github.com/localstack/terraform-local): Terraform CLI wrapper to deploy your Terraform applications directly to LocalStack
+- Open Source!
+- Latest greatest terminal tools, LTS versions, vi-bindings
+- Dark themes: [gruvbox](https://github.com/morhetz/gruvbox), [tokyonight](https://github.com/folke/tokyonight.nvim)
+- Reproducible environment from [Ubuntu](https://hub.docker.com/_/ubuntu) base
+- Security via sandboxing with analog control over isolation vs. functionality
 
-Optional runtime scripts in [setup.d/](setup.d/) can be run inside a container to install additional tools on-demand:
+## Host Dependencies
 
-- [Aztec](https://github.com/AztecProtocol/aztec-packages): Privacy-first L2 on Ethereum; installs CLI, local network, and related tooling ([xen/sys](#docker-in-docker-with-sysbox))
-- [WhisperX](https://github.com/m-bain/whisperX): Automatic speech recognition with word-level timestamps and speaker diarization
-
-Additionally (and optionally), the following are within the X11 base image:
-
-- [Xfce](https://gitlab.xfce.org/xfce): A lightweight desktop environment for UNIX-like operating systems. It aims to be fast and low on system resources, while still being visually appealing and user friendly.
-- [kitty](https://github.com/kovidgoyal/kitty): Cross-platform, fast, feature-rich, GPU based terminal
-  - [kitty-gruvbox-theme](https://github.com/wdomitrz/kitty-gruvbox-theme): Gruvbox theme for kitty terminal
-- [ImageMagick](https://github.com/ImageMagick/ImageMagick): Software suite for displaying, converting, and editing raster image and vector image files
-- [nerd-fonts](https://github.com/ryanoasis/nerd-fonts): Developer targeted fonts with a high number of glyphs (icons)
-  - [Hack](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/Hack): A typeface designed for source code
-
-Powered-by:
-
-- [x11docker](https://github.com/mviereck/x11docker): Run GUI applications and desktops in docker and podman containers. Focus on security.
-- [sysbox](https://github.com/nestybox/sysbox): Next-generation container runtime for secure, easy Docker-in-Docker (optional)
-
-## Build
-
-### Host Requirements
-
-- docker or podman
-- docker compose
-- x11docker (not required for tty-only)
-  - x11docker gpu support
-- sysbox (optional, for Docker-in-Docker via `xendev.sys`)
-- make (or manually run the commands in [Makefile](Makefile))
-
-### Configure
-
-Edit `.env` to set specific versions and optional installations.
-
-### Build Image(s)
-
-#### Build the full image with X11 support
-
-```sh
-make build
-```
-
-#### Or build the tty-only image
-
-```sh
-make build-tty
-```
-
-#### See all make commands
-
-```sh
-❯ make                                                                                                                                                                                                        2023-01-21 14:02:33
-help                 print this help message with some nifty mojo
-build                build docker image with X11 support
-rebuild              rebuild docker image with X11 support
-build-tty            build tty-only docker image
-rebuild-tty          (re)build tty-only docker image with --no-cache --pull
-```
+| Dependency                                                                                  | Required For              | Notes                                                      |
+| :------------------------------------------------------------------------------------------ | :------------------------ | :--------------------------------------------------------- |
+| docker or podman                                                                            | Core                      | Container runtime                                          |
+| docker compose                                                                              | Building                  | Build orchestration                                        |
+| make                                                                                        | Building                  | Recommended; or run [Makefile](Makefile) commands manually |
+| [x11docker](https://github.com/mviereck/x11docker#installation)                             | `max`, `min`, `sys` modes | Not needed for `tty` mode                                  |
+| [sysbox](https://github.com/nestybox/sysbox/blob/master/docs/user-guide/install-package.md) | `sys` mode                | Recommended for Docker-in-Docker                           |
+| rofi / dmenu / fzf                                                                          | Launcher                  | Any one; detected in order                                 |
+| [Nerd Font](https://github.com/ryanoasis/nerd-fonts#font-installation)                      | `tty` mode                | Container provides fonts for GUI modes                     |
 
 ## Run
 
-Launcher scripts provide ready-to-use configurations for common use cases. They share host directories (ssh, gpg, git config, `~/src`) with the container.
+### Launcher
 
-| Script                     | Description                                              |
-| -------------------------- | -------------------------------------------------------- |
-| [xendev](./xendev)         | Main launcher with x11docker, GPU, and clipboard support |
-| [xendev.gpu](./xendev.gpu) | Direct GPU access for maximum GPU performance            |
-| [xendev.sys](./xendev.sys) | Docker-in-Docker via sysbox runtime                      |
-| [xendev.tty](./xendev.tty) | TTY-only mode, no x11docker required                     |
+The `./xendev` launcher provides an interactive menu (via `rofi`, `dmenu`, or `fzf`) for selecting modes, naming containers, and toggling volume mounts.
 
-### Other Examples
+| Mode  | Description                                                       | X11 |   GPU    | Use Case                           |
+| ----- | ----------------------------------------------------------------- | :-: | :------: | ---------------------------------- |
+| `max` | Full access, direct GPU                                           | Yes |  Direct  | Daily development                  |
+| `min` | Restricted host access                                            | Yes | Fallback | Sandboxed agents, untrusted code   |
+| `sys` | Docker-in-Docker via [sysbox](https://github.com/nestybox/sysbox) | Yes | Fallback | Stronger isolation, run containers |
+| `tty` | TTY-only, no X11                                                  | No  |    No    | Headless servers, SSH sessions     |
 
-x11docker desktop mode — fully sandboxed desktop in a window:
+**Selector**: The launcher probes for an available selector. Override with `XENDEV_SELECTOR` or `./xendev -s fzf`.
+
+### No Launcher
+
+Run directly without the interactive menu, for example:
 
 ```sh
+# GPU-accelerated terminal with clipboard
+x11docker --gpu --clipboard --network --user=RETAIN -- --tmpfs=/tmp:exec -- xen/dev
+
+# Full desktop in a window
 x11docker --desktop --gpu --clipboard --network -- xen/dev
+
+# TTY-only (no x11docker needed)
+docker run -it --rm --network=host xen/dev
 ```
 
-x11docker TTY mode — run in your terminal with clipboard support:
+### Docker-in-Docker (Sysbox)
+
+The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, rootless Docker-in-Docker without `--privileged`.
+
+**Tradeoffs**: No direct GPU (uses `--gpu` fallback), bridged networking (no `--network=host`).
+
+**Persistence**: Inner Docker data stored at `~/.local/share/xendev/sysbox/var-lib-docker`.
+
+## Tools
+
+### Powered By
+
+- [x11docker](https://github.com/mviereck/x11docker): Secure GUI containers
+- [Sysbox](https://github.com/nestybox/sysbox): Rootless system containers, enabling Docker-in-Docker
+- [Xen](https://github.com/xendarboh): Elven Tech Wizard
+
+### Editor & Plugins
+
+- [Neovim](https://github.com/neovim/neovim): Vim-fork focused on extensibility and usability
+  - [LazyVim](https://github.com/LazyVim/LazyVim): Neovim config for the lazy _(INSTALL_NVIM_LAZYVIM)_
+    - [avante.nvim](https://github.com/yetone/avante.nvim): Use your Neovim like using Cursor AI IDE!
+    - [better-escape.nvim](https://github.com/max397574/better-escape.nvim): Escape from insert mode without delay
+    - [markdown-preview.nvim](https://github.com/iamcco/markdown-preview.nvim): Markdown preview plugin
+    - [noir.nvim](https://github.com/noir-lang/noir-nvim): Syntax highlighting and LSP for Noir
+    - [nx.nvim](https://github.com/Equilibris/nx.nvim): NX console features for Neovim
+    - [smart-splits.nvim](https://github.com/mrjones2014/smart-splits.nvim): Seamless navigation and resizing
+    - [wakatime.nvim](https://github.com/wakatime/vim-wakatime): Automatic time tracking
+
+### AI/Agentic Coding
+
+- [aicommits](https://github.com/Nutlope/aicommits): AI-written git commit messages
+- [claude-code](https://github.com/anthropics/claude-code): Agentic coding tool in your terminal
+- [OpenCode](https://github.com/anomalyco/opencode): Open source coding agent _(INSTALL_OPENCODE)_
+  - [oh-my-opencode](https://github.com/code-yeongyu/oh-my-opencode): Batteries-included agent harness
+- [repomix](https://github.com/yamadashy/repomix): Pack repository into AI-friendly file
+
+### Shell & Terminal
+
+- [exa](https://github.com/ogham/exa): Modern replacement for 'ls'
+- [fd](https://github.com/sharkdp/fd): Simple, fast alternative to 'find'
+- [fish-shell](https://github.com/fish-shell/fish-shell): User-friendly command line shell
+  - [fish-exa](https://github.com/gazorby/fish-exa): exa aliases for fish
+  - [fish-gruvbox](https://github.com/Jomik/fish-gruvbox): Gruvbox theme
+  - [fish-nx](https://github.com/jukben/fish-nx): Fish completions for Nx
+  - [fisher](https://github.com/jorgebucaran/fisher): Plugin manager for Fish
+  - [nix-env.fish](https://github.com/lilyball/nix-env.fish): Nix environment for fish _(INSTALL_NIX)_
+- [fzf](https://github.com/junegunn/fzf): Command-line fuzzy finder
+- [jq](https://github.com/stedolan/jq): Command-line JSON processor
+- [ripgrep](https://github.com/BurntSushi/ripgrep): Fast regex search respecting gitignore
+- [silversearcher-ag](https://github.com/ggreer/the_silver_searcher): Code search faster than ack
+- [spacer](https://github.com/samwho/spacer): Insert spacers in command output
+- [starship](https://github.com/starship/starship): Minimal, fast, customizable prompt
+- [stow](https://github.com/aspiers/stow): Symlink farm manager
+- [tmux](https://github.com/tmux/tmux): Terminal multiplexer
+  - [tmux-gruvbox](https://github.com/egel/tmux-gruvbox): Gruvbox color scheme
+  - [tmux-resurrect](https://github.com/tmux-plugins/tmux-resurrect): Persist environment across restarts
+  - [tmux-window-name](https://github.com/ofirgall/tmux-window-name): Smart window naming
+  - [tpm](https://github.com/tmux-plugins/tpm): Tmux Plugin Manager
+- [zoxide](https://github.com/ajeetdsouza/zoxide): Smarter cd command
+
+### Git & Version Control
+
+- [diff-so-fancy](https://github.com/so-fancy/diff-so-fancy): Best-lookin' diffs
+- [git](https://github.com/git/git): Latest stable version
+  - [gh](https://github.com/cli/cli): GitHub's official CLI
+  - [git-absorb](https://github.com/tummychow/git-absorb): Automatic fixup commits
+  - [git-crypt](https://github.com/xendarboh/git-crypt): Transparent file encryption \[fork\]
+  - [git-filter-repo](https://github.com/newren/git-filter-repo): Rewrite git history fast
+    - gfr-bfg-ish: BFG Repo Cleaner reimplementation
+    - gfr-clean-ignore: Remove gitignored files from history
+    - gfr-insert-beginning: Insert a file at history start
+    - gfr-lint-history: Lint all non-binary files across history
+    - gfr-signed-off-by: Add Signed-off-by tags to commit range
+  - [git-lfs](https://github.com/git-lfs/git-lfs): Large file versioning
+  - [lazygit](https://github.com/jesseduffield/lazygit): Terminal UI for git
+
+### Languages & Runtimes
+
+- [Bun](https://github.com/oven-sh/bun): Fast JS runtime, bundler, test runner, package manager
+- [Deno](https://github.com/denoland/deno): Modern JavaScript/TypeScript runtime
+- [Go](https://github.com/golang/go): The Go programming language
+- [LLVM](https://github.com/llvm/llvm-project): Clang toolchain _(INSTALL_LLVM)_
+- [Nix](https://github.com/NixOS/nix): Purely functional package manager _(INSTALL_NIX)_
+- [Node.js](https://github.com/nodejs/node): JavaScript runtime
+  - [fnm](https://github.com/Schniz/fnm): Fast Node.js version manager
+  - [npm-check-updates](https://github.com/raineorshine/npm-check-updates): Find newer package versions
+  - [npm-check](https://github.com/dylang/npm-check): Check for outdated dependencies
+  - [pnpm](https://github.com/pnpm/pnpm): Fast, disk space efficient package manager
+  - [yarn](https://github.com/yarnpkg/yarn): Dependency management
+- [Rust](https://github.com/rust-lang/rust): Reliable and efficient software
+  - [cargo-edit](https://github.com/killercup/cargo-edit): Manage cargo dependencies from CLI
+  - [rust-analyzer](https://github.com/rust-lang/rust-analyzer): Rust compiler front-end for IDEs
+  - [rustup](https://github.com/rust-lang/rustup): Rust toolchain installer
+
+### ZK & Blockchain
+
+- [circom](https://github.com/iden3/circom): zkSnark circuit compiler _(INSTALL_CIRCOM)_
+- [Noir](https://github.com/noir-lang/noir): DSL for zero knowledge proofs _(INSTALL_NOIR)_
+  - [barretenberg](https://github.com/AztecProtocol/aztec-packages): ZK prover backend
+- [Solidity](https://github.com/ethereum/solidity): Smart contract language
+
+### DevOps _(INSTALL_DEVOPS)_
+
+- [Ansible](https://github.com/ansible/ansible): IT automation
+- [AWS CLI v2](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html): AWS interaction
+- [OpenTofu](https://github.com/opentofu/opentofu): Open source Terraform alternative
+- [Packer](https://github.com/hashicorp/packer): Machine image builder
+- [terraform-local](https://github.com/localstack/terraform-local): Deploy to LocalStack
+- [Terraform](https://github.com/hashicorp/terraform): Infrastructure as code
+
+### Utilities
+
+- [cpanminus](https://github.com/miyagawa/cpanminus): CPAN module installer
+- [cypress](https://github.com/cypress-io/cypress): Browser testing deps _(INSTALL_CYPRESS_DEPS)_
+- [fastmod](https://github.com/facebookincubator/fastmod): Large-scale codebase refactors
+- [fleek-cli](https://github.com/fleekhq/fleek-cli): Deploy to Fleek
+- [ImageMagick](https://github.com/ImageMagick/ImageMagick): Image manipulation
+- [kpcli](http://kpcli.sourceforge.net/): KeePass CLI
+- [ncdu](https://code.blicky.net/yorhel/ncdu): NCurses Disk Usage
+- [ninja-build](https://github.com/ninja-build/ninja): Fast build system
+- [platformio-core](https://github.com/platformio/platformio-core): Embedded development _(INSTALL_PLATFORMIO)_
+- [prettier](https://github.com/prettier/prettier): Opinionated code formatter
+- [protobuf](https://github.com/protocolbuffers/protobuf): Protocol Buffers _(INSTALL_PB)_
+  - [buf](https://github.com/bufbuild/buf): Modern protobuf workflow
+- [ranger](https://github.com/ranger/ranger): VIM-inspired file manager
+- [sqlite](https://github.com/sqlite/sqlite): SQL database engine
+- [tauri-cli](https://github.com/tauri-apps/tauri): Build desktop apps _(INSTALL_TAURI)_
+- [Tomb](https://github.com/dyne/Tomb): Crypto Undertaker _(INSTALL_TOMB)_
+- [watchexec](https://github.com/watchexec/watchexec): Execute on file changes
+- [websocat](https://github.com/vi/websocat): WebSocket CLI client
+
+### X11 Desktop
+
+- [Brave browser](https://github.com/brave/brave-browser) _(INSTALL_BROWSER_BRAVE)_
+- [Chromium](https://github.com/chromium/chromium) _(INSTALL_BROWSER_CHROMIUM)_
+- [kitty](https://github.com/kovidgoyal/kitty): GPU-accelerated terminal
+  - [kitty-gruvbox-theme](https://github.com/wdomitrz/kitty-gruvbox-theme): Gruvbox theme
+- [Nerd Fonts](https://github.com/ryanoasis/nerd-fonts): Developer fonts with icons
+  - [Hack](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/Hack): Typeface for code
+- [xclip](https://github.com/astrand/xclip): X11 clipboard CLI
+- [Xfce](https://gitlab.xfce.org/xfce): Lightweight desktop environment
+
+### Sysbox Runtime
+
+- [docker](https://github.com/docker/cli): The Docker CLI
+  - [docker-compose](https://github.com/docker/compose): Orchestrate multi-container Docker apps
+
+### Runtime Scripts
+
+Optional tools installed on-demand via [setup.d/](setup.d/):
+
+- [Aztec](https://github.com/AztecProtocol/aztec-packages): Privacy-first L2 (requires `sys` mode)
+- [WhisperX](https://github.com/m-bain/whisperX): Speech recognition with timestamps
+
+## Build
+
+### Configure
+
+Edit `.env` to set versions and enable optional tools (copy from `.env-example`).
+
+### Build Images
 
 ```sh
-x11docker --tty --interactive --clipboard --network -- xen/dev
+make build      # Full image with X11 support
+make build-tty  # TTY-only image (smaller, no X11)
+make help       # All available targets
 ```
 
-### Docker-in-Docker with Sysbox
+## Customization
 
-For running Docker inside xendev (e.g., building images, running containers), use `./xendev.sys` with the [sysbox](https://github.com/nestybox/sysbox) runtime. Sysbox provides secure, rootless Docker-in-Docker without privileged mode.
+### Dotfiles
 
-**Installation**: Follow the [sysbox installation guide](https://github.com/nestybox/sysbox/blob/master/docs/user-guide/install-package.md#installing-sysbox).
+- `conf/` — Built-in configs, shipped with xendev source, baked into image
+- `conf.local/` — Your customizations go here; gitignored, volume-mapped at runtime
 
-**Tradeoffs**:
-
-- No `--gpu=direct` (uses `--gpu` fallback)
-- No `--network=host` (uses bridged networking)
-- Secure Docker-in-Docker without `--privileged`
-- Persistent Docker storage at `~/.local/share/xendev/sysbox/var-lib-docker`
-
-### Notes
-
-- Host terminal ideally has truecolor support and a [nerd-fonts](https://github.com/ryanoasis/nerd-fonts) patched font (use scripts in [test/](test/) to verify)
-- Some applications need more privileges than x11docker provides by default; see x11docker [privilege checks](https://github.com/mviereck/x11docker#privilege-checks)
-- TTY-only mode (`xendev.tty`) works on headless servers with minimal requirements (`docker` or `podman` only)
-
-## Preferences & Philosophy
-
-- modern latest greatest terminal utilities and versions
-- reproducible personal development environment
-- default to current LTS versions
-- [FROM ubuntu](https://hub.docker.com/_/ubuntu)
-- vi-style key bindings
-- dark [gruvbox](https://github.com/morhetz/gruvbox) color scheme
-- `LOCALE=en_US.UTF-8` (overridden by x11docker)
-- analog choice of sandboxed security vs function
-
-## Tests
-
-See the shell scripts within the [test](test/) directory for tests to confirm
-host-mapped gpg support, terminal font rendering (truecolor, glyphs, italics)
-capabilities, etc.
-
-## Customization & Notes
-
-See [conf/](conf/) files.
-
-### git
-
-To include xendev git config without replacing the local, add the following to `~/.config/git/config`:
-
-```
-[includeIf "gitdir:/home/xendev"]
-  path = ~/src/xendev/conf/gitconfig
-```
-
-- facilitates same git config on host and within [xendev](./xendev) container
-- only applied to git commands run within `/home/xendev/`
-- recommendation is to share source between host/container with volume-mapped `~/src/`
-
-### Local (machine-specific) Configuration
-
-This configuration remains outside the image and is volume-mapped into the
-container at runtime.
+Both directories are [stow](https://github.com/aspiers/stow)'d to the user's home directory at container start (ex: `conf.local/.aws/` → `~/.aws/`).
 
 ```sh
 cp -a conf.local-example conf.local
 ```
 
-With the exception of `conf.local/xendev/`, the "dotfiles" of `conf.local` are [stow](https://github.com/aspiers/stowstow)'d in the user's homedir. For example, `conf.local/.xyz` gets symlinked from `~/.xyz`.
+Notable files in `conf.local/`, for example:
 
-Notable local conf files may include:
+| File                       | Purpose                                             |
+| :------------------------- | :-------------------------------------------------- |
+| `xendev/bash.sh`           | Custom env vars (`GH_TOKEN`, `FLEEK_API_KEY`, etc.) |
+| `xendev/directory_map.txt` | Path mappings for tmux/kitty CWD preservation       |
+| `.aicommits`               | aicommits configuration                             |
+| `.wakatime.cfg`            | Wakatime/Wakapi config                              |
+| `.aws/`                    | AWS credentials                                     |
 
-- `conf.local/xendev/bash.sh`: use to set custom config like `GH_TOKEN` or `FLEEK_API_KEY`
-- `conf.local/xendev/directory_map.txt`
-  - a list of `from:to` directory mappings to preserve current working directory
-    in new windows (since tmux/kitty does not handle preserved symlinked directories)
-  - you likely want a directory mapping for `/home/xendev:/home/<USER>`
-- `conf.local/.aicommits`: aicommits configuration
-- `conf.local/.wakatime.cfg`: wakatime or [wakapi](https://github.com/muety/wakapi) configuration
-- `conf.local/.aws`: preserve local aws credentials... or anything else in this manner
+### Git Config
+
+Include xendev's git config conditionally:
+
+```gitconfig
+# ~/.config/git/config
+[includeIf "gitdir:/home/xendev"]
+  path = ~/src/xendev/conf/gitconfig
+```
+
+### Tests
+
+Verify terminal capabilities with scripts in [test/](test/):
+
+```sh
+./test/truecolor.sh  # Terminal color support
+./test/glyphs.sh     # Nerd font rendering
+./test/italics.sh    # Italic text
+./test/gpg.sh        # GPG volume mapping
+```
