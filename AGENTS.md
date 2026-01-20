@@ -151,7 +151,7 @@ test/                      # Manual verification scripts
 
 1. **GNU Stow**: Configs use stow for symlinks. Files in `conf/` become `~/.file`.
 2. **Shell behavior**: Bash auto-drops into Fish (see `.bash_xendev` lines 101-104).
-3. **x11docker**: Launcher scripts use `--user=RETAIN` to preserve host UID.
+3. **x11docker**: The `./xendev` launcher uses `--user=RETAIN` to preserve host UID.
 4. **No package.json**: Build system is Make + Docker Compose.
 5. **No `make` for agents**: AI agents must not run build commands.
 
@@ -164,7 +164,39 @@ test/                      # Manual verification scripts
    1. add `INSTALL_*` ARG and conditional block
    2. Update `.env-example` with the new `INSTALL_*` or `VERSION_*` variable
    3. Update `docker-compose.yml` to pass the new ARG to the build
-3. Update `README.md` — add tool with GitHub link, following existing format
+3. Update `README.md` — add tool to the appropriate section in "Tools"
+
+#### README.md Tool List Format
+
+The Tools section is an **Awesome-List** style curated collection with strict conventions:
+
+**Organization**: Tools are grouped into sections (Editor & Plugins, AI/Agentic Coding, Shell & Terminal, etc.)
+
+**Ordering**: **Case-insensitive alphabetical order** within each section (e.g., `Bun`, `Deno`, `Go`)
+
+**Entry format**:
+```markdown
+- [ToolName](https://github.com/org/repo): Brief description
+```
+
+**Optional tools** (controlled by build ARGs): Append `_(INSTALL_*)_` suffix:
+```markdown
+- [Nix](https://github.com/NixOS/nix): Purely functional package manager _(INSTALL_NIX)_
+```
+
+**Sub-tools** (plugins, extensions): Indent under parent:
+```markdown
+- [fish-shell](https://github.com/fish-shell/fish-shell): User-friendly command line shell
+  - [fisher](https://github.com/jorgebucaran/fisher): Plugin manager for Fish
+  - [fish-gruvbox](https://github.com/Jomik/fish-gruvbox): Gruvbox theme
+```
+
+**Example placement**: To add `htop`, find the Utilities section, then insert alphabetically between existing entries:
+```markdown
+- [ImageMagick](...)
+- [htop](https://github.com/htop-dev/htop): Interactive process viewer  ← insert here
+- [kpcli](...)
+```
 
 ### Update tool versions
 
