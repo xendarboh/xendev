@@ -108,6 +108,7 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
 - [claude-code](https://github.com/anthropics/claude-code): Agentic coding tool in your terminal
 - [OpenCode](https://github.com/anomalyco/opencode): Open source coding agent _(INSTALL_OPENCODE)_
   - [oh-my-opencode](https://github.com/code-yeongyu/oh-my-opencode): Batteries-included agent harness
+  - [opencode-wakatime](https://github.com/angristan/opencode-wakatime): OpenCode usage time tracking
 - [repomix](https://github.com/yamadashy/repomix): Pack repository into AI-friendly file
 
 ### Shell & Terminal

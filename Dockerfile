@@ -566,6 +566,7 @@ RUN \
     curl -fsSL https://opencode.ai/install | bash \
     && export PATH=/home/${_USER}/.opencode/bin:${PATH} \
     && bunx oh-my-opencode install --no-tui ${OPTIONS_OHMYOPENCODE} \
+    && sudo npm i -g opencode-wakatime && opencode-wakatime --install \
   ; fi
 
 # install extra bash things
