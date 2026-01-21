@@ -1,0 +1,29 @@
+# tinty configuration
+# https://github.com/tinted-theming/tinty
+
+default-scheme = "base24-tokyo-night-dark"
+preferred-schemes = ["base24-gruvbox-dark-hard", "base24-tokyo-night-dark"]
+shell = "sh -c '{}'"
+
+# tinted-shell: Updates terminal colors via OSC escape sequences
+[[items]]
+name = "tinted-shell"
+path = "https://github.com/tinted-theming/tinted-shell"
+themes-dir = "scripts"
+hook = ". %f"
+
+# tinted-tmux: Applies theme to tmux status bar and panes
+[[items]]
+name = "tinted-tmux"
+path = "https://github.com/tinted-theming/tinted-tmux"
+themes-dir = "colors"
+hook = "tmux run 2> /dev/null && tmux source-file %f"
+
+# tinted-kitty: Applies theme to kitty terminal
+# https://github.com/tinted-theming/tinted-terminal?tab=readme-ov-file#kitty
+[[items]]
+name = "tinted-terminal"
+path = "https://github.com/tinted-theming/tinted-terminal"
+themes-dir = "themes/kitty"
+hook = "kitten @ load-config"
+supported-systems = ["base16", "base24"]

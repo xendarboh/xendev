@@ -28,7 +28,7 @@ make build
 
 - Open Source!
 - Latest greatest terminal tools, LTS versions, vi-bindings
-- Dark themes: [gruvbox](https://github.com/morhetz/gruvbox), [tokyonight](https://github.com/folke/tokyonight.nvim)
+- Unified theming via [tinty](https://github.com/tinted-theming/tinty) with native Neovim colorscheme sync
 - Reproducible environment from [Ubuntu](https://hub.docker.com/_/ubuntu) base
 - Security via sandboxing with analog control over isolation vs. functionality
 
@@ -96,10 +96,13 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
   - [LazyVim](https://github.com/LazyVim/LazyVim): Neovim config for the lazy _(INSTALL_NVIM_LAZYVIM)_
     - [avante.nvim](https://github.com/yetone/avante.nvim): Use your Neovim like using Cursor AI IDE!
     - [better-escape.nvim](https://github.com/max397574/better-escape.nvim): Escape from insert mode without delay
+    - [gruvbox.nvim](https://github.com/ellisonleao/gruvbox.nvim): Gruvbox colorscheme
     - [markdown-preview.nvim](https://github.com/iamcco/markdown-preview.nvim): Markdown preview plugin
     - [noir.nvim](https://github.com/noir-lang/noir-nvim): Syntax highlighting and LSP for Noir
     - [nx.nvim](https://github.com/Equilibris/nx.nvim): NX console features for Neovim
     - [smart-splits.nvim](https://github.com/mrjones2014/smart-splits.nvim): Seamless navigation and resizing
+    - [tinted-nvim](https://github.com/tinted-theming/tinted-nvim): Tinty colorscheme sync with native fallback
+    - [tokyonight.nvim](https://github.com/folke/tokyonight.nvim): Tokyo Night colorscheme
     - [wakatime.nvim](https://github.com/wakatime/vim-wakatime): Automatic time tracking
 
 ### AI/Agentic Coding
@@ -117,7 +120,6 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
 - [fd](https://github.com/sharkdp/fd): Simple, fast alternative to 'find'
 - [fish-shell](https://github.com/fish-shell/fish-shell): User-friendly command line shell
   - [fish-exa](https://github.com/gazorby/fish-exa): exa aliases for fish
-  - [fish-gruvbox](https://github.com/Jomik/fish-gruvbox): Gruvbox theme
   - [fish-nx](https://github.com/jukben/fish-nx): Fish completions for Nx
   - [fisher](https://github.com/jorgebucaran/fisher): Plugin manager for Fish
   - [nix-env.fish](https://github.com/lilyball/nix-env.fish): Nix environment for fish _(INSTALL_NIX)_
@@ -128,8 +130,8 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
 - [spacer](https://github.com/samwho/spacer): Insert spacers in command output
 - [starship](https://github.com/starship/starship): Minimal, fast, customizable prompt
 - [stow](https://github.com/aspiers/stow): Symlink farm manager
+- [tinty](https://github.com/tinted-theming/tinty): Unified colorscheme manager for 70+ apps
 - [tmux](https://github.com/tmux/tmux): Terminal multiplexer
-  - [tmux-gruvbox](https://github.com/egel/tmux-gruvbox): Gruvbox color scheme
   - [tmux-resurrect](https://github.com/tmux-plugins/tmux-resurrect): Persist environment across restarts
   - [tmux-window-name](https://github.com/ofirgall/tmux-window-name): Smart window naming
   - [tpm](https://github.com/tmux-plugins/tpm): Tmux Plugin Manager
@@ -211,7 +213,6 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
 - [Brave browser](https://github.com/brave/brave-browser) _(INSTALL_BROWSER_BRAVE)_
 - [Chromium](https://github.com/chromium/chromium) _(INSTALL_BROWSER_CHROMIUM)_
 - [kitty](https://github.com/kovidgoyal/kitty): GPU-accelerated terminal
-  - [kitty-gruvbox-theme](https://github.com/wdomitrz/kitty-gruvbox-theme): Gruvbox theme
 - [Nerd Fonts](https://github.com/ryanoasis/nerd-fonts): Developer fonts with icons
   - [Hack](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/Hack): Typeface for code
 - [xclip](https://github.com/astrand/xclip): X11 clipboard CLI
@@ -274,6 +275,21 @@ Include xendev's git config conditionally:
 # ~/.config/git/config
 [includeIf "gitdir:/home/xendev"]
   path = ~/src/xendev/conf/gitconfig
+```
+
+### Themes
+
+Colorschemes are managed by [tinty](https://github.com/tinted-theming/tinty), providing unified theming across apps.
+
+Set `OPTIONS_THEME` in `.env` for the image build-time default.
+
+Neovim listens for theme changes and applies the corresponding native plugin (tokyonight, gruvbox) when available.
+
+**Change theme at runtime:**
+
+```sh
+tinty cycle                          # cycle through preferred schemes
+tinty apply base24-tokyo-night-dark  # or any scheme from `tinty list`
 ```
 
 ### Tests

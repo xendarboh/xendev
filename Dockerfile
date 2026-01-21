@@ -578,7 +578,6 @@ RUN curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/function
     | source \
   && fisher install \
     gazorby/fish-exa \
-    jomik/fish-gruvbox \
     jukben/fish-nx \
     jorgebucaran/fisher
 SHELL ["/bin/bash", "--login", "-c"]
@@ -688,6 +687,23 @@ RUN cd /tmp \
   && cd smart-splits.nvim \
   && ./kitty/install-kittens.bash \
   && rm -rf /tmp/smart-splits.nvim
+
+# install tinty, sync schemes/templates, and apply a theme
+# tinty expects a ~/.config/ file, so run this after stow
+ARG OPTIONS_THEME
+RUN \
+  cargo binstall \
+    --continue-on-failure \
+    --disable-telemetry \
+    --locked \
+    tinty \
+  && tinty sync \
+  # symlink our custom schemes, as they only work in tinty data-dir
+  && export D="tinted-theming/tinty/custom-schemes" && ln -sfn /home/${_USER}/.config/${D} ~/.local/share/${D} \
+  # apply configured theme system wide
+  && tinty apply ${OPTIONS_THEME} \
+  # relocate tinty data-dir as ~/.local/share/ is commonly volume-mapped for persistence
+  && mv ~/.local/share/tinted-theming/tinty ~/.tinty
 
 # set nvim distribution
 ARG OPTIONS_NVIM_APPNAME

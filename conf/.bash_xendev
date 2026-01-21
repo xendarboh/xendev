@@ -50,6 +50,14 @@ eval "$(zoxide init bash)"
 # zoxide: When set to 1, z will print the matched directory before navigating to it.
 export _ZO_ECHO=1
 
+# symlink to tinty data-dir baked into the image so it exists upon ~/.local/share/ volume mount
+D=~/.local/share/tinted-theming
+if [ ! -e ${D}/tinty ]; then
+  mkdir -p ${D}
+  ln -sfn ~/.tinty ${D}/tinty
+  tinty apply $(tinty current) # (re)apply current theme for the terminal (kitty)
+fi
+
 # Workaround opencode's re-creation of file(s) that break stow symlinks
 F=~/.config/opencode/antigravity-accounts.json && test ! -L ${F} && rm -f ${F}
 
@@ -103,4 +111,4 @@ then
   exec fish
 fi
 
-# vim:syntax=sh
+# vim: ft=sh

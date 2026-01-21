@@ -39,6 +39,7 @@ services:
         - INSTALL_TOMB
         - OPTIONS_NVIM_APPNAME
         - OPTIONS_OHMYOPENCODE
+        - OPTIONS_THEME
         - VERSION_FISH
         - VERSION_KPCLI
         - VERSION_LLVM

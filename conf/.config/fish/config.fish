@@ -4,13 +4,12 @@ end
 
 command -q buf && buf completion fish | source
 command -q nargo && nargo generate-completion-script fish | source
+command -q tinty && tinty generate-completion fish | source
 fnm completions --shell fish | source
 fnm env | source
 git-absorb --gen-completions fish | source
 starship init fish | source
 zoxide init fish | source
-
-theme_gruvbox dark hard
 
 # gpg needs this
 export GPG_TTY=(tty)
@@ -88,6 +87,7 @@ abbr b 'git branch -av'
 abbr s 'git status'
 abbr gl 'git log --show-signature'
 abbr lz lazygit
+abbr tc 'tinty cycle'
 
 # INSTALL_BROWSER_BRAVE
 command -v brave-browser >/dev/null && abbr brave-browser 'brave-browser --no-sandbox'

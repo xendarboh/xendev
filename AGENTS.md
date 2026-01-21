@@ -138,6 +138,7 @@ conf/                      # Built-in dotfiles (stowed during build)
   .bash_aliases            # Shell aliases
   .config/nvim-lazyvim/    # Neovim LazyVim distribution
   .config/fish/            # Fish shell config
+  .config/tinted-theming/  # Tinty colorscheme config
   .tmux.conf               # Tmux configuration
 
 conf.local/                # User dotfiles (gitignored, stowed during runtime)
@@ -188,7 +189,7 @@ The Tools section is an **Awesome-List** style curated collection with strict co
 ```markdown
 - [fish-shell](https://github.com/fish-shell/fish-shell): User-friendly command line shell
   - [fisher](https://github.com/jorgebucaran/fisher): Plugin manager for Fish
-  - [fish-gruvbox](https://github.com/Jomik/fish-gruvbox): Gruvbox theme
+  - [fish-exa](https://github.com/gazorby/fish-exa): exa aliases for fish
 ```
 
 **Example placement**: To add `htop`, find the Utilities section, then insert alphabetically between existing entries:
@@ -214,3 +215,19 @@ The Tools section is an **Awesome-List** style curated collection with strict co
 1. Create `conf/.config/nvim-lazyvim/lua/plugins/<plugin-name>.lua`
 2. Follow existing plugin patterns (return table with plugin spec)
 3. Update `README.md` if it's a notable addition
+
+### Theming
+
+Colorschemes are managed by [tinty](https://github.com/tinted-theming/tinty), providing unified theming across kitty, tmux, and Neovim.
+
+**Key files:**
+- `conf/.config/tinted-theming/tinty/config.toml` — tinty item configs (shell, tmux, kitty)
+- `conf/.config/nvim-lazyvim/lua/plugins/colorscheme.lua` — Neovim theme sync with native plugin fallback
+- `.env-example` `OPTIONS_THEME` — build-time default theme
+
+**How it works:**
+1. `tinty apply <scheme>` propagates colors to all configured apps via hooks
+2. Neovim listens for `TintedColorsPost` event (via tinted-nvim plugin) and applies native plugins (gruvbox.nvim, tokyonight.nvim) when available
+3. Neovim falls back to tinty-provided generic theme when no native plugin matches
+
+**Preferred schemes** (have native Neovim plugins): `base24-gruvbox-dark-hard`, `base24-tokyo-night-dark`

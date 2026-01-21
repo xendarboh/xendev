@@ -151,15 +151,6 @@ RUN \
   && sed -i "s|Icon=kitty|Icon=${DEST}/kitty.app/share/icons/hicolor/256x256/apps/kitty.png|g" ${DEST}/share/applications/kitty*.desktop \
   && sed -i "s|Exec=kitty|Exec=${DEST}/kitty.app/bin/kitty|g" ${DEST}/share/applications/kitty*.desktop
 
-# install kitty gruvbox themes
-RUN \
-  mkdir -p ${DEST}/kitty.app/themes \
-  && cd ${DEST}/kitty.app/themes \
-  && curl -LO https://github.com/wdomitrz/kitty_gruvbox_theme/archive/refs/heads/master.zip \
-  && unzip master.zip \
-  && mv kitty_gruvbox_theme-master gruvbox \
-  && rm -f master.zip
-
 # install NerdFonts
 RUN \
   mkdir -p /usr/local/share/fonts/NerdFonts \
