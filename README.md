@@ -52,10 +52,12 @@ The `./xendev` launcher provides an interactive menu (via `rofi`, `dmenu`, or `f
 
 | Mode  | Description                                                       | X11 |   GPU    | Use Case                           |
 | ----- | ----------------------------------------------------------------- | :-: | :------: | ---------------------------------- |
-| `max` | Full access, direct GPU                                           | Yes |  Direct  | Daily development                  |
-| `min` | Restricted host access                                            | Yes | Fallback | Sandboxed agents, untrusted code   |
+| `max` | Most host integration, direct GPU                                 | Yes |  Direct  | Daily development                  |
+| `min` | Minimal host integration, fallback GPU                            | Yes | Fallback | Sandboxed agents, untrusted code   |
 | `sys` | Docker-in-Docker via [sysbox](https://github.com/nestybox/sysbox) | Yes | Fallback | Stronger isolation, run containers |
 | `tty` | TTY-only, no X11                                                  | No  |    No    | Headless servers, SSH sessions     |
+
+All modes are containerized and sandboxed; the difference is capability and host integration.
 
 **Selector**: The launcher probes for an available selector. Override with `XENDEV_SELECTOR` or `./xendev -s fzf`.
 
