@@ -2,6 +2,7 @@ if status is-interactive
     # Commands to run in interactive sessions can go here
 end
 
+command -q bat && bat --completion fish | source
 command -q buf && buf completion fish | source
 command -q nargo && nargo generate-completion-script fish | source
 command -q tinty && tinty generate-completion fish | source

@@ -166,6 +166,12 @@ test/                      # Manual verification scripts
    2. Update `.env-example` with the new `INSTALL_*` or `VERSION_*` variable
    3. Update `docker-compose.yml` to pass the new ARG to the build
 3. Update `README.md` — add tool to the appropriate section in "Tools"
+4. If the tool supports shell completions:
+   - Add to `conf/.config/fish/config.fish`: `command -q <tool> && <tool> --completion fish | source`
+   - Follow existing patterns (guard with `command -q`, use tool's completion flag)
+5. If tool supports tinty/base16/base24 theming:
+   - Add item to `conf/.config/tinted-theming/tinty/config.toml` if official tinted template exists
+   - And/or add configuration for the tool (likely in `conf/.config/<tool>/`)
 
 #### README.md Tool List Format
 

@@ -118,6 +118,7 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
 
 ### Shell & Terminal
 
+- [bat](https://github.com/sharkdp/bat): A cat(1) clone with syntax highlighting
 - [exa](https://github.com/ogham/exa): Modern replacement for 'ls'
 - [fd](https://github.com/sharkdp/fd): Simple, fast alternative to 'find'
 - [fish-shell](https://github.com/fish-shell/fish-shell): User-friendly command line shell

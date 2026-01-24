@@ -429,6 +429,7 @@ RUN \
     --continue-on-failure \
     --disable-telemetry \
     --locked \
+    bat \
     cargo-edit \
     exa \
     fastmod \

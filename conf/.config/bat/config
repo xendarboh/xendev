@@ -1,0 +1,2 @@
+# Use base16-256 theme to sync with tinted-shell/tinty terminal palette
+--theme=base16-256
