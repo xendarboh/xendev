@@ -562,11 +562,12 @@ RUN git clone \
 # install opencode
 ARG INSTALL_OPENCODE=0
 ARG OPTIONS_OHMYOPENCODE
+ARG VERSION_OHMYOPENCODE
 RUN \
   if [ "${INSTALL_OPENCODE}" = "1" ]; then \
     curl -fsSL https://opencode.ai/install | bash \
     && export PATH=/home/${_USER}/.opencode/bin:${PATH} \
-    && bunx oh-my-opencode install --no-tui ${OPTIONS_OHMYOPENCODE} \
+    && bunx oh-my-opencode@${VERSION_OHMYOPENCODE} install --no-tui ${OPTIONS_OHMYOPENCODE} \
     && sudo npm i -g opencode-wakatime && opencode-wakatime --install \
   ; fi
 
