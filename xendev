@@ -133,7 +133,9 @@ mode_tty() {
 }
 
 main() {
-  # 1. Action Selection
+  #---------------------------------------------------------------------------
+  # 1. Action Selection — attach to existing container or create new instance
+  #---------------------------------------------------------------------------
   mapfile -t options < <(
     echo "+ New Instance"
     docker ps --filter "name=^${CONTAINER_PREFIX}-" --format '{{.Names}} │ {{.Label "xendev.mode"}}' 2>/dev/null || true
@@ -142,7 +144,9 @@ main() {
   [[ -z "$sel" ]] && exit 0
   [[ "$sel" != "+ New Instance" ]] && { exec docker exec -it "${sel%% *}" /bin/bash; }
 
-  # 2. Mode Selection
+  #---------------------------------------------------------------------------
+  # 2. Mode Selection — choose environment preset (max, min, sys, tty)
+  #---------------------------------------------------------------------------
   modes=($(declare -F | grep "mode_" | cut -d_ -f2-))
   m_sel=$(ui "Mode" <<<"$(for m in "${modes[@]}"; do (
     "mode_$m"
@@ -151,11 +155,15 @@ main() {
   [[ -z "$m_sel" ]] && exit 0
   mode="${m_sel%% *}"
 
-  # 3. Container Name Selection (pre-filled)
+  #---------------------------------------------------------------------------
+  # 3. Container Name — pre-filled with mode-based default
+  #---------------------------------------------------------------------------
   inst=$(ui "Container Name" "${CONTAINER_PREFIX}-$mode-" <<<"")
   [[ -z "$inst" ]] && inst="${CONTAINER_PREFIX}-$mode"
 
-  # 4. Stateful Mount Selection Loop
+  #---------------------------------------------------------------------------
+  # 4. Mount Selection — toggle volume mounts before launching
+  #---------------------------------------------------------------------------
   "mode_$mode"
   declare -A selected
   for i in "${!MOUNTS[@]}"; do
@@ -190,7 +198,9 @@ main() {
     done
   done
 
-  # 5. Build & Launch
+  #---------------------------------------------------------------------------
+  # 5. Build Command & Confirm Launch
+  #---------------------------------------------------------------------------
   vol_args=()
   for i in "${!selected[@]}"; do
     IFS=':' read -r src dst tag <<<"${MOUNTS[$i]}"
@@ -205,9 +215,14 @@ main() {
     cmd="x11docker --name $inst ${ARGS_X11DOCKER[*]} -- ${ARGS_DOCKER[*]} ${vol_args[*]} -- $IMAGE $SHELL_CMD $inst" ||
     cmd="docker run -it --rm --name $inst ${ARGS_DOCKER[*]} ${vol_args[*]} $IMAGE $SHELL_CMD"
 
-  echo -e "\n\033[1;32mGenerated Command:\033[0m\n$cmd\n"
-  read -p "Launch? [Y/n] " confirm
-  [[ "${confirm,,}" == "y" || -z "$confirm" ]] && eval "$cmd"
+  # TTY: show command and prompt; GUI: auto-launch
+  if [[ -t 0 && -t 1 ]]; then
+    echo -e "\n\033[1;32mGenerated Command:\033[0m\n$cmd\n"
+    read -p "Launch? [Y/n] " confirm
+    [[ "${confirm,,}" == "y" || -z "$confirm" ]] && eval "$cmd"
+  else
+    eval "$cmd"
+  fi
 }
 
 main
