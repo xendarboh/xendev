@@ -163,9 +163,6 @@ RUN \
     && rm -f NerdFontsSymbolsOnly.zip \
   && fc-cache -vr /usr/local/share/fonts
 
-# configure kitty
-COPY ./conf/.config/kitty/kitty.conf /etc/skel/.config/kitty/kitty.conf
-
 # https://brave.com/linux/
 ARG INSTALL_BROWSER_BRAVE=0
 ENV INSTALL_BROWSER_BRAVE=${INSTALL_BROWSER_BRAVE}

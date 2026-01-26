@@ -657,7 +657,6 @@ COPY --chown=${_USER}:${_USER} . ${XENDEV_DIR}
 RUN \
   # stash original files before replacing with symlinks to our custom config files
   files_to_stash=( \
-    /home/${_USER}/.config/kitty/kitty.conf \
     /home/${_USER}/.config/opencode/oh-my-opencode.json \
     /home/${_USER}/.config/opencode/opencode.json \
   ) \
@@ -666,6 +665,7 @@ RUN \
   done \
   # create dirs so stow symlinks files and not dirs
   && mkdir -p \
+    /home/${_USER}/.config/kitty \
     /home/${_USER}/.config/lazygit \
     /home/${_USER}/.config/opencode \
   # stow the conf files!
