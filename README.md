@@ -118,6 +118,7 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
 
 ### Shell & Terminal
 
+- [ack](https://github.com/beyondgrep/ack3): Grep-like tool for searching code
 - [bat](https://github.com/sharkdp/bat): A cat(1) clone with syntax highlighting
 - [exa](https://github.com/ogham/exa): Modern replacement for 'ls'
 - [fd](https://github.com/sharkdp/fd): Simple, fast alternative to 'find'
@@ -127,6 +128,7 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
   - [fisher](https://github.com/jorgebucaran/fisher): Plugin manager for Fish
   - [nix-env.fish](https://github.com/lilyball/nix-env.fish): Nix environment for fish _(INSTALL_NIX)_
 - [fzf](https://github.com/junegunn/fzf): Command-line fuzzy finder
+- [htop](https://github.com/htop-dev/htop): Interactive process viewer
 - [jq](https://github.com/stedolan/jq): Command-line JSON processor
 - [ripgrep](https://github.com/BurntSushi/ripgrep): Fast regex search respecting gitignore
 - [silversearcher-ag](https://github.com/ggreer/the_silver_searcher): Code search faster than ack
@@ -138,6 +140,7 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
   - [tmux-resurrect](https://github.com/tmux-plugins/tmux-resurrect): Persist environment across restarts
   - [tmux-window-name](https://github.com/ofirgall/tmux-window-name): Smart window naming
   - [tpm](https://github.com/tmux-plugins/tpm): Tmux Plugin Manager
+- [tree](https://github.com/Old-Man-Programmer/tree): Directory tree viewer
 - [zoxide](https://github.com/ajeetdsouza/zoxide): Smarter cd command
 
 ### Git & Version Control
@@ -169,6 +172,8 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
   - [npm-check](https://github.com/dylang/npm-check): Check for outdated dependencies
   - [pnpm](https://github.com/pnpm/pnpm): Fast, disk space efficient package manager
   - [yarn](https://github.com/yarnpkg/yarn): Dependency management
+- [Ruby](https://github.com/ruby/ruby): Dynamic programming language
+  - [rake](https://github.com/ruby/rake): Ruby build automation tool
 - [Rust](https://github.com/rust-lang/rust): Reliable and efficient software
   - [cargo-edit](https://github.com/killercup/cargo-edit): Manage cargo dependencies from CLI
   - [rust-analyzer](https://github.com/rust-lang/rust-analyzer): Rust compiler front-end for IDEs
@@ -208,6 +213,7 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
 - [sqlite](https://github.com/sqlite/sqlite): SQL database engine
 - [tauri-cli](https://github.com/tauri-apps/tauri): Build desktop apps _(INSTALL_TAURI)_
 - [Tomb](https://github.com/dyne/Tomb): Crypto Undertaker _(INSTALL_TOMB)_
+- [tree-sitter-cli](https://github.com/tree-sitter/tree-sitter/tree/master/crates/cli): Parser generator for syntax trees
 - [watchexec](https://github.com/watchexec/watchexec): Execute on file changes
 - [websocat](https://github.com/vi/websocat): WebSocket CLI client
 
@@ -220,6 +226,9 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
   - [Hack](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/Hack): Typeface for code
 - [xclip](https://github.com/astrand/xclip): X11 clipboard CLI
 - [Xfce](https://gitlab.xfce.org/xfce): Lightweight desktop environment
+  - [xfce4-notifyd](https://docs.xfce.org/apps/notifyd/start): Desktop notification daemon
+  - [xfce4-taskmanager](https://docs.xfce.org/apps/xfce4-taskmanager/start): Process/task manager
+  - [xfce4-terminal](https://docs.xfce.org/apps/terminal/start): Terminal emulator
 
 ### Sysbox Runtime
 
