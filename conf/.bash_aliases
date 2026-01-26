@@ -17,9 +17,6 @@ alias view='nvim -R'
 # edit files of specified git status, for example "vimgit M" to open all modified files
 vimgit() { nvim ${@:2} $(git status --porcelain | grep "$1 " | awk '{print $2}'); }
 
-# taskbook: set custom home dir, enforce color (for pipe to less)
-alias tb='clear; HOME=~/src/ tb --color=always'
-
 # https://www.topbug.net/blog/2016/09/27/make-gnu-less-more-powerful/
 alias less='less -F -i -J -M -R -W -x4 -X -z-4'
 
