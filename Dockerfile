@@ -655,11 +655,15 @@ COPY --chown=${_USER}:${_USER} . ${XENDEV_DIR}
 
 # link configuration files so that a mounted volume may override at container execution time
 RUN \
-  # replace files with symlinks to our custom config files
-  rm -f \
+  # stash original files before replacing with symlinks to our custom config files
+  files_to_stash=( \
     /home/${_USER}/.config/kitty/kitty.conf \
     /home/${_USER}/.config/opencode/oh-my-opencode.json \
     /home/${_USER}/.config/opencode/opencode.json \
+  ) \
+  && for file in "${files_to_stash[@]}"; do \
+    mkdir -p ~/.xendev/stash/$(dirname "$file") && mv "$file" ~/.xendev/stash/$(dirname "$file")/; \
+  done \
   # create dirs so stow symlinks files and not dirs
   && mkdir -p \
     /home/${_USER}/.config/lazygit \
