@@ -294,7 +294,6 @@ ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 
 # install node things
 RUN npm install --global \
-    @anthropic-ai/claude-code \
     @fleek-platform/cli \
     aicommits \
     diff-so-fancy \
@@ -556,6 +555,12 @@ RUN git clone \
   && ~/.fzf/install \
     --all \
     --no-zsh
+
+# install claude code
+RUN \
+  --mount=type=cache,id=dlu,target=/dlu,sharing=locked,uid=${_USER_ID} \
+  wget -qN -P /dlu/claude-code https://claude.ai/install.sh \
+  && bash /dlu//claude-code/install.sh
 
 # install opencode
 ARG INSTALL_OPENCODE=0
