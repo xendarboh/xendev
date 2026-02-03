@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 # A Dockerfile extending xen/dev with sysbox compatibility.
 
 FROM xen/dev
@@ -5,7 +7,10 @@ FROM xen/dev
 USER root
 
 # install docker
-RUN apt update \
+RUN \
+  --mount=type=cache,id=apt-archives,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,id=apt-lists,target=/var/lib/apt,sharing=locked \
+  apt update \
   # install iptables to avoid held packages error
   && apt install -y -q \
   --allow-change-held-packages \
@@ -14,8 +19,7 @@ RUN apt update \
   # https://docs.docker.com/engine/install/ubuntu/#install-using-the-convenience-script
   && curl -fsSL https://get.docker.com -o install-docker.sh \
   && sh ./install-docker.sh \
-  && rm -f ./install-docker.sh \
-  && rm -rf /var/lib/apt/lists/*
+  && rm -f ./install-docker.sh
 
 RUN usermod -aG docker ${XENDEV_USER}
 

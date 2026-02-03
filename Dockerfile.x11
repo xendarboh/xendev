@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 ########################################################################
 # https://github.com/mviereck/dockerfile-x11docker-xfce
 ########################################################################
@@ -34,7 +36,14 @@ FROM ${IMAGE_BASE}
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get update \
+# Cache downloaded .deb files to speed up repeated builds
+RUN rm -f /etc/apt/apt.conf.d/docker-clean \
+  && echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache
+
+RUN \
+  --mount=type=cache,id=apt-archives,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,id=apt-lists,target=/var/lib/apt,sharing=locked \
+  apt-get update \
   && apt-mark hold iptables \
   && apt-get install -y -q --no-install-recommends \
       dbus-x11 \
@@ -74,7 +83,7 @@ RUN apt-get update \
       libxv1 \
       mesa-utils \
       mesa-utils-extra \
-  && rm -rf /var/lib/apt/lists/*
+  && true
 
 RUN sed -i \
     's%<property name="ThemeName" type="string" value="Xfce"/>%<property name="ThemeName" type="string" value="Raleigh"/>%' \
@@ -111,7 +120,10 @@ CMD start
 # xendev
 ########################################################################
 
-RUN apt update \
+RUN \
+  --mount=type=cache,id=apt-archives,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,id=apt-lists,target=/var/lib/apt,sharing=locked \
+  apt update \
   && apt install --no-install-recommends -y -q \
     # base
     apt-transport-https \
@@ -132,7 +144,7 @@ RUN apt update \
     xz-utils \
     # NOTE: this enables nvim-invoked lazygit gpg signing to work
     pinentry-gtk2 \
-  && rm -rf /var/lib/apt/lists/*
+  && true
 
 # https://sw.kovidgoyal.net/kitty/binary/#desktop-integration-on-linux
 ENV DEST=/usr/local
@@ -167,6 +179,8 @@ RUN \
 ARG INSTALL_BROWSER_BRAVE=0
 ENV INSTALL_BROWSER_BRAVE=${INSTALL_BROWSER_BRAVE}
 RUN \
+  --mount=type=cache,id=apt-archives,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,id=apt-lists,target=/var/lib/apt,sharing=locked \
   if [ "${INSTALL_BROWSER_BRAVE}" = "1" ]; then \
     curl -fsSLO "https://dl.brave.com/install.sh{,.asc}" \
     && gpg \
@@ -176,16 +190,16 @@ RUN \
     && chmod u+x ./install.sh \
     && ./install.sh \
     && rm -f ./install.sh* \
-    && rm -rf /var/lib/apt/lists/* \
   ; fi
 
 ARG INSTALL_BROWSER_CHROMIUM=0
 ENV INSTALL_BROWSER_CHROMIUM=${INSTALL_BROWSER_CHROMIUM}
 RUN \
+  --mount=type=cache,id=apt-archives,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,id=apt-lists,target=/var/lib/apt,sharing=locked \
   if [ "${INSTALL_BROWSER_CHROMIUM}" = "1" ]; then \
     add-apt-repository -y ppa:savoury1/chromium \
     && apt update \
     && apt install -y -q --no-install-recommends \
       chromium-browser \
-    && rm -rf /var/lib/apt/lists/* \
   ; fi

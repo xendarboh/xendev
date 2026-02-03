@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 ARG IMAGE_BASE=
 FROM ${IMAGE_BASE}
 
@@ -17,11 +19,18 @@ ENV XENDEV_DIR=/home/${_USER}/src/xendev
 # use the "noninteractive" debconf frontend
 ENV DEBIAN_FRONTEND=noninteractive
 
+# Cache downloaded .deb files to speed up repeated builds
+RUN rm -f /etc/apt/apt.conf.d/docker-clean \
+  && echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache
+
 # use bash for RUN commands
 SHELL ["/bin/bash", "--login", "-c"]
 
 # install things
-RUN apt update \
+RUN \
+  --mount=type=cache,id=apt-archives,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,id=apt-lists,target=/var/lib/apt,sharing=locked \
+  apt update \
   # install some apt related things first
   && apt install --no-install-recommends -y -q \
     apt-transport-https \
@@ -71,7 +80,7 @@ RUN apt update \
     libreadline-dev \
     xclip \
     zlib1g-dev \
-  && rm -rf /var/lib/apt/lists/*
+  && true
 
 # set locale
 RUN locale-gen ${_LOCALE} \
@@ -79,19 +88,23 @@ RUN locale-gen ${_LOCALE} \
 
 # install latest fish
 ARG VERSION_FISH
-RUN apt-add-repository ppa:fish-shell/${VERSION_FISH} \
+RUN \
+  --mount=type=cache,id=apt-archives,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,id=apt-lists,target=/var/lib/apt,sharing=locked \
+  apt-add-repository ppa:fish-shell/${VERSION_FISH} \
   && apt update \
   && apt install --no-install-recommends -y -q \
-    fish \
-  && rm -rf /var/lib/apt/lists/*
+    fish
 
 # install latest git
-RUN apt-add-repository ppa:git-core/ppa \
+RUN \
+  --mount=type=cache,id=apt-archives,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,id=apt-lists,target=/var/lib/apt,sharing=locked \
+  apt-add-repository ppa:git-core/ppa \
   && apt update \
   && apt install --no-install-recommends -y -q \
     git \
-    git-lfs \
-  && rm -rf /var/lib/apt/lists/*
+    git-lfs
 
 # create user, grant sudo access
 # NOTE: _USER_GROUPS are voided by x11docker without --user=RETAIN option
@@ -114,11 +127,12 @@ RUN groupadd -g 110 render
 
 # install git-crypt
 RUN \
+  --mount=type=cache,id=apt-archives,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,id=apt-lists,target=/var/lib/apt,sharing=locked \
   # install deps
   apt update \
   && apt install --no-install-recommends -y -q \
     libssl-dev \
-  && rm -rf /var/lib/apt/lists/* \
   # clone our patched fork
   && git clone \
     --depth 1 \
@@ -166,7 +180,10 @@ RUN cd /tmp \
   && rm -rf /tmp/git-filter-repo-*
 
 # install latest github cli
-RUN cd /tmp \
+RUN \
+  --mount=type=cache,id=apt-archives,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,id=apt-lists,target=/var/lib/apt,sharing=locked \
+  cd /tmp \
   && export V=$( \
     curl -L -s https://api.github.com/repos/cli/cli/releases/latest \
     | sed -n -e 's/"tag_name": "\(.*\)",/\1/p' \
@@ -177,7 +194,6 @@ RUN cd /tmp \
   && apt update \
   && (dpkg -i ${F} || true) \
   && apt install --no-install-recommends -y -q -f \
-  && rm -rf /var/lib/apt/lists/* \
   && rm -f ${F}
 
 # install latest clang tools
@@ -185,6 +201,8 @@ RUN cd /tmp \
 ARG INSTALL_LLVM=0
 ARG VERSION_LLVM
 RUN \
+  --mount=type=cache,id=apt-archives,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,id=apt-lists,target=/var/lib/apt,sharing=locked \
   if [ "${INSTALL_LLVM}" = "1" ]; then \
     cd /tmp \
     && wget https://apt.llvm.org/llvm.sh \
@@ -197,16 +215,20 @@ RUN \
   ; fi
 
 # install solidity compiler
-RUN apt-add-repository ppa:ethereum/ethereum \
+RUN \
+  --mount=type=cache,id=apt-archives,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,id=apt-lists,target=/var/lib/apt,sharing=locked \
+  apt-add-repository ppa:ethereum/ethereum \
   && apt update \
   && apt install --no-install-recommends -y -q \
-    solc \
-  && rm -rf /var/lib/apt/lists/*
+    solc
 
 # install cypress system deps
 # https://docs.cypress.io/guides/getting-started/installing-cypress#UbuntuDebian
 ARG INSTALL_CYPRESS_DEPS=0
 RUN \
+  --mount=type=cache,id=apt-archives,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,id=apt-lists,target=/var/lib/apt,sharing=locked \
   if [ "${INSTALL_CYPRESS_DEPS}" = "1" ]; then \
     apt update \
     && apt install --no-install-recommends -y -q \
@@ -221,13 +243,14 @@ RUN \
       libxtst6 \
       xauth \
       xvfb \
-    && rm -rf /var/lib/apt/lists/* \
   ; fi
 
 # install tomb
 ARG INSTALL_TOMB=0
 ARG VERSION_TOMB
 RUN \
+  --mount=type=cache,id=apt-archives,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,id=apt-lists,target=/var/lib/apt,sharing=locked \
   if [ "${INSTALL_TOMB}" = "1" ]; then \
     apt update \
       && apt install --no-install-recommends -y -q \
@@ -235,7 +258,6 @@ RUN \
         gettext \
         pinentry-curses \
         zsh \
-      && rm -rf /var/lib/apt/lists/* \
     && git clone \
       --branch ${VERSION_TOMB} \
       --depth 1 \
@@ -310,6 +332,8 @@ ARG INSTALL_NEOVIM_FROM_PPA_STABLE=0
 ARG INSTALL_NEOVIM_FROM_PPA_UNSTABLE=0
 ARG VERSION_NEOVIM_FROM_SRC=stable
 RUN \
+  --mount=type=cache,id=apt-archives,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,id=apt-lists,target=/var/lib/apt,sharing=locked \
   if [ "${INSTALL_NEOVIM_FROM_SRC}" = "1" ]; then \
     # install neovim tag'd release from source
     # reference: https://github.com/neovim/neovim/wiki/Building-Neovim
@@ -323,7 +347,6 @@ RUN \
         ninja-build \
         pkg-config \
         unzip \
-      && rm -rf /var/lib/apt/lists/* \
       && git clone \
         --branch ${VERSION_NEOVIM_FROM_SRC} \
         --depth 1 \
@@ -342,20 +365,17 @@ RUN \
       && apt update \
       && apt install --no-install-recommends -y -q \
         neovim \
-      && rm -rf /var/lib/apt/lists/* \
   ; elif [ "${INSTALL_NEOVIM_FROM_PPA_UNSTABLE}" = "1" ]; then \
     # install neovim (unstable) from ppa
     add-apt-repository ppa:neovim-ppa/unstable \
       && apt update \
       && apt install --no-install-recommends -y -q \
         neovim \
-      && rm -rf /var/lib/apt/lists/* \
   ; else \
     # install neovim from apt
     apt update \
       && apt install --no-install-recommends -y -q \
         neovim \
-      && rm -rf /var/lib/apt/lists/* \
   ; fi
 
 # install python support for neovim
@@ -596,6 +616,8 @@ RUN \
 
 ARG INSTALL_DEVOPS=0
 RUN \
+  --mount=type=cache,id=apt-archives,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,id=apt-lists,target=/var/lib/apt,sharing=locked \
   if [ "${INSTALL_DEVOPS}" = "1" ]; then \
     # install ansible
     pip install --upgrade ansible \
@@ -622,13 +644,13 @@ RUN \
       terraform \
     ## install tflocal (for localstack)
     && pip install --upgrade terraform-local \
-    ## clean up
-    && sudo rm -rf /var/lib/apt/lists/* \
   ; fi
 
 # https://v2.tauri.app/start/prerequisites/#linux
 ARG INSTALL_TAURI=0
 RUN \
+  --mount=type=cache,id=apt-archives,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,id=apt-lists,target=/var/lib/apt,sharing=locked \
   if [ "${INSTALL_TAURI}" = "1" ]; then \
     sudo apt update \
     && sudo apt install --no-install-recommends -y -q \
@@ -641,7 +663,6 @@ RUN \
       libwebkit2gtk-4.1-dev \
       libxdo-dev \
       wget \
-    && sudo rm -rf /var/lib/apt/lists/* \
     && cargo binstall \
       --continue-on-failure \
       --disable-telemetry \
@@ -734,9 +755,10 @@ RUN echo \
 # unminimize to install docs
 ARG INSTALL_DOCS=0
 RUN \
+  --mount=type=cache,id=apt-archives,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,id=apt-lists,target=/var/lib/apt,sharing=locked \
   if [ "${INSTALL_DOCS}" = "1" ]; then \
     yes | unminimize \
-    && rm -rf /var/lib/apt/lists/* \
   ; fi
 
 ########################################################################
