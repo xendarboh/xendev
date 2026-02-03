@@ -10,6 +10,7 @@ USER root
 RUN \
   --mount=type=cache,id=apt-archives,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,id=apt-lists,target=/var/lib/apt,sharing=locked \
+  --mount=type=cache,id=dl,target=/dl,sharing=locked \
   apt update \
   # install iptables to avoid held packages error
   && apt install -y -q \
@@ -17,9 +18,8 @@ RUN \
   --no-install-recommends \
   iptables \
   # https://docs.docker.com/engine/install/ubuntu/#install-using-the-convenience-script
-  && curl -fsSL https://get.docker.com -o install-docker.sh \
-  && sh ./install-docker.sh \
-  && rm -f ./install-docker.sh
+  && wget -qN -P /dl/docker https://get.docker.com/ \
+  && sh /dl/docker/index.html
 
 RUN usermod -aG docker ${XENDEV_USER}
 

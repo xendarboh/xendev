@@ -147,19 +147,17 @@ RUN \
   && rm -rf /tmp/git-crypt
 
 # install latest git-filter-repo
-RUN cd /tmp \
-  # download the latest source package
-  # Note: 2023-06-12 make from git clone failed
-  && export V=$( \
-    curl -L -s https://api.github.com/repos/newren/git-filter-repo/releases/latest \
-    | sed -n -e 's/"tag_name": "\(.*\)",/\1/p' \
-    | sed -e 's/^.*v//' \
+# Note: 2023-06-12 make from git clone failed
+RUN \
+  --mount=type=cache,id=dl,target=/dl,sharing=locked \
+  export V=$( \
+    curl -Ls https://api.github.com/repos/newren/git-filter-repo/releases/latest \
+    | sed -n 's/"tag_name": "\(.*\)",/\1/p' | sed 's/^.*v//' \
   ) \
   && export F="git-filter-repo-${V}" \
-  && wget "https://github.com/newren/git-filter-repo/releases/download/v${V}/${F}.tar.xz" \
-  && tar -xf "${F}.tar.xz" \
-  && cd ${F} \
-  # make install
+  && wget -qN -P /dl "https://github.com/newren/git-filter-repo/releases/download/v${V}/${F}.tar.xz" \
+  && tar -xf /dl/${F}.tar.xz -C /tmp \
+  && cd /tmp/${F} \
   && make \
     bindir=/usr/local/bin \
     prefix=/usr \
@@ -183,18 +181,16 @@ RUN cd /tmp \
 RUN \
   --mount=type=cache,id=apt-archives,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,id=apt-lists,target=/var/lib/apt,sharing=locked \
-  cd /tmp \
-  && export V=$( \
-    curl -L -s https://api.github.com/repos/cli/cli/releases/latest \
-    | sed -n -e 's/"tag_name": "\(.*\)",/\1/p' \
-    | sed -e 's/^.*v//' \
+  --mount=type=cache,id=dl,target=/dl,sharing=locked \
+  export V=$( \
+    curl -Ls https://api.github.com/repos/cli/cli/releases/latest \
+    | sed -n 's/"tag_name": "\(.*\)",/\1/p' | sed 's/^.*v//' \
   ) \
   && export F="gh_${V}_linux_amd64.deb" \
-  && wget "https://github.com/cli/cli/releases/download/v${V}/${F}" \
+  && wget -qN -P /dl "https://github.com/cli/cli/releases/download/v${V}/${F}" \
   && apt update \
-  && (dpkg -i ${F} || true) \
-  && apt install --no-install-recommends -y -q -f \
-  && rm -f ${F}
+  && (dpkg -i /dl/${F} || true) \
+  && apt install --no-install-recommends -y -q -f
 
 # install latest clang tools
 # https://apt.llvm.org/
@@ -203,14 +199,13 @@ ARG VERSION_LLVM
 RUN \
   --mount=type=cache,id=apt-archives,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,id=apt-lists,target=/var/lib/apt,sharing=locked \
+  --mount=type=cache,id=dl,target=/dl,sharing=locked \
   if [ "${INSTALL_LLVM}" = "1" ]; then \
-    cd /tmp \
-    && wget https://apt.llvm.org/llvm.sh \
-    && chmod +x llvm.sh \
-    && ./llvm.sh ${VERSION_LLVM} all \
-    && rm -f llvm.sh \
+    wget -qN -P /dl/llvm https://apt.llvm.org/llvm.sh \
+    && chmod +x /dl/llvm/llvm.sh \
+    && /dl/llvm/llvm.sh ${VERSION_LLVM} all \
     && for x in $(ls /usr/bin/clang*${VERSION_LLVM}); do \
-        ln -sv $x $(echo $x | sed -e "s/-${VERSION_LLVM}//"); \
+        ln -sv $x $(echo $x | sed "s/-${VERSION_LLVM}//"); \
       done \
   ; fi
 
@@ -271,39 +266,25 @@ RUN \
 # install node
 ARG VERSION_NODE
 RUN \
+  --mount=type=cache,id=dl,target=/dl,sharing=locked \
   if [ "${VERSION_NODE}" = "LATEST" ]; then \
-    export V=$( \
-      wget -O - -q https://nodejs.org/dist/index.json \
-        | grep '"lts":false' \
-        | head -n1 \
-        | cut -d',' -f1 \
-        | cut -d'"' -f4 \
-    ) \
+    export V=$(curl -Ls https://nodejs.org/dist/index.json \
+      | grep '"lts":false' | head -n1 | cut -d',' -f1 | cut -d'"' -f4) \
   ; elif [ "${VERSION_NODE}" = "LTS" ]; then \
-    export V=$( \
-      wget -O - -q https://nodejs.org/dist/index.json \
-        | grep -v '"lts":false' \
-        | grep lts \
-        | head -n1 \
-        | cut -d',' -f1 \
-        | cut -d'"' -f4 \
-    ) \
+    export V=$(curl -Ls https://nodejs.org/dist/index.json \
+      | grep -v '"lts":false' | grep lts | head -n1 | cut -d',' -f1 | cut -d'"' -f4) \
   ; else \
     export V=${VERSION_NODE} \
   ; fi \
   && export F="node-${V}-linux-x64.tar.xz" \
-  && cd /tmp \
-  && wget https://nodejs.org/dist/${V}/${F} \
-  && tar \
+  && wget -qN -P /dl https://nodejs.org/dist/${V}/${F} \
+  && tar -xf /dl/${F} \
     --directory /usr/local \
     --exclude='CHANGELOG.md' \
     --exclude='LICENSE' \
     --exclude='README.md' \
-    --extract \
-    --file ${F} \
     --strip-components 1 \
-  && chown -R 0:0 /usr/local \
-  && rm -f ${F}
+  && chown -R 0:0 /usr/local
 
 # install yarn and pnpm
 RUN npm install --global corepack
@@ -415,19 +396,16 @@ WORKDIR /home/${_USER}
 # Note: 2023-08: go_installer fails with:
 #   Downloading Go from 400 Bad Request failed with HTTP status %!s(MISSING)
 #   https://github.com/golang/tools/tree/master/cmd/getgo#usage
-RUN mkdir -p /tmp/go && cd /tmp/go \
-  # https://github.com/golang/tools/blob/master/cmd/getgo/download.go
-  && curl -Ls 'https://go.dev/dl/?mode=json' \
-    | jq -r '.[0].files[] | select(.os == "linux" and .arch == "amd64")' \
-    > go.json \
-  && export F=$(cat go.json | jq -r '.filename') \
-  && export C=$(cat go.json | jq -r '.sha256') \
-  && curl -LO "https://go.dev/dl/${F}" \
-  && echo "${C} ${F}" > checksum.txt \
-  && sha256sum --check checksum.txt \
-  && tar -xzf ${F} \
-  && mv go /home/${_USER}/.go \
-  && rm -rf /tmp/go
+RUN \
+  --mount=type=cache,id=dlu,target=/dlu,sharing=locked,uid=${_USER_ID} \
+  export JSON=$(curl -Ls 'https://go.dev/dl/?mode=json' \
+    | jq -r '.[0].files[] | select(.os == "linux" and .arch == "amd64")') \
+  && export F=$(echo "$JSON" | jq -r '.filename') \
+  && export C=$(echo "$JSON" | jq -r '.sha256') \
+  && wget -qN -P /dlu "https://go.dev/dl/${F}" \
+  && echo "${C}  /dlu/${F}" | sha256sum --check \
+  && tar -xzf /dlu/${F} \
+  && mv go ~/.go
 
 # install go things
 RUN go install \
@@ -509,30 +487,28 @@ RUN \
 # install Protocol Buffers
 ARG INSTALL_PB=0
 RUN \
+  --mount=type=cache,id=dlu,target=/dlu,sharing=locked,uid=${_USER_ID} \
   if [ "${INSTALL_PB}" = "1" ]; then \
-    # install latest protoc release
     export V=$( \
-      curl -L -s https://api.github.com/repos/protocolbuffers/protobuf/releases/latest \
-      | sed -n -e 's/"tag_name": "\(.*\)",/\1/p' \
-      | sed -e 's/^.*v//' \
+      curl -Ls https://api.github.com/repos/protocolbuffers/protobuf/releases/latest \
+      | sed -n 's/"tag_name": "\(.*\)",/\1/p' | sed 's/^.*v//' \
     ) \
     && export F="protoc-${V}-linux-x86_64.zip" \
-    && wget "https://github.com/protocolbuffers/protobuf/releases/download/v${V}/${F}" \
-    && unzip ${F} \
+    && wget -qN -P /dlu "https://github.com/protocolbuffers/protobuf/releases/download/v${V}/${F}" \
+    && unzip /dlu/${F} \
       -x readme.txt \
       -d ~/.local \
-    && rm -f ${F} \
-    # install buf; also provides formatter and linter
     && go install github.com/bufbuild/buf/cmd/buf@latest \
-    # clean up
     && go clean --cache \
   ; fi
 
 # install cpanminus for installing perl modules
 # running cpanm gives suggestion to install local::lib, so do that
-RUN mkdir bin \
-  && curl -L -o bin/cpanm https://cpanmin.us/ \
-  && chmod +x bin/cpanm \
+RUN \
+  --mount=type=cache,id=dlu,target=/dlu,sharing=locked,uid=${_USER_ID} \
+  mkdir bin \
+  && wget -qN -P /dlu/cpanm https://cpanmin.us/ \
+  && install -m755 /dlu/cpanm/index.html bin/cpanm \
   && bin/cpanm --quiet --local-lib=perl5 local::lib \
   && perl -I perl5/lib/perl5/ -Mlocal::lib >> .bashrc
 
@@ -544,8 +520,10 @@ RUN cpanm --quiet --notest \
 
 # install latest kpcli and dependencies
 ARG VERSION_KPCLI
-RUN wget -O bin/kpcli https://downloads.sourceforge.net/project/kpcli/kpcli-${VERSION_KPCLI}.pl \
-  && chmod +x bin/kpcli \
+RUN \
+  --mount=type=cache,id=dlu,target=/dlu,sharing=locked,uid=${_USER_ID} \
+  wget -qN -P /dlu https://downloads.sourceforge.net/project/kpcli/kpcli-${VERSION_KPCLI}.pl \
+  && install -m755 /dlu/kpcli-${VERSION_KPCLI}.pl bin/kpcli \
   && cpanm --quiet --notest \
     Authen::OATH \
     Capture::Tiny \
@@ -618,31 +596,24 @@ ARG INSTALL_DEVOPS=0
 RUN \
   --mount=type=cache,id=apt-archives,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,id=apt-lists,target=/var/lib/apt,sharing=locked \
+  --mount=type=cache,id=dlu,target=/dlu,sharing=locked,uid=${_USER_ID} \
   if [ "${INSTALL_DEVOPS}" = "1" ]; then \
-    # install ansible
     pip install --upgrade ansible \
-    # install awscli
-    && cd /tmp \
-    && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
-    && unzip awscliv2.zip \
-    && sudo ./aws/install \
-    && rm -rf ./aws* \
-    # install opentofu
+    && wget -qN -P /dlu https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip \
+    && unzip -q /dlu/awscli-exe-linux-x86_64.zip -d /tmp \
+    && sudo /tmp/aws/install \
+    && rm -rf /tmp/aws \
     # https://opentofu.org/docs/intro/install/deb/#installing-using-the-installer
-    && curl --proto '=https' --tlsv1.2 -fsSL https://get.opentofu.org/install-opentofu.sh -o install-opentofu.sh \
-    && chmod +x install-opentofu.sh \
-    && ./install-opentofu.sh --install-method deb \
-    && rm install-opentofu.sh \
-    # install hashicorp things
-    && wget -O - https://apt.releases.hashicorp.com/gpg \
-      | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg \
+    && wget -qN -P /dlu/opentofu https://get.opentofu.org/install-opentofu.sh \
+    && chmod +x /dlu/opentofu/install-opentofu.sh && /dlu/opentofu/install-opentofu.sh --install-method deb \
+    && wget -qN -P /dlu/hashicorp https://apt.releases.hashicorp.com/gpg \
+    && sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg < /dlu/hashicorp/gpg \
     && echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" \
       | sudo tee /etc/apt/sources.list.d/hashicorp.list \
     && sudo apt update \
     && sudo apt install --no-install-recommends -y -q \
       packer \
       terraform \
-    ## install tflocal (for localstack)
     && pip install --upgrade terraform-local \
   ; fi
 
@@ -751,6 +722,14 @@ RUN mv /etc/skel /etc/skel.bak \
 RUN echo \
     "VERSION=$(date +'%Y%m%d%H%M%S')" \
     > /etc/xendev-release
+
+# record cache state
+RUN \
+  --mount=type=cache,id=apt-archives,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,id=apt-lists,target=/var/lib/apt,sharing=locked \
+  --mount=type=cache,id=dl,target=/dl,sharing=locked \
+  --mount=type=cache,id=dlu,target=/dlu,sharing=locked,uid=${_USER_ID} \
+  du -hs /dl /dlu /var/cache/apt/archives /var/lib/apt/lists | sort -h > /etc/xendev-cache.txt
 
 # unminimize to install docs
 ARG INSTALL_DOCS=0

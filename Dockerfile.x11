@@ -132,6 +132,7 @@ RUN \
     gnupg \
     software-properties-common \
     unzip \
+    wget \
     # fonts
     fonts-hack \
     fonts-noto-cjk \
@@ -149,9 +150,9 @@ RUN \
 # https://sw.kovidgoyal.net/kitty/binary/#desktop-integration-on-linux
 ENV DEST=/usr/local
 RUN \
-  # Install kitty to ${DEST}
-  curl -L https://sw.kovidgoyal.net/kitty/installer.sh \
-    | sh /dev/stdin dest=${DEST} launch=n \
+  --mount=type=cache,id=dl,target=/dl,sharing=locked \
+  wget -qN -P /dl/kitty https://sw.kovidgoyal.net/kitty/installer.sh \
+  && sh /dl/kitty/installer.sh dest=${DEST} launch=n \
   # Create symbolic links to add kitty and kitten to PATH
   && ln -sf ${DEST}/kitty.app/bin/* ${DEST}/bin/ \
   # Place the kitty.desktop file somewhere it can be found by the OS
@@ -165,14 +166,12 @@ RUN \
 
 # install NerdFonts
 RUN \
+  --mount=type=cache,id=dl,target=/dl,sharing=locked \
   mkdir -p /usr/local/share/fonts/NerdFonts \
-  && cd /usr/local/share/fonts/NerdFonts \
-  && curl -LO https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Hack.zip \
-    && unzip -o Hack.zip \
-    && rm -f Hack.zip \
-  && curl -LO https://github.com/ryanoasis/nerd-fonts/releases/latest/download/NerdFontsSymbolsOnly.zip \
-    && unzip -o NerdFontsSymbolsOnly.zip \
-    && rm -f NerdFontsSymbolsOnly.zip \
+  && wget -qN -P /dl https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Hack.zip \
+  && wget -qN -P /dl https://github.com/ryanoasis/nerd-fonts/releases/latest/download/NerdFontsSymbolsOnly.zip \
+  && unzip -o /dl/Hack.zip -d /usr/local/share/fonts/NerdFonts \
+  && unzip -o /dl/NerdFontsSymbolsOnly.zip -d /usr/local/share/fonts/NerdFonts \
   && fc-cache -vr /usr/local/share/fonts
 
 # https://brave.com/linux/
@@ -181,15 +180,14 @@ ENV INSTALL_BROWSER_BRAVE=${INSTALL_BROWSER_BRAVE}
 RUN \
   --mount=type=cache,id=apt-archives,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,id=apt-lists,target=/var/lib/apt,sharing=locked \
+  --mount=type=cache,id=dl,target=/dl,sharing=locked \
   if [ "${INSTALL_BROWSER_BRAVE}" = "1" ]; then \
-    curl -fsSLO "https://dl.brave.com/install.sh{,.asc}" \
-    && gpg \
-      --keyserver hkps://keys.openpgp.org \
+    wget -qN -P /dl/brave https://dl.brave.com/install.sh https://dl.brave.com/install.sh.asc \
+    && gpg --keyserver hkps://keys.openpgp.org \
       --recv-keys D16166072CACDF2C9429CBF11BF41E37D039F691 \
-    && gpg --verify install.sh.asc \
-    && chmod u+x ./install.sh \
-    && ./install.sh \
-    && rm -f ./install.sh* \
+    && gpg --verify /dl/brave/install.sh.asc /dl/brave/install.sh \
+    && chmod +x /dl/brave/install.sh \
+    && /dl/brave/install.sh \
   ; fi
 
 ARG INSTALL_BROWSER_CHROMIUM=0
