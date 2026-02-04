@@ -305,7 +305,10 @@ RUN npm install --global \
     typescript
 
 # install latest deno
-RUN curl -fsSL https://deno.land/install.sh | DENO_INSTALL=/usr/local sh
+RUN \
+  --mount=type=cache,id=dl,target=/dl,sharing=locked \
+  wget -qN -P /dl/deno https://deno.land/install.sh \
+  && DENO_INSTALL=/usr/local sh /dl/deno/install.sh
 
 ARG INSTALL_NEOVIM_FROM_SRC=0
 ARG INSTALL_NEOVIM_FROM_PPA_STABLE=0
@@ -412,7 +415,10 @@ RUN go install \
   && go clean --cache
 
 # install rust
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+RUN \
+  --mount=type=cache,id=dlu,target=/dlu,sharing=locked,uid=${_USER_ID} \
+  wget -qN -P /dlu/rustup https://sh.rustup.rs \
+  && sh /dlu/rustup/index.html -y
 
 # install rust things
 ENV CARGO_HOME=/home/${_USER}/.cargo
@@ -420,8 +426,9 @@ ENV CARGO_TARGET_DIR=${CARGO_HOME}/target
 RUN \
   --mount=type=cache,id=cargo-registry,target=${CARGO_HOME}/registry,uid=${_USER_ID} \
   --mount=type=cache,id=cargo-target,target=$CARGO_TARGET_DIR,uid=${_USER_ID} \
-  curl -L --proto '=https' --tlsv1.2 -sSf \
-    https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash \
+  --mount=type=cache,id=dlu,target=/dlu,sharing=locked,uid=${_USER_ID} \
+  wget -qN -P /dlu/cargo-binstall https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh \
+  && bash /dlu/cargo-binstall/install-from-binstall-release.sh \
   && cargo binstall \
     --continue-on-failure \
     --disable-telemetry \
@@ -444,7 +451,10 @@ RUN \
     rust-analyzer
 
 # install latest bun and make it available in PATH
-RUN curl -fsSL https://bun.sh/install | bash
+RUN \
+  --mount=type=cache,id=dlu,target=/dlu,sharing=locked,uid=${_USER_ID} \
+  wget -qN -P /dlu/bun https://bun.sh/install \
+  && bash /dlu/bun/install
 ENV PATH="/home/${_USER}/.bun/bin:${PATH}"
 
 # install bun things
@@ -475,11 +485,14 @@ RUN \
 ARG INSTALL_NOIR=0
 ENV NARGO_HOME=/home/${_USER}/.nargo
 RUN \
+  --mount=type=cache,id=dlu,target=/dlu,sharing=locked,uid=${_USER_ID} \
   if [ "${INSTALL_NOIR}" = "1" ]; then \
-    curl -L https://raw.githubusercontent.com/noir-lang/noirup/refs/heads/main/install | bash \
+    wget -qN -P /dlu/noirup https://raw.githubusercontent.com/noir-lang/noirup/refs/heads/main/install \
+    && bash /dlu/noirup/install \
     && ${NARGO_HOME}/bin/noirup \
     # NOTE: bb installed this way works on ubuntu 24, but not 22 (cuz glibc)
-    && curl -L https://raw.githubusercontent.com/AztecProtocol/aztec-packages/refs/heads/next/barretenberg/bbup/install | bash \
+    && wget -qN -P /dlu/bbup https://raw.githubusercontent.com/AztecProtocol/aztec-packages/refs/heads/next/barretenberg/bbup/install \
+    && bash /dlu/bbup/install \
     && PATH="${NARGO_HOME}/bin:$PATH" SHELL=/bin/bash ~/.bb/bbup \
   ; fi
 
@@ -579,8 +592,9 @@ RUN mkdir ~/.bash
 
 # install extra fish things
 SHELL ["/bin/fish", "--login", "-c"]
-RUN curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish \
-    | source \
+RUN --mount=type=cache,id=dlu,target=/dlu,sharing=locked,uid=${_USER_ID} \
+  wget -qN -P /dlu/fisher https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish \
+  && source /dlu/fisher/fisher.fish \
   && fisher install \
     gazorby/fish-exa \
     jukben/fish-nx \
@@ -591,9 +605,11 @@ SHELL ["/bin/bash", "--login", "-c"]
 # https://nixos.wiki/wiki/Nix_Installation_Guide
 ARG INSTALL_NIX=0
 RUN \
+  --mount=type=cache,id=dlu,target=/dlu,sharing=locked,uid=${_USER_ID} \
   if [ "${INSTALL_NIX}" = "1" ]; then \
     sudo install -d -m755 -o $(id -u) -g $(id -g) /nix \
-    && curl -L https://nixos.org/nix/install | sh \
+    && wget -qN -P /dlu/nix https://nixos.org/nix/install \
+    && sh /dlu/nix/install \
     && /bin/fish --login -c 'fisher install lilyball/nix-env.fish' \
   ; fi
 
@@ -734,7 +750,7 @@ RUN \
   --mount=type=cache,id=apt-lists,target=/var/lib/apt,sharing=locked \
   --mount=type=cache,id=dl,target=/dl,sharing=locked \
   --mount=type=cache,id=dlu,target=/dlu,sharing=locked,uid=${_USER_ID} \
-  du -hs /dl /dlu /var/cache/apt/archives /var/lib/apt/lists | sort -h > /etc/xendev-cache.txt
+  du -hs /dl /dlu /var/cache/apt/archives /var/lib/apt/lists | sort -h > /etc/xendev-cache-stats
 
 # unminimize to install docs
 ARG INSTALL_DOCS=0
