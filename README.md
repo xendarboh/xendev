@@ -200,7 +200,6 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
 - [cpanminus](https://github.com/miyagawa/cpanminus): CPAN module installer
 - [cypress](https://github.com/cypress-io/cypress): Browser testing deps _(INSTALL_CYPRESS_DEPS)_
 - [fastmod](https://github.com/facebookincubator/fastmod): Large-scale codebase refactors
-- [fleek-cli](https://github.com/fleekhq/fleek-cli): Deploy to Fleek
 - [ImageMagick](https://github.com/ImageMagick/ImageMagick): Image manipulation
 - [kpcli](http://kpcli.sourceforge.net/): KeePass CLI
 - [ncdu](https://code.blicky.net/yorhel/ncdu): NCurses Disk Usage

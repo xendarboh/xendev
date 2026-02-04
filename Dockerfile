@@ -294,7 +294,6 @@ ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 
 # install node things
 RUN npm install --global \
-    @fleek-platform/cli \
     aicommits \
     diff-so-fancy \
     neovim \
