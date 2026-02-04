@@ -6,7 +6,7 @@ include .env
 export
 MAKEFILE_LIST = Makefile
 
-.PHONY: help build-tty rebuild-tty build retag rebuild
+.PHONY: help build-tty rebuild-tty install-x11docker fetch-nvidia-driver build retag rebuild
 
 # https://blog.testdouble.com/posts/2017-04-17-makefile-usability-tips/#step-3-parse-annotations
 help: ## print this help message with some nifty mojo
@@ -17,6 +17,18 @@ build-tty: ## build tty-only docker image
 
 rebuild-tty: ## (re)build tty-only docker image with --no-cache --pull
 	time docker compose build --no-cache --pull xen-dev
+
+install-x11docker: ## install or update x11docker and pull xserver image
+	curl -fsSL https://raw.githubusercontent.com/mviereck/x11docker/master/x11docker | sudo bash -s -- --update
+	docker pull x11docker/xserver
+
+fetch-nvidia-driver: ## fetch versioned NVIDIA driver for x11docker
+	@V=$$(grep -oP 'Kernel Module\s+\K[0-9.]+' /proc/driver/nvidia/version | head -1); \
+	if [ -z "$$V" ]; then echo "Error: No NVIDIA driver detected" >&2; exit 1; fi; \
+	echo "Detected: $$V"; \
+	DL="$$HOME/.local/share/x11docker"; \
+	mkdir -p "$$DL" && \
+	curl -fL --progress-bar "https://http.download.nvidia.com/XFree86/Linux-x86_64/$$V/NVIDIA-Linux-x86_64-$$V.run" -o "$$DL/NVIDIA-Linux-x86_64-$$V.run"
 
 build: ## build docker images
 	time docker compose build xen-x11
