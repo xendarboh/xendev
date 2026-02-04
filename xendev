@@ -92,6 +92,7 @@ mode_sys() {
   IMAGE="xen/sys"
   ARGS_X11DOCKER+=(
     --cap-default
+    --gpu=virgl
     --runtime=sysbox-runc
   )
   ARGS_DOCKER+=(
