@@ -85,7 +85,7 @@ mode_max() {
 
 # uses sysbox runtime for docker-in-docker
 # persists docker storage at ~/.local/share/xendev/sysbox/var-lib-docker
-# requires x11docker without --gpu=direct and --network=host
+# not compatible with x11docker --gpu=direct or --network=host
 mode_sys() {
   base
   DESC="Docker-in-Docker via sysbox"
@@ -94,6 +94,7 @@ mode_sys() {
     --cap-default
     --gpu=virgl
     --runtime=sysbox-runc
+    --share=/dev/dri
   )
   ARGS_DOCKER+=(
     --cap-add=NET_ADMIN
