@@ -1,14 +1,8 @@
 #!/bin/bash
 
 FLAGS=(
-  --no-sandbox
   --disable-dev-shm-usage
-  --disable-gpu
-  --disable-gpu-compositing
-  --disable-software-rasterizer
   --force-dark-mode
-  # --in-process-gpu
-  # --use-gl=swiftshader
 )
 
 exec /usr/lib/chromium-browser/chromium-browser-original "${FLAGS[@]}" "$@"
