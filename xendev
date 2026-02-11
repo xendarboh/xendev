@@ -30,7 +30,7 @@ ui() {
   esac
 }
 
-# src:[dest]:[tag]
+# src:[dest]:[tag]:[options]
 MOUNTS=(
   "$HOME/.config/git::priv"
   "$HOME/.gnupg::priv"
@@ -79,7 +79,6 @@ mode_max() {
   )
   TAGS+=(
     "priv"
-    "data"
   )
 }
 
@@ -169,7 +168,7 @@ main() {
   "mode_$mode"
   declare -A selected
   for i in "${!MOUNTS[@]}"; do
-    IFS=':' read -r src dst tag <<<"${MOUNTS[$i]}"
+    IFS=':' read -r src dst tag opts <<<"${MOUNTS[$i]}"
     for dt in "${TAGS[@]:-}"; do
       [[ -n "$tag" && "$tag" == "$dt" ]] && selected[$i]=1
     done
@@ -180,7 +179,7 @@ main() {
     for i in "${!MOUNTS[@]}"; do
       state="[ ]"
       [[ -n "${selected[$i]:-}" ]] && state="[x]"
-      IFS=':' read -r src dst tag <<<"${MOUNTS[$i]}"
+      IFS=':' read -r src dst tag opts <<<"${MOUNTS[$i]}"
       printf -v line "%s %-40s%s" "$state" "$src" "${tag:+ │ :$tag}"
       menu_lines+=("$line")
     done
@@ -192,7 +191,7 @@ main() {
 
     choice_path=$(echo "$choice" | sed 's/^\[.\] //; s/  *│.*//; s/ *$//')
     for i in "${!MOUNTS[@]}"; do
-      IFS=':' read -r src dst tag <<<"${MOUNTS[$i]}"
+      IFS=':' read -r src dst tag opts <<<"${MOUNTS[$i]}"
       if [[ "$src" == "$choice_path" ]]; then
         if [[ -n "${selected[$i]:-}" ]]; then unset "selected[$i]"; else selected[$i]=1; fi
         break
@@ -205,10 +204,10 @@ main() {
   #---------------------------------------------------------------------------
   vol_args=()
   for i in "${!selected[@]}"; do
-    IFS=':' read -r src dst tag <<<"${MOUNTS[$i]}"
+    IFS=':' read -r src dst tag opts <<<"${MOUNTS[$i]}"
     dst="${dst:-/home/${XENDEV_USER}/${src#$HOME/}}"
     [[ ! -d "$src" ]] && mkdir -p "$src"
-    vol_args+=("--volume" "$src:$dst")
+    vol_args+=("--volume" "$src:$dst${opts:+:$opts}")
   done
 
   "mode_$mode"
