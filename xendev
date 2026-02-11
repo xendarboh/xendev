@@ -37,6 +37,7 @@ MOUNTS=(
   "$HOME/.ssh::priv"
   "$HOME/src.priv::priv"
   "$HOME/src::core"
+  "$HOME/sshfs::core:rshared"
   "$HOME/.local/share/xendev:/home/${XENDEV_USER}/.local/share:data"
   "/media"
   "/mnt"
