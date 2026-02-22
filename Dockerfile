@@ -56,7 +56,7 @@ RUN \
     pinentry-curses \
     pkg-config \
     psmisc \
-    python3-pip \
+    python3-libtmux \
     python3-pygments \
     rake \
     ranger \
@@ -360,11 +360,6 @@ RUN \
         neovim \
   ; fi
 
-# install python support for neovim
-ENV PIP_BREAK_SYSTEM_PACKAGES=1
-ENV PIP_NO_CACHE_DIR=1
-RUN pip install --upgrade pynvim
-
 # use neovim for editor alternatives
 # reference: https://github.com/neovim/neovim/wiki/Installing-Neovim#install-from-source
 RUN update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 60 \
@@ -374,24 +369,37 @@ RUN update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 60 \
   && update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 60 \
   && update-alternatives --config editor
 
-# install PlatformIO (stable version)
-# http://docs.platformio.org/en/latest/installation.html#python-package-manager
-ARG INSTALL_PLATFORMIO=0
-RUN \
-  if [ "${INSTALL_PLATFORMIO}" = "1" ]; then \
-    pip install --upgrade platformio \
-  ; fi
-
 ########################################################################
 # switch to user
 ########################################################################
 ENV HOME=/home/${_USER} USER=${_USER} LC_ALL=${_LOCALE} LANG=${_LOCALE}
-ENV PATH=/home/${_USER}/bin:/home/${_USER}/.go/bin:/home/${_USER}/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV PATH=/home/${_USER}/bin:/home/${_USER}/.local/bin:/home/${_USER}/.go/bin:/home/${_USER}/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 ENV SHELL=/bin/bash
 ENV XDG_CONFIG_HOME=/home/${_USER}/.config
 SHELL ["/bin/bash", "--login", "-c"]
 USER ${_USER}
 WORKDIR /home/${_USER}
+
+# install uv (python package manager)
+ENV UV_LINK_MODE=copy
+ENV UV_TOOL_DIR=${HOME}/.uv/tools
+RUN \
+  --mount=type=cache,id=dlu,target=/dlu,sharing=locked,uid=${_USER_ID} \
+  wget -qN -P /dlu/uv https://astral.sh/uv/install.sh \
+  && sh /dlu/uv/install.sh
+
+# install python support for neovim
+RUN \
+  --mount=type=cache,id=uv-cache,target=${HOME}/.cache/uv,uid=${_USER_ID} \
+  uv tool install --upgrade pynvim
+
+# install PlatformIO (stable version)
+# http://docs.platformio.org/en/latest/installation.html#python-package-manager
+ARG INSTALL_PLATFORMIO=0
+RUN \
+  if [ "${INSTALL_PLATFORMIO}" = "1" ]; then \
+    uv tool install --upgrade platformio \
+  ; fi
 
 # install latest go
 # Note: 2023-08: go_installer fails with:
@@ -618,7 +626,7 @@ RUN \
   --mount=type=cache,id=apt-lists,target=/var/lib/apt,sharing=locked \
   --mount=type=cache,id=dlu,target=/dlu,sharing=locked,uid=${_USER_ID} \
   if [ "${INSTALL_DEVOPS}" = "1" ]; then \
-    pip install --upgrade ansible \
+    uv tool install --upgrade ansible-core \
     && wget -qN -P /dlu https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip \
     && unzip -q /dlu/awscli-exe-linux-x86_64.zip -d /tmp \
     && sudo /tmp/aws/install \
@@ -634,7 +642,7 @@ RUN \
     && sudo apt install --no-install-recommends -y -q \
       packer \
       terraform \
-    && pip install --upgrade terraform-local \
+    && uv tool install --upgrade terraform-local \
   ; fi
 
 # https://v2.tauri.app/start/prerequisites/#linux
@@ -690,11 +698,6 @@ RUN \
 
 # source bash configuration
 RUN /bin/echo -e "\ntest -f ~/.bash_xendev && . ~/.bash_xendev\n" >> .bashrc
-
-# tmux things that need something extra
-RUN \
-  # tmux-window-name deps
-  pip install --user libtmux
 
 # install smart-splits Kitty multiplexer support
 # Kitty conf expects the kittens so don't wait for nvim lazy load

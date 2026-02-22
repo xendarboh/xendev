@@ -172,6 +172,8 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
   - [npm-check](https://github.com/dylang/npm-check): Check for outdated dependencies
   - [pnpm](https://github.com/pnpm/pnpm): Fast, disk space efficient package manager
   - [yarn](https://github.com/yarnpkg/yarn): Dependency management
+- [Python](https://www.python.org): Programming language
+  - [uv](https://github.com/astral-sh/uv): Extremely fast Python package and project manager
 - [Ruby](https://github.com/ruby/ruby): Dynamic programming language
   - [rake](https://github.com/ruby/rake): Ruby build automation tool
 - [Rust](https://github.com/rust-lang/rust): Reliable and efficient software
