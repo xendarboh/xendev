@@ -23,7 +23,7 @@ return {
       },
     },
     config = function(_, opts)
-      local tinted = require("tinted-colorscheme")
+      local tinted = require("tinted-nvim")
 
       -- suppress noisy notifications during setup about custom themes not found
       local notify = vim.notify
