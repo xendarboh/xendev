@@ -397,6 +397,7 @@ RUN \
 # http://docs.platformio.org/en/latest/installation.html#python-package-manager
 ARG INSTALL_PLATFORMIO=0
 RUN \
+  --mount=type=cache,id=uv-cache,target=${HOME}/.cache/uv,uid=${_USER_ID} \
   if [ "${INSTALL_PLATFORMIO}" = "1" ]; then \
     uv tool install --upgrade platformio \
   ; fi
@@ -625,6 +626,7 @@ RUN \
   --mount=type=cache,id=apt-archives,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,id=apt-lists,target=/var/lib/apt,sharing=locked \
   --mount=type=cache,id=dlu,target=/dlu,sharing=locked,uid=${_USER_ID} \
+  --mount=type=cache,id=uv-cache,target=${HOME}/.cache/uv,uid=${_USER_ID} \
   if [ "${INSTALL_DEVOPS}" = "1" ]; then \
     uv tool install --upgrade ansible-core \
     && wget -qN -P /dlu https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip \
