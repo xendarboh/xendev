@@ -526,6 +526,7 @@ RUN \
 # running cpanm gives suggestion to install local::lib, so do that
 RUN \
   --mount=type=cache,id=dlu,target=/dlu,sharing=locked,uid=${_USER_ID} \
+  --mount=type=cache,id=cpanm-cache,target=${HOME}/.cpanm,uid=${_USER_ID} \
   mkdir bin \
   && wget -qN -P /dlu/cpanm https://cpanmin.us/ \
   && install -m755 /dlu/cpanm/index.html bin/cpanm \
@@ -533,15 +534,17 @@ RUN \
   && perl -I perl5/lib/perl5/ -Mlocal::lib >> .bashrc
 
 # install neovim perl provider dependencies (according to :checkhealth)
-RUN cpanm --quiet --notest \
+RUN \
+  --mount=type=cache,id=cpanm-cache,target=${HOME}/.cpanm,uid=${_USER_ID} \
+  cpanm --quiet --notest \
     Neovim::Ext \
-    App::cpanminus \
-  && rm -rf .cpanm
+    App::cpanminus
 
 # install latest kpcli and dependencies
 ARG VERSION_KPCLI
 RUN \
   --mount=type=cache,id=dlu,target=/dlu,sharing=locked,uid=${_USER_ID} \
+  --mount=type=cache,id=cpanm-cache,target=${HOME}/.cpanm,uid=${_USER_ID} \
   wget -qN -P /dlu https://downloads.sourceforge.net/project/kpcli/kpcli-${VERSION_KPCLI}.pl \
   && install -m755 /dlu/kpcli-${VERSION_KPCLI}.pl bin/kpcli \
   && cpanm --quiet --notest \
@@ -561,8 +564,7 @@ RUN \
     Sub::Install \
     Term::ReadKey \
     Term::ReadLine::Gnu \
-    Term::ShellUI \
-  && rm -rf .cpanm
+    Term::ShellUI
 
 # install latest fzf release
 RUN git clone \
