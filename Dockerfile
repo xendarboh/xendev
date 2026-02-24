@@ -431,10 +431,18 @@ RUN \
 ENV CARGO_HOME=/home/${_USER}/.cargo
 ENV CARGO_TARGET_DIR=${CARGO_HOME}/target
 RUN \
+  --mount=type=cache,id=apt-archives,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,id=apt-lists,target=/var/lib/apt,sharing=locked \
   --mount=type=cache,id=cargo-registry,target=${CARGO_HOME}/registry,uid=${_USER_ID} \
   --mount=type=cache,id=cargo-target,target=$CARGO_TARGET_DIR,uid=${_USER_ID} \
   --mount=type=cache,id=dlu,target=/dlu,sharing=locked,uid=${_USER_ID} \
-  wget -qN -P /dlu/cargo-binstall https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh \
+  # ensure clang is available (otherwise provided by INSTALL_LLVM)
+  if ! command -v clang >/dev/null 2>&1; then \
+    sudo apt install --no-install-recommends -y -q \
+      clang \
+      libclang-dev \
+  ; fi \
+  && wget -qN -P /dlu/cargo-binstall https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh \
   && bash /dlu/cargo-binstall/install-from-binstall-release.sh \
   && cargo binstall \
     --continue-on-failure \
