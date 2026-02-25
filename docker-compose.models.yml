@@ -1,0 +1,23 @@
+# Optional local model runner stack (Docker Model Runner + Open WebUI)
+# Usage: make models-up / make models-down
+# Configure via .env — see MODELS_* variables in .env-example
+
+services:
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: xendev-open-webui
+    ports:
+      - ${MODELS_WEBUI_PORT:-12444}:8080
+    environment:
+      - GUNICORN_TIMEOUT=300
+      - WEBUI_AUTH=false
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ${HOME}/.local/share/xendev/xndv-ai/open-webui:/app/backend/data
+    models:
+      - llm-primary
+
+models:
+  llm-primary:
+    model: ${MODELS_PRIMARY}

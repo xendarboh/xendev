@@ -5,8 +5,9 @@ export BUILDKIT_PROGRESS := plain
 include .env
 export
 MAKEFILE_LIST = Makefile
+COMPOSE_MODELS := docker compose -f docker-compose.models.yml
 
-.PHONY: help build-tty rebuild-tty install-x11docker fetch-nvidia-driver build retag rebuild
+.PHONY: help build-tty rebuild-tty install-x11docker fetch-nvidia-driver build retag rebuild models-up models-down models-logs models-status
 
 # https://blog.testdouble.com/posts/2017-04-17-makefile-usability-tips/#step-3-parse-annotations
 help: ## print this help message with some nifty mojo
@@ -46,3 +47,15 @@ rebuild: ## rebuild docker images (no cache, pull latest base images)
 	time docker compose build --no-cache --pull xen-x11
 	time docker compose build --no-cache --build-arg IMAGE_BASE=xen/x11 xen-dev
 	time docker compose build --no-cache xen-sys
+
+models-up: ## start local model runner + Open WebUI
+	$(COMPOSE_MODELS) up -d
+
+models-down: ## stop local model services
+	$(COMPOSE_MODELS) down
+
+models-logs: ## show local model service logs
+	$(COMPOSE_MODELS) logs -f
+
+models-status: ## show local model service status
+	$(COMPOSE_MODELS) ps

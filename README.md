@@ -6,8 +6,8 @@ Overpowered dotfiles in a box. A sandboxed, GPU-accelerated, terminal-first deve
 
 Run it as a:
 
-- **TTY-only terminal** for headless servers
 - **GPU-accelerated terminal** with clipboard integration ← recommended
+- **TTY-only terminal** for headless servers
 - **Full desktop environment** in a window (x11docker)
 - **Docker-in-Docker environment** for nested containers (sysbox)
 
@@ -34,15 +34,16 @@ make build
 
 ## Host Dependencies
 
-| Dependency                                                                                  | Required For              | Notes                                                      |
-| :------------------------------------------------------------------------------------------ | :------------------------ | :--------------------------------------------------------- |
-| docker or podman                                                                            | Core                      | Container runtime                                          |
-| docker compose                                                                              | Building                  | Build orchestration                                        |
-| make                                                                                        | Building                  | Recommended; or run [Makefile](Makefile) commands manually |
-| [x11docker](https://github.com/mviereck/x11docker#installation)                             | `max`, `min`, `sys` modes | Not needed for `tty` mode                                  |
-| [sysbox](https://github.com/nestybox/sysbox/blob/master/docs/user-guide/install-package.md) | `sys` mode                | Recommended for Docker-in-Docker                           |
-| rofi / dmenu / fzf                                                                          | Launcher                  | Any one; detected in order                                 |
-| [Nerd Font](https://github.com/ryanoasis/nerd-fonts#font-installation)                      | `tty` mode                | Container provides fonts for GUI modes                     |
+| Dependency                                                                                  | Required For              | Notes                                                                                                                                               |
+| :------------------------------------------------------------------------------------------ | :------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------- |
+| docker or podman                                                                            | Core                      | Container runtime                                                                                                                                   |
+| docker compose                                                                              | Building                  | Build orchestration                                                                                                                                 |
+| make                                                                                        | Building                  | Recommended; or run [Makefile](Makefile) commands manually                                                                                          |
+| [x11docker](https://github.com/mviereck/x11docker#installation)                             | `max`, `min`, `sys` modes | Not needed for `tty` mode                                                                                                                           |
+| [sysbox](https://github.com/nestybox/sysbox/blob/master/docs/user-guide/install-package.md) | `sys` mode                | Recommended for Docker-in-Docker                                                                                                                    |
+| rofi / dmenu / fzf                                                                          | Launcher                  | Any one; detected in order                                                                                                                          |
+| [Nerd Font](https://github.com/ryanoasis/nerd-fonts#font-installation)                      | `tty` mode                | Container provides fonts for GUI modes                                                                                                              |
+| [Docker Model Runner](https://docs.docker.com/ai/model-runner/)                             | Local AI (optional)       | GPU-accelerated inference via [nvidia-container-toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html), etc |
 
 ## Run
 
@@ -111,6 +112,8 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
 
 - [aicommits](https://github.com/Nutlope/aicommits): AI-written git commit messages
 - [claude-code](https://github.com/anthropics/claude-code): Agentic coding tool in your terminal
+- [Docker Model Runner](https://docs.docker.com/ai/model-runner/): Run LLMs locally via Docker
+- [Open WebUI](https://github.com/open-webui/open-webui): Chat UI for local LLMs
 - [OpenCode](https://github.com/anomalyco/opencode): Open source coding agent _(INSTALL_OPENCODE)_
   - [oh-my-opencode](https://github.com/code-yeongyu/oh-my-opencode): Batteries-included agent harness
   - [opencode-wakatime](https://github.com/angristan/opencode-wakatime): OpenCode usage time tracking
@@ -315,4 +318,36 @@ Verify terminal capabilities with scripts in [test/](test/):
 ./test/glyphs.sh     # Nerd font rendering
 ./test/italics.sh    # Italic text
 ./test/gpg.sh        # GPG volume mapping
+```
+
+## Local AI Models
+
+Run local AI model(s) with [Docker Model Runner](https://docs.docker.com/ai/model-runner/) and interact via [Open WebUI](https://github.com/open-webui/open-webui), [OpenCode](https://github.com/anomalyco/opencode), or `bin/x-ai`. Optional, independent of the main xendev build.
+
+### Quick Start
+
+```sh
+# Edit MODELS_* vars in .env (see .env-example) to configure the model
+make models-up
+# Access open-webui at http://localhost:12444
+```
+
+Model downloads on first start. See `docker model list` and use `docker model` for management.
+
+For more models, check out the published [Docker Hub AI models](https://hub.docker.com/u/ai) or [Hugging Face Transformers](https://huggingface.co/models?filter=transformers&sort=trending) (compatible with Docker Model Runner). Pull any model with `docker model pull` and set `MODELS_PRIMARY` to your chosen image.
+
+### Configuration
+
+| Variable            | Description                                |
+| :------------------ | :----------------------------------------- |
+| `MODELS_PRIMARY`    | Model (any `docker model pull` compatible) |
+| `MODELS_WEBUI_PORT` | Open WebUI port                            |
+
+### Management
+
+```sh
+make models-up      # Start docker containers (detached)
+make models-down    # Stop
+make models-logs    # Follow logs
+make models-status  # Show containers
 ```
