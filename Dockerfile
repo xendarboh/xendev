@@ -192,6 +192,19 @@ RUN \
   && (dpkg -i /dl/${F} || true) \
   && apt install --no-install-recommends -y -q -f
 
+# install latest shellcheck
+RUN \
+  --mount=type=cache,id=dl,target=/dl,sharing=locked \
+  export V=v$( \
+    curl -Ls https://api.github.com/repos/koalaman/shellcheck/releases/latest \
+    | sed -n 's/"tag_name": "\(.*\)",/\1/p' | sed 's/^.*v//' \
+  ) \
+  && export F="shellcheck-${V}.linux.x86_64.tar.xz" \
+  && wget -qN -P /dl "https://github.com/koalaman/shellcheck/releases/download/${V}/${F}" \
+  && tar -xJf /dl/${F} -C /tmp \
+  && install -m755 /tmp/shellcheck-${V}/shellcheck /usr/local/bin/shellcheck \
+  && rm -rf /tmp/shellcheck-${V}
+
 # install latest clang tools
 # https://apt.llvm.org/
 ARG INSTALL_LLVM=0

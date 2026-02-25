@@ -132,6 +132,7 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
 - [jq](https://github.com/stedolan/jq): Command-line JSON processor
 - [ripgrep](https://github.com/BurntSushi/ripgrep): Fast regex search respecting gitignore
 - [silversearcher-ag](https://github.com/ggreer/the_silver_searcher): Code search faster than ack
+- [ShellCheck](https://github.com/koalaman/shellcheck): Shell script static analysis tool
 - [spacer](https://github.com/samwho/spacer): Insert spacers in command output
 - [starship](https://github.com/starship/starship): Minimal, fast, customizable prompt
 - [stow](https://github.com/aspiers/stow): Symlink farm manager
