@@ -7,6 +7,13 @@
     "opencode-openai-codex-auth"
   ],
   "provider": {
+    "dmr": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Docker Model Runner",
+      "options": {
+        "baseURL": "http://localhost:12434/v1"
+      }
+    },
     "google": {
       "name": "Google",
       "models": {

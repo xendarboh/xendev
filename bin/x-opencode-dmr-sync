@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Sync local AI models via Docker Model Runner to the OpenCode config file
+
+set -euo pipefail
+
+config="${HOME}/.config/opencode/opencode.json"
+real=$(realpath "$config")
+models=$(curl -sf "http://localhost:12434/engines/v1/models" |
+  jq '.data | map({(.id): {"name": .id}}) | add // {}')
+[[ -n "$models" && "$models" != "null" ]] &&
+  tmp=$(mktemp "$(dirname "$real")/.opencode.json.XXXXXX") &&
+  jq --argjson m "$models" '.provider.dmr.models = $m' "$real" >"$tmp" &&
+  mv "$tmp" "$real"
