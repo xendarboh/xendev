@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Query local model via Docker Model Runner
+# Model is loaded from .env in the script's directory
+
+set -euo pipefail
+
+# Build prompt from arguments
+prompt="$*"
+test -z "{$prompt}" && echo "Usage: $(basename "$0") \"your prompt here\"" >&2 && exit 1
+
+# Load config from .env
+root_dir=$(readlink -f $(dirname $0)/..)
+env_file="${root_dir}/.env"
+test ! -f "$env_file" && echo "ERROR: .env file not found" && exit 1
+set -a
+source <(sed 's/=\(.*\)/="\1"/' ${env_file})
+set +a
+
+# Query the model via local API
+model="${MODELS_PRIMARY}"
+api_url="http://localhost:12434/v1/messages"
+curl -s ${api_url} \
+  -H "Content-Type: application/json" \
+  -d "$(jq -n \
+    --arg prompt "${prompt}" \
+    --arg model "${model}" '{
+      "model": $model,
+      "messages": [{"role": "user", "content": $prompt}]
+    }')" |
+  jq -r '.content[0].text' |
+  bat -l markdown
