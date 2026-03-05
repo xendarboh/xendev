@@ -110,7 +110,6 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
 
 ### AI/Agentic Coding
 
-- [aicommits](https://github.com/Nutlope/aicommits): AI-written git commit messages
 - [claude-code](https://github.com/anthropics/claude-code): Agentic coding tool in your terminal
 - [Docker Model Runner](https://docs.docker.com/ai/model-runner/): Run LLMs locally via Docker
 - [Open WebUI](https://github.com/open-webui/open-webui): Chat UI for local LLMs
@@ -280,7 +279,6 @@ Notable files in `conf.local/`, for example:
 | :------------------------- | :-------------------------------------------------- |
 | `xendev/bash.sh`           | Custom env vars (`GH_TOKEN`, `FLEEK_API_KEY`, etc.) |
 | `xendev/directory_map.txt` | Path mappings for tmux/kitty CWD preservation       |
-| `.aicommits`               | aicommits configuration                             |
 | `.wakatime.cfg`            | Wakatime/Wakapi config                              |
 | `.aws/`                    | AWS credentials                                     |
 
