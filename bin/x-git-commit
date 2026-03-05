@@ -1,0 +1,199 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+usage() {
+  cat <<EOF
+Usage: $(basename "$0") [--backend <local|opencode>] [--generate N] [--model MODEL] [hint]
+  --backend       force backend: local (DMR) or opencode (default: auto-detect)
+  --generate N    number of alternatives (default: 3)
+  --model MODEL   model override (DMR model name or opencode provider/model)
+EOF
+}
+
+backend=""
+generate=3
+model=""
+hint=""
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+  --backend)
+    backend="${2:-}"
+    shift 2
+    ;;
+  --generate)
+    generate="${2:-}"
+    shift 2
+    ;;
+  --model)
+    model="${2:-}"
+    shift 2
+    ;;
+  -h | --help)
+    usage
+    exit 0
+    ;;
+  *)
+    hint+="${hint:+ }$1"
+    shift
+    ;;
+  esac
+done
+
+[[ "$generate" =~ ^[0-9]+$ ]] && [[ "$generate" -gt 0 ]] || {
+  echo "ERROR: --generate must be a positive integer" >&2
+  exit 2
+}
+
+[[ -z "$backend" || "$backend" == "local" || "$backend" == "opencode" ]] || {
+  echo "ERROR: --backend must be 'local' or 'opencode'" >&2
+  exit 2
+}
+
+git rev-parse --is-inside-work-tree >/dev/null 2>&1 || {
+  echo "ERROR: not inside a git repository" >&2
+  exit 1
+}
+
+[[ -n "$(git diff --staged --name-only)" ]] || {
+  echo "No staged changes. Stage files first." >&2
+  exit 1
+}
+
+dmr_available() { curl -sf --connect-timeout 1 http://localhost:12434/v1/models >/dev/null 2>&1; }
+opencode_available() { command -v opencode >/dev/null 2>&1; }
+
+if [[ -z "$backend" ]]; then
+  if dmr_available; then
+    backend="local"
+  elif opencode_available; then
+    backend="opencode"
+  else
+    echo "ERROR: no backend available (DMR not reachable at localhost:12434, opencode not in PATH)" >&2
+    exit 1
+  fi
+elif [[ "$backend" == "local" ]]; then
+  dmr_available || {
+    echo "ERROR: DMR not reachable at localhost:12434" >&2
+    exit 1
+  }
+elif [[ "$backend" == "opencode" ]]; then
+  opencode_available || {
+    echo "ERROR: opencode not found in PATH" >&2
+    exit 1
+  }
+fi
+
+repo_root=$(git rev-parse --show-toplevel)
+tmpdir=$(mktemp -d)
+trap 'rm -rf "$tmpdir"' EXIT
+
+status_file="$tmpdir/status.txt"
+diff_file="$tmpdir/staged.diff"
+log_file="$tmpdir/recent.log"
+out_file="$tmpdir/llm-output.txt"
+
+git status --short >"$status_file"
+git diff --staged >"$diff_file"
+git log --oneline -20 --name-only >"$log_file"
+
+prompt="Generate ${generate} conventional commit subject lines for the staged changes."
+prompt+=" Output numbered list only (e.g. '1. fix(scope): subject')."
+prompt+=" No explanations. Imperative mood. <= 72 chars. No trailing period."
+[[ -n "$hint" ]] && prompt+=" Hint: ${hint}."
+
+if [[ "$backend" == "opencode" ]]; then
+  args=(run --command x-git-commit "count=${generate}" "hint=${hint:-(none)}"
+    -f "$status_file" -f "$diff_file" -f "$log_file")
+  [[ -n "$model" ]] && args+=(--model "$model")
+  opencode "${args[@]}" >"$out_file"
+else
+  root_dir=$(readlink -f "$(dirname "$0")/..")
+  env_file="$root_dir/.env"
+  [[ -f "$env_file" ]] || {
+    echo "ERROR: .env not found" >&2
+    exit 1
+  }
+  set -a
+  # shellcheck disable=SC1090
+  source <(sed 's/=\(.*\)/="\1"/' "$env_file")
+  set +a
+  dmr_model="${model:-${MODELS_PRIMARY:-}}"
+  [[ -n "$dmr_model" ]] || {
+    echo "ERROR: no model set (use --model or MODELS_PRIMARY in .env)" >&2
+    exit 1
+  }
+
+  context="$prompt
+
+Staged status:
+$(cat "$status_file")
+
+Staged diff:
+$(cat "$diff_file")
+
+Recent commits:
+$(cat "$log_file")"
+
+  curl -sf "http://localhost:12434/v1/messages" \
+    -H "Content-Type: application/json" \
+    -d "$(jq -n \
+      --arg prompt "$context" \
+      --arg model "$dmr_model" '{
+        "model": $model,
+        "messages": [{"role": "user", "content": $prompt}]
+      }')" | jq -r '.content[0].text' >"$out_file"
+fi
+
+sanitize() {
+  local s="$1"
+  s="${s#"${s%%[![:space:]]*}"}"
+  s="${s%"${s##*[![:space:]]}"}"
+  [[ ${#s} -ge 6 && ${s:0:3} == '```' && ${s: -3} == '```' ]] && s="${s:3:${#s}-6}"
+  [[ ${#s} -ge 2 && ${s:0:1} == '`' && ${s: -1} == '`' ]] && s="${s:1:${#s}-2}"
+  s="${s#"${s%%[![:space:]]*}"}"
+  s="${s%"${s##*[![:space:]]}"}"
+  printf '%s' "$s"
+}
+
+mapfile -t raw < <(
+  sed 's/\r$//' "$out_file" |
+    sed -n \
+      -e 's/^[[:space:]]*[0-9][0-9]*[.)-][[:space:]]\+//p' \
+      -e 's/^[[:space:]]*[-*][[:space:]]\+//p'
+)
+
+messages=()
+for line in "${raw[@]}"; do
+  m="$(sanitize "$line")"
+  [[ -z "$m" ]] && continue
+  [[ " ${messages[*]} " == *" $m "* ]] || messages+=("$m")
+done
+
+if [[ ${#messages[@]} -eq 0 ]]; then
+  first="$(sed -n '/^[[:space:]]*$/!{p;q}' "$out_file" || true)"
+  first="$(sanitize "$first")"
+  [[ -n "$first" ]] || {
+    echo "ERROR: model returned no commit message candidates" >&2
+    exit 1
+  }
+  messages=("$first")
+fi
+
+[[ ${#messages[@]} -gt $generate ]] && messages=("${messages[@]:0:$generate}")
+
+msg_file="$repo_root/.git/COMMIT_EDITMSG"
+{
+  echo "# AI-generated commit message. Edit freely, then save and quit."
+  echo "# Keep one non-comment line as the final commit message."
+  echo
+  echo "${messages[0]}"
+  for ((i = 1; i < ${#messages[@]}; i++)); do
+    echo
+    echo "# Alternative $((i + 1)):"
+    echo "# ${messages[$i]}"
+  done
+} >"$msg_file"
+
+git commit -e -F "$msg_file"
