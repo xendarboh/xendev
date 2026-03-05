@@ -10,6 +10,6 @@ promptToReturnFromSubprocess: false # display confirmation when subprocess termi
 customCommands:
   - key: <c-a>
     description: Choose AI-generated commit
-    command: aicommits --generate 3
+    command: x-git-commit
     context: files
     output: terminal
