@@ -111,7 +111,7 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
 ### AI/Agentic Coding
 
 - [claude-code](https://github.com/anthropics/claude-code): Agentic coding tool in your terminal
-- [Docker Model Runner](https://docs.docker.com/ai/model-runner/): Run LLMs locally via Docker
+- [Docker Model Runner](https://docs.docker.com/ai/model-runner/) (DMR): Run LLMs locally via Docker
 - [Open WebUI](https://github.com/open-webui/open-webui): Chat UI for local LLMs
 - [OpenCode](https://github.com/anomalyco/opencode): Open source coding agent _(INSTALL_OPENCODE)_
   - [oh-my-opencode](https://github.com/code-yeongyu/oh-my-opencode): Batteries-included agent harness
@@ -238,6 +238,16 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
 
 - [docker](https://github.com/docker/cli): The Docker CLI
   - [docker-compose](https://github.com/docker/compose): Orchestrate multi-container Docker apps
+
+### Built-in Scripts
+
+Scripts in [bin/](bin/) are available inside the container:
+
+- [x-ai](bin/x-ai): Query the local LLM (Docker Model Runner) directly from the terminal
+- [x-git-commit](bin/x-git-commit): AI-generated conventional git commit messages
+  - auto-selects local LLM (DMR) when available, falls back to opencode
+  - opens editor (neovim) with N alternatives for final selection
+  - invoke from lazygit with `CTRL+a`
 
 ### Runtime Scripts
 
