@@ -467,6 +467,7 @@ RUN \
     fd-find \
     fnm \
     git-absorb \
+    llmfit \
     ripgrep \
     spacer \
     starship \
