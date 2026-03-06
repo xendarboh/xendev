@@ -40,6 +40,7 @@ RUN \
     ack-grep \
     automake \
     bash-completion \
+    btop \
     build-essential \
     curl \
     dos2unix \
@@ -712,6 +713,7 @@ RUN \
   done \
   # create dirs so stow symlinks files and not dirs
   && mkdir -p \
+    /home/${_USER}/.config/btop \
     /home/${_USER}/.config/kitty \
     /home/${_USER}/.config/lazygit \
     /home/${_USER}/.config/opencode \

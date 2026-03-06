@@ -123,6 +123,7 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
 
 - [ack](https://github.com/beyondgrep/ack3): Grep-like tool for searching code
 - [bat](https://github.com/sharkdp/bat): A cat(1) clone with syntax highlighting
+- [btop](https://github.com/aristocratos/btop): Resource monitor with GPU support
 - [exa](https://github.com/ogham/exa): Modern replacement for 'ls'
 - [fd](https://github.com/sharkdp/fd): Simple, fast alternative to 'find'
 - [fish-shell](https://github.com/fish-shell/fish-shell): User-friendly command line shell
