@@ -110,6 +110,8 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
 
 ### AI/Agentic Coding
 
+- [aider](https://github.com/Aider-AI/aider): AI pair programming in your terminal _(INSTALL_AIDER)_
+  - [aider.nvim](https://github.com/joshuavial/aider.nvim): Neovim integration for aider
 - [claude-code](https://github.com/anthropics/claude-code): Agentic coding tool in your terminal
 - [Docker Model Runner](https://docs.docker.com/ai/model-runner/) (DMR): Run LLMs locally via Docker
 - [llmfit](https://github.com/AlexsJones/llmfit): Score and rank LLMs by hardware fit (RAM, CPU, GPU)

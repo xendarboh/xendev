@@ -20,6 +20,7 @@ services:
       context: ./
       args:
         - IMAGE_BASE
+        - INSTALL_AIDER
         - INSTALL_BROWSER_BRAVE
         - INSTALL_BROWSER_CHROMIUM
         - INSTALL_CIRCOM

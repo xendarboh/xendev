@@ -405,6 +405,15 @@ RUN \
   --mount=type=cache,id=uv-cache,target=${HOME}/.cache/uv,uid=${_USER_ID} \
   uv tool install --upgrade pynvim
 
+# install aider AI coding assistant
+# https://aider.chat
+ARG INSTALL_AIDER=0
+RUN \
+  --mount=type=cache,id=uv-cache,target=${HOME}/.cache/uv,uid=${_USER_ID} \
+  if [ "${INSTALL_AIDER}" = "1" ]; then \
+    uv tool install --upgrade aider-chat \
+  ; fi
+
 # install PlatformIO (stable version)
 # http://docs.platformio.org/en/latest/installation.html#python-package-manager
 ARG INSTALL_PLATFORMIO=0
