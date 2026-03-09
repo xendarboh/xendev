@@ -1,5 +1,6 @@
 **/.netrwhist
 *.local/
+.aider*
 .env
 _/
 conf/.config/nvim-lazyvim/lazy-lock.json
