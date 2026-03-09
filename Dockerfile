@@ -126,6 +126,20 @@ RUN \
 # fix: "cannot find name for group ID 110"
 RUN groupadd -g 110 render
 
+# build helper: gh-latest <owner/repo> [prefix]
+# Fetches the latest GitHub release version via web redirect (no REST API, not rate-limited).
+# Default output: bare version "X.Y.Z". Pass a prefix (e.g. "v") to prepend it.
+RUN <<'EOF'
+cat > /usr/local/bin/gh-latest << 'SCRIPT'
+#!/bin/bash
+set -euo pipefail
+v=$(curl -Ls -o /dev/null -w '%{url_effective}' "https://github.com/${1}/releases/latest" | sed 's|.*/tag/v\?||')
+[ -n "$v" ] || { echo "gh-latest: failed to resolve ${1}" >&2; exit 1; }
+echo "${2:-}${v}"
+SCRIPT
+chmod +x /usr/local/bin/gh-latest
+EOF
+
 # install git-crypt
 RUN \
   --mount=type=cache,id=apt-archives,target=/var/cache/apt,sharing=locked \
@@ -151,10 +165,7 @@ RUN \
 # Note: 2023-06-12 make from git clone failed
 RUN \
   --mount=type=cache,id=dl,target=/dl,sharing=locked \
-  export V=$( \
-    curl -Ls https://api.github.com/repos/newren/git-filter-repo/releases/latest \
-    | sed -n 's/"tag_name": "\(.*\)",/\1/p' | sed 's/^.*v//' \
-  ) \
+  export V=$(gh-latest newren/git-filter-repo) \
   && export F="git-filter-repo-${V}" \
   && wget -qN -P /dl "https://github.com/newren/git-filter-repo/releases/download/v${V}/${F}.tar.xz" \
   && tar -xf /dl/${F}.tar.xz -C /tmp \
@@ -183,10 +194,7 @@ RUN \
   --mount=type=cache,id=apt-archives,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,id=apt-lists,target=/var/lib/apt,sharing=locked \
   --mount=type=cache,id=dl,target=/dl,sharing=locked \
-  export V=$( \
-    curl -Ls https://api.github.com/repos/cli/cli/releases/latest \
-    | sed -n 's/"tag_name": "\(.*\)",/\1/p' | sed 's/^.*v//' \
-  ) \
+  export V=$(gh-latest cli/cli) \
   && export F="gh_${V}_linux_amd64.deb" \
   && wget -qN -P /dl "https://github.com/cli/cli/releases/download/v${V}/${F}" \
   && apt update \
@@ -196,10 +204,7 @@ RUN \
 # install latest shellcheck
 RUN \
   --mount=type=cache,id=dl,target=/dl,sharing=locked \
-  export V=v$( \
-    curl -Ls https://api.github.com/repos/koalaman/shellcheck/releases/latest \
-    | sed -n 's/"tag_name": "\(.*\)",/\1/p' | sed 's/^.*v//' \
-  ) \
+  export V=$(gh-latest koalaman/shellcheck v) \
   && export F="shellcheck-${V}.linux.x86_64.tar.xz" \
   && wget -qN -P /dl "https://github.com/koalaman/shellcheck/releases/download/${V}/${F}" \
   && tar -xJf /dl/${F} -C /tmp \
@@ -506,17 +511,14 @@ ARG INSTALL_CIRCOM=0
 RUN \
   if [ "${INSTALL_CIRCOM}" = "1" ]; then \
     git clone \
-      --branch $( \
-        curl -Ls https://api.github.com/repos/iden3/circom/releases/latest \
-        | sed -n -e 's/"tag_name": "\(.*\)",/\1/p' \
-      ) \
+      --branch $(gh-latest iden3/circom v) \
       --depth 1 \
       https://github.com/iden3/circom.git \
-      /usr/local/src/circom \
-    && cd /usr/local/src/circom \
+      /tmp/circom \
+    && cd /tmp/circom \
     && cargo build --release \
     && cargo install --path circom \
-    && rm -rf /usr/local/src/circom \
+    && rm -rf /tmp/circom \
   ; fi
 
 # install noir
@@ -540,10 +542,7 @@ ARG INSTALL_PB=0
 RUN \
   --mount=type=cache,id=dlu,target=/dlu,sharing=locked,uid=${_USER_ID} \
   if [ "${INSTALL_PB}" = "1" ]; then \
-    export V=$( \
-      curl -Ls https://api.github.com/repos/protocolbuffers/protobuf/releases/latest \
-      | sed -n 's/"tag_name": "\(.*\)",/\1/p' | sed 's/^.*v//' \
-    ) \
+    export V=$(gh-latest protocolbuffers/protobuf) \
     && export F="protoc-${V}-linux-x86_64.zip" \
     && wget -qN -P /dlu "https://github.com/protocolbuffers/protobuf/releases/download/v${V}/${F}" \
     && unzip /dlu/${F} \
@@ -600,10 +599,7 @@ RUN \
 # install latest fzf release
 RUN git clone \
     --depth 1 \
-    --branch $( \
-      curl -Ls https://api.github.com/repos/junegunn/fzf/releases/latest \
-      | sed -n -e 's/"tag_name": "\(.*\)",/\1/p' \
-    ) \
+    --branch $(gh-latest junegunn/fzf v) \
     https://github.com/junegunn/fzf.git \
     ~/.fzf \
   && ~/.fzf/install \
