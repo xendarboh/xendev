@@ -254,8 +254,9 @@ RUN \
       xvfb \
   ; fi
 
-# install latest tomb release
+# install tomb
 ARG INSTALL_TOMB=0
+ARG VERSION_TOMB
 RUN \
   --mount=type=cache,id=apt-archives,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,id=apt-lists,target=/var/lib/apt,sharing=locked \
@@ -267,7 +268,7 @@ RUN \
         pinentry-curses \
         zsh \
     && git clone \
-      --branch $(curl -fsSL "https://api.github.com/repos/dyne/Tomb/tags" | jq -r '.[0].name') \
+      --branch ${VERSION_TOMB} \
       --depth 1 \
       https://github.com/dyne/Tomb.git \
       /usr/local/src/tomb \
