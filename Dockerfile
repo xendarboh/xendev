@@ -607,13 +607,16 @@ RUN git clone \
     --no-zsh
 
 # install claude code
+ARG INSTALL_CLAUDECODE=0
 ENV CLAUDE_CONFIG_DIR /home/${_USER}/.local/share/claude
 RUN \
   --mount=type=cache,id=dlu,target=/dlu,sharing=locked,uid=${_USER_ID} \
-  wget -qN -P /dlu/claude-code https://claude.ai/install.sh \
-  && bash /dlu/claude-code/install.sh \
-  # 2026-03: claude is dir-dumb, hack it into shape
-  && mv ~/.local/share/claude/versions/* ~/.local/bin/claude
+  if [ "${INSTALL_CLAUDECODE}" = "1" ]; then \
+    wget -qN -P /dlu/claude-code https://claude.ai/install.sh \
+    && bash /dlu/claude-code/install.sh \
+    # 2026-03: claude is dir-dumb, hack it into shape
+    && mv ~/.local/share/claude/versions/* ~/.local/bin/claude \
+  ; fi
 
 # install opencode
 ARG INSTALL_OPENCODE=0
