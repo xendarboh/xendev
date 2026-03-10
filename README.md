@@ -113,10 +113,12 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
 - [aider](https://github.com/Aider-AI/aider): AI pair programming in your terminal _(INSTALL_AIDER)_
   - [aider.nvim](https://github.com/joshuavial/aider.nvim): Neovim integration for aider
 - [claude-code](https://github.com/anthropics/claude-code): Agentic coding tool in your terminal _(INSTALL_CLAUDECODE)_
+  - [GSD](https://github.com/gsd-build/get-shit-done): Meta-prompting and spec-driven development system
 - [Docker Model Runner](https://docs.docker.com/ai/model-runner/) (DMR): Run LLMs locally via Docker
 - [llmfit](https://github.com/AlexsJones/llmfit): Score and rank LLMs by hardware fit (RAM, CPU, GPU)
 - [Open WebUI](https://github.com/open-webui/open-webui): Chat UI for local LLMs
 - [OpenCode](https://github.com/anomalyco/opencode): Open source coding agent _(INSTALL_OPENCODE)_
+  - [GSD](https://github.com/gsd-build/get-shit-done): Meta-prompting and spec-driven development system
   - [oh-my-opencode](https://github.com/code-yeongyu/oh-my-opencode): Batteries-included agent harness
   - [opencode-wakatime](https://github.com/angristan/opencode-wakatime): OpenCode usage time tracking
 - [repomix](https://github.com/yamadashy/repomix): Pack repository into AI-friendly file

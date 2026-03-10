@@ -616,6 +616,8 @@ RUN \
     && bash /dlu/claude-code/install.sh \
     # 2026-03: claude is dir-dumb, hack it into shape
     && mv ~/.local/share/claude/versions/* ~/.local/bin/claude \
+    # install extras
+    && npx get-shit-done-cc --claude --global \
   ; fi
 
 # install opencode
@@ -628,6 +630,7 @@ RUN \
     && export PATH=/home/${_USER}/.opencode/bin:${PATH} \
     && bunx oh-my-opencode@${VERSION_OHMYOPENCODE} install --no-tui ${OPTIONS_OHMYOPENCODE} \
     && sudo npm i -g opencode-wakatime && opencode-wakatime --install \
+    && npx get-shit-done-cc --opencode --global \
   ; fi
 
 # install extra bash things
