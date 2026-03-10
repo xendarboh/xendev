@@ -121,6 +121,7 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
   - [GSD](https://github.com/gsd-build/get-shit-done): Meta-prompting and spec-driven development system
   - [oh-my-opencode](https://github.com/code-yeongyu/oh-my-opencode): Batteries-included agent harness
   - [opencode-wakatime](https://github.com/angristan/opencode-wakatime): OpenCode usage time tracking
+- [OpenPackage](https://github.com/enulus/openpackage): Universal package manager for AI coding agent skills/rules/commands
 - [repomix](https://github.com/yamadashy/repomix): Pack repository into AI-friendly file
 
 ### Shell & Terminal

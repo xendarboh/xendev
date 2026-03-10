@@ -317,6 +317,7 @@ RUN npm install --global \
     neovim \
     npm-check \
     npm-check-updates \
+    opkg \
     prettier \
     prettier-plugin-solidity \
     typescript
