@@ -182,16 +182,19 @@ The Tools section is an **Awesome-List** style curated collection with strict co
 **Ordering**: **Case-insensitive alphabetical order** within each section (e.g., `Bun`, `Deno`, `Go`)
 
 **Entry format**:
+
 ```markdown
 - [ToolName](https://github.com/org/repo): Brief description
 ```
 
 **Optional tools** (controlled by build ARGs): Append `_(INSTALL_*)_` suffix:
+
 ```markdown
 - [Nix](https://github.com/NixOS/nix): Purely functional package manager _(INSTALL_NIX)_
 ```
 
 **Sub-tools** (plugins, extensions): Indent under parent:
+
 ```markdown
 - [fish-shell](https://github.com/fish-shell/fish-shell): User-friendly command line shell
   - [fisher](https://github.com/jorgebucaran/fisher): Plugin manager for Fish
@@ -199,9 +202,10 @@ The Tools section is an **Awesome-List** style curated collection with strict co
 ```
 
 **Example placement**: To add `htop`, find the Utilities section, then insert alphabetically between existing entries:
+
 ```markdown
 - [ImageMagick](...)
-- [htop](https://github.com/htop-dev/htop): Interactive process viewer  ← insert here
+- [htop](https://github.com/htop-dev/htop): Interactive process viewer ← insert here
 - [kpcli](...)
 ```
 
@@ -216,6 +220,130 @@ The Tools section is an **Awesome-List** style curated collection with strict co
 1. Edit files in `conf/` (`.bash_xendev`, `.bash_aliases`, `config.fish`)
 2. Changes take effect on next container start (stowed at runtime)
 
+### Add a new script
+
+Scripts live in different directories depending on their purpose. Match the conventions of the target directory exactly.
+
+#### Directory Conventions
+
+| Directory   | Purpose                                             | Extension | Naming            | Added to PATH via         |
+| ----------- | --------------------------------------------------- | --------- | ----------------- | ------------------------- |
+| `bin/`      | Container-internal utilities                        | none      | `x-kebab-case`    | `${XENDEV_DIR}/bin`       |
+| `bin.host/` | Host-side utilities (run on host, not in container) | none      | `x-kebab-case`    | manual                    |
+| `bin.sys/`  | Sysbox-mode wrappers (override system binaries)     | none      | exact binary name | placed before system PATH |
+| `setup.d/`  | Optional on-demand setup scripts                    | `.sh`     | `kebab-case.sh`   | run manually              |
+| `test/`     | Manual terminal/environment verification            | `.sh`     | `kebab-case.sh`   | run with `./test/`        |
+
+#### Shebang
+
+- `bin/`, `bin.host/`, root launcher: `#!/usr/bin/env bash` (portability for host execution)
+- `bin.sys/`, `setup.d/`, `test/`: `#!/bin/bash` (container context, known path)
+
+#### Error Handling
+
+- **`bin/` scripts**: Always include `set -euo pipefail` near the top — these are production utilities
+- **`setup.d/` scripts**: No strict requirement; use `set -e` or `#!/bin/bash -ex` when appropriate
+- **`test/` scripts**: Typically none — they're diagnostic and partial failure is acceptable
+- **`bin.sys/` wrappers**: No `set -euo pipefail` — they must propagate exit codes from wrapped binaries
+
+#### Argument Handling
+
+Use a `while [[ $# -gt 0 ]]; do case "$1" in` loop for named flags (not `getopts`):
+
+```bash
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+  --flag)
+    FLAG="${2:-}"
+    shift 2
+    ;;
+  -h | --help)
+    usage
+    exit 0
+    ;;
+  *)
+    POSITIONAL+="${POSITIONAL:+ }$1"
+    shift
+    ;;
+  esac
+done
+```
+
+For simple positional-only scripts, validate inline:
+
+```bash
+test -z "$1" && echo "USAGE: $0 <arg>" && exit 1
+```
+
+#### Usage / Help
+
+Longer scripts define a `usage()` function using a heredoc:
+
+```bash
+usage() {
+  cat <<EOF
+Usage: $(basename "$0") [--flag VALUE] [arg]
+  --flag VALUE    Description of flag
+EOF
+}
+```
+
+Emit usage to `stderr` on bad input (`usage >&2`); emit normally for `-h`/`--help`.
+
+#### Output Style
+
+- Diagnostic messages and errors: `echo "[xendev] message" >&2` or `echo "[xendev] ERROR: message" >&2`
+- Interactive output (TTY check): `[[ -t 0 && -t 1 ]] && echo "..."` before prompting
+- Colored output (sparingly): ANSI escapes via `echo -e "\033[1;32mText\033[0m"` for visibility
+
+#### Executable Bit
+
+All scripts must be executable:
+
+```sh
+chmod +x <script>
+```
+
+Verify with `ls -la` — all scripts in this repo have `-rwxr-xr-x` or `-rwxr--r--` permissions.
+
+#### Naming Conventions
+
+- `bin/` and `bin.host/`: prefix with `x-` + kebab-case (e.g., `x-git-commit`, `x-fix-gpg-hang`)
+- `bin.sys/`: exact name of the binary being wrapped (e.g., `docker`, `brave-browser`)
+- `setup.d/` and `test/`: kebab-case with `.sh` (e.g., `whisperx.sh`, `test-fonts.sh`)
+- Root scripts: no extension (e.g., `xendev`)
+
+#### Sourcing `.env`
+
+Scripts that need project config load `.env` relative to their own location:
+
+```bash
+root_dir=$(readlink -f "$(dirname "$0")/..")
+env_file="$root_dir/.env"
+[[ -f "$env_file" ]] || { echo "ERROR: .env not found" >&2; exit 1; }
+set -a
+# shellcheck disable=SC1090
+source <(sed 's/=\(.*\)/="\1"/' "$env_file")
+set +a
+```
+
+#### Temporary Files
+
+Use `mktemp` with a `trap` for cleanup:
+
+```bash
+tmpdir=$(mktemp -d)
+trap 'rm -rf "$tmpdir"' EXIT
+```
+
+#### README.md
+
+Add `bin/` scripts to the **Built-in Scripts** section in `README.md`. Add `setup.d/` scripts to the **Runtime Scripts** section. Follow the existing bullet format:
+
+```markdown
+- [x-script-name](bin/x-script-name): One-line description of what it does
+```
+
 ### Add a Neovim plugin
 
 1. Create `conf/.config/nvim-lazyvim/lua/plugins/<plugin-name>.lua`
@@ -227,11 +355,13 @@ The Tools section is an **Awesome-List** style curated collection with strict co
 Colorschemes are managed by [tinty](https://github.com/tinted-theming/tinty), providing unified theming across kitty, tmux, and Neovim.
 
 **Key files:**
+
 - `conf/.config/tinted-theming/tinty/config.toml` — tinty item configs (shell, tmux, kitty)
 - `conf/.config/nvim-lazyvim/lua/plugins/colorscheme.lua` — Neovim theme sync with native plugin fallback
 - `.env-example` `OPTIONS_THEME` — build-time default theme
 
 **How it works:**
+
 1. `tinty apply <scheme>` propagates colors to all configured apps via hooks
 2. Neovim listens for `TintedColorsPost` event (via tinted-nvim plugin) and applies native plugins (gruvbox.nvim, tokyonight.nvim) when available
 3. Neovim falls back to tinty-provided generic theme when no native plugin matches
