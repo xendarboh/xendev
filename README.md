@@ -250,7 +250,8 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
 
 Scripts in [bin/](bin/) are available inside the container:
 
-- [x-ai](bin/x-ai): Query the local LLM (Docker Model Runner) directly from the terminal
+- [x-ai](bin/x-ai): Query a local LLM (via Docker Model Runner) directly from the terminal
+- [x-aztec-ai-tools](bin/x-aztec-ai-tools): Setup a project with [Aztec/Noir AI Tooling](https://docs.aztec.network/developers/ai_tooling) (MCP servers, skills, platform configs)
 - [x-git-commit](bin/x-git-commit): AI-generated conventional git commit messages
   - auto-selects local LLM (DMR) when available, falls back to opencode
   - opens editor (neovim) with N alternatives for final selection

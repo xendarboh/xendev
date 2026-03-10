@@ -1,0 +1,292 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+AZTEC_MCP_REPOS_BASE="${HOME}/.local/share/xendev/mcp/aztec"
+NOIR_MCP_REPOS_DIR="${HOME}/.local/share/xendev/mcp/noir"
+AZTEC_SECTION_MARKER="<!-- aztec-dev-setup: do not remove this marker -->"
+
+# --- External sources ---
+AZTEC_CLAUDE_PLUGIN_PKG="gh@critesjosh/aztec-claude-plugin"
+NOIR_CLAUDE_PLUGIN_PKG="gh@critesjosh/noir-claude-plugin"
+NETHERMIND_SKILLS_REPO="https://github.com/NethermindEth/aztec-skills.git"
+AZTEC_MCP_NPM_PKG="@aztec/mcp-server"
+NOIR_MCP_NPM_PKG="noir-mcp-server"
+
+usage() {
+  cat <<EOF
+Usage: $(basename "$0") [--platforms <p1> [p2 ...]] [--version <ver>]
+
+  --platforms   Platforms to configure (space-separated).
+                Values: claude opencode cursor codex ...
+                Default: auto-detect from installed binaries
+  --version     Aztec version pin (e.g. v4.0.0-devnet.2-patch.1)
+                Default: Nargo.toml > \$VERSION_AZTEC > latest
+  -h, --help    Show this help
+
+Info: https://docs.aztec.network/developers/ai_tooling
+EOF
+}
+
+# --- Argument parsing ---
+
+platforms=()
+version=""
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+  --platforms)
+    shift
+    while [[ $# -gt 0 ]] && [[ "${1:0:1}" != "-" ]]; do
+      platforms+=("$1")
+      shift
+    done
+    [[ ${#platforms[@]} -eq 0 ]] && {
+      echo "[xendev] ERROR: --platforms requires at least one value" >&2
+      exit 1
+    }
+    ;;
+  --version)
+    version="${2:-}"
+    [[ -z "$version" ]] && {
+      echo "[xendev] ERROR: --version requires a value" >&2
+      exit 1
+    }
+    shift 2
+    ;;
+  -h | --help)
+    usage
+    exit 0
+    ;;
+  *)
+    echo "[xendev] ERROR: unknown argument: $1" >&2
+    usage >&2
+    exit 1
+    ;;
+  esac
+done
+
+# --- Platform detection ---
+
+if [[ ${#platforms[@]} -eq 0 ]]; then
+  command -v claude >/dev/null 2>&1 && platforms+=("claude")
+  command -v opencode >/dev/null 2>&1 && platforms+=("opencode")
+  if [[ ${#platforms[@]} -eq 0 ]]; then
+    echo "[xendev] ERROR: no platforms detected (claude/opencode not in PATH). Use --platforms." >&2
+    exit 1
+  fi
+  echo "[xendev] auto-detected platforms: ${platforms[*]}"
+fi
+
+# --- Version resolution ---
+
+if [[ -z "$version" && -f Nargo.toml ]]; then
+  _v=$(sed -n 's/.*aztec_version\s*=\s*"\([^"]*\)".*/\1/p' Nargo.toml 2>/dev/null | head -1 || true)
+  [[ -n "$_v" ]] && version="$_v" && echo "[xendev] Aztec version from Nargo.toml: $version"
+fi
+[[ -z "$version" && -n "${VERSION_AZTEC:-}" ]] && version="$VERSION_AZTEC" && echo "[xendev] Aztec version from \$VERSION_AZTEC: $version"
+[[ -z "$version" ]] && version="latest"
+
+AZTEC_MCP_REPOS_DIR="${AZTEC_MCP_REPOS_BASE}/${version}"
+
+echo "[xendev] platforms : ${platforms[*]}"
+echo "[xendev] version   : $version"
+echo ""
+
+# --- Helpers ---
+
+has_platform() {
+  local t="$1" p
+  for p in "${platforms[@]}"; do [[ "$p" == "$t" ]] && return 0; done
+  return 1
+}
+
+# Return the skills directory for a given platform name (opkg convention)
+platform_skills_dir() {
+  case "$1" in
+  claude | claudecode) echo ".claude/skills" ;;
+  opencode) echo ".opencode/skills" ;;
+  cursor) echo ".cursor/skills" ;;
+  codex | codexcli) echo ".codex/skills" ;;
+  *) echo ".${1}/skills" ;;
+  esac
+}
+
+# Build @aztec/mcp-server JSON entry
+# $1=repos_dir  $2=version  $3=format (claude|opencode)
+build_aztec_mcp_entry() {
+  local repos_dir="$1" ver="$2" fmt="$3"
+  local pkg="${AZTEC_MCP_NPM_PKG}@latest"
+  if [[ "$fmt" == "opencode" ]]; then
+    if [[ "$ver" == "latest" ]]; then
+      jq -n --arg rd "$repos_dir" --arg pkg "$pkg" '{
+        type: "local",
+        command: ["npx", "--prefer-online", "-y", $pkg],
+        environment: {AZTEC_MCP_REPOS_DIR: $rd}
+      }'
+    else
+      jq -n --arg rd "$repos_dir" --arg v "$ver" --arg pkg "$pkg" '{
+        type: "local",
+        command: ["npx", "--prefer-online", "-y", $pkg],
+        environment: {AZTEC_MCP_REPOS_DIR: $rd, AZTEC_DEFAULT_VERSION: $v}
+      }'
+    fi
+  else
+    if [[ "$ver" == "latest" ]]; then
+      jq -n --arg rd "$repos_dir" --arg pkg "$pkg" '{
+        command: "npx",
+        args: ["--prefer-online", "-y", $pkg],
+        env: {AZTEC_MCP_REPOS_DIR: $rd}
+      }'
+    else
+      jq -n --arg rd "$repos_dir" --arg v "$ver" --arg pkg "$pkg" '{
+        command: "npx",
+        args: ["--prefer-online", "-y", $pkg],
+        env: {AZTEC_MCP_REPOS_DIR: $rd, AZTEC_DEFAULT_VERSION: $v}
+      }'
+    fi
+  fi
+}
+
+# Build noir-mcp-server JSON entry
+# $1=repos_dir  $2=format (claude|opencode)
+build_noir_mcp_entry() {
+  local repos_dir="$1" fmt="$2"
+  local pkg="${NOIR_MCP_NPM_PKG}@latest"
+  if [[ "$fmt" == "opencode" ]]; then
+    jq -n --arg rd "$repos_dir" --arg pkg "$pkg" '{
+      type: "local",
+      command: ["npx", "--prefer-online", "-y", $pkg],
+      environment: {NOIR_MCP_REPOS_DIR: $rd}
+    }'
+  else
+    jq -n --arg rd "$repos_dir" --arg pkg "$pkg" '{
+      command: "npx",
+      args: ["--prefer-online", "-y", $pkg],
+      env: {NOIR_MCP_REPOS_DIR: $rd}
+    }'
+  fi
+}
+
+write_json() {
+  local file="$1" update="$2" create="$3" a="$4" n="$5" tmp
+  if [[ -f "$file" ]]; then
+    tmp=$(mktemp)
+    jq --argjson a "$a" --argjson n "$n" "$update" "$file" >"$tmp" && mv "$tmp" "$file"
+  else
+    jq -n --argjson a "$a" --argjson n "$n" "$create" >"$file"
+  fi
+}
+
+# Append Aztec CLI instructions to a file (idempotent, symlink-safe)
+inject_aztec_section() {
+  local file="$1"
+  local real_file
+  real_file=$(readlink -f "$file")
+
+  if grep -qF "$AZTEC_SECTION_MARKER" "$real_file" 2>/dev/null; then
+    echo "[xendev] $file: Aztec section already present, skipping"
+    return
+  fi
+
+  # Write marker + content (single-quoted heredoc: no variable/backtick expansion)
+  printf '\n%s\n' "$AZTEC_SECTION_MARKER" >>"$real_file"
+  cat >>"$real_file" <<'AZTEC_SECTION'
+## Critical: Use `aztec` CLI, not `nargo` directly
+
+This is an Aztec smart contract project. Always use the `aztec` CLI wrapper instead of calling `nargo` directly:
+
+- **Compile**: `aztec compile` (NOT `nargo compile`). Using `nargo compile` alone produces incomplete artifacts.
+- **Test**: `aztec test` (NOT `nargo test`).
+- **Other nargo commands** like `nargo fmt` and `nargo doc` are fine to use directly.
+AZTEC_SECTION
+  echo "[xendev] $file: appended Aztec CLI instructions"
+}
+
+# --- Ensure MCP repos cache dirs exist (persistent volume) ---
+
+mkdir -p "$AZTEC_MCP_REPOS_DIR" "$NOIR_MCP_REPOS_DIR"
+
+# --- 1. opkg: aztec-claude-plugin (skills, commands, agents) ---
+
+echo "[xendev] installing aztec-claude-plugin..."
+opkg install "$AZTEC_CLAUDE_PLUGIN_PKG" --platforms "${platforms[@]}"
+
+echo "[xendev] installing noir-claude-plugin..."
+opkg install "$NOIR_CLAUDE_PLUGIN_PKG" --platforms "${platforms[@]}"
+
+# --- 2. NethermindEth/aztec-skills (direct clone + copy; no openpackage.yml) ---
+
+echo "[xendev] installing NethermindEth/aztec-skills..."
+_tmpdir=$(mktemp -d)
+trap 'rm -rf "$_tmpdir"' EXIT
+
+git clone --depth 1 --quiet "$NETHERMIND_SKILLS_REPO" "$_tmpdir/aztec-skills"
+
+mapfile -t _nethermind_skills < <(
+  find "$_tmpdir/aztec-skills" -maxdepth 2 -name "SKILL.md" -printf "%h\n" |
+    xargs -I{} basename {}
+)
+echo "[xendev]   discovered ${#_nethermind_skills[@]} skills: ${_nethermind_skills[*]}"
+
+for _p in "${platforms[@]}"; do
+  _skills_dir=$(platform_skills_dir "$_p")
+  mkdir -p "$_skills_dir"
+  for _skill in "${_nethermind_skills[@]}"; do
+    cp -r "$_tmpdir/aztec-skills/${_skill}" "$_skills_dir/"
+    echo "[xendev]   ${_skill} → ${_skills_dir}/"
+  done
+done
+
+# --- 3. MCP config: Claude Code (.mcp.json) ---
+# Note: opkg may have written a basic .mcp.json; we overwrite the aztec/noir entries
+# to add AZTEC_MCP_REPOS_DIR and the version pin.
+
+if has_platform "claude" || has_platform "claudecode"; then
+  echo "[xendev] writing .mcp.json..."
+  _aztec_entry=$(build_aztec_mcp_entry "$AZTEC_MCP_REPOS_DIR" "$version" "claude")
+  _noir_entry=$(build_noir_mcp_entry "$NOIR_MCP_REPOS_DIR" "claude")
+
+  write_json ".mcp.json" \
+    ".mcpServers.aztec = \$a | .mcpServers.noir = \$n" \
+    "{mcpServers: {aztec: \$a, noir: \$n}}" \
+    "$_aztec_entry" "$_noir_entry"
+  echo "[xendev]   wrote .mcp.json"
+fi
+
+# --- 4. MCP config: OpenCode (.opencode/opencode.json) ---
+# OpenCode uses key "mcp" (not "mcpServers") in its config.
+
+if has_platform "opencode"; then
+  echo "[xendev] writing .opencode/opencode.json..."
+  mkdir -p .opencode
+  _aztec_entry=$(build_aztec_mcp_entry "$AZTEC_MCP_REPOS_DIR" "$version" "opencode")
+  _noir_entry=$(build_noir_mcp_entry "$NOIR_MCP_REPOS_DIR" "opencode")
+  _oc_file=".opencode/opencode.json"
+
+  write_json "$_oc_file" \
+    ".mcp.aztec = \$a | .mcp.noir = \$n" \
+    "{\"\$schema\": \"https://opencode.ai/config.json\", mcp: {aztec: \$a, noir: \$n}}" \
+    "$_aztec_entry" "$_noir_entry"
+  echo "[xendev]   wrote $_oc_file"
+fi
+
+# --- 5. AGENTS.md / CLAUDE.md: inject Aztec CLI instructions ---
+# Only appends to files that already exist in the project.
+# Symlink-safe: resolves to real file to avoid double-writing when one symlinks to the other.
+
+_agents_real=""
+_claude_real=""
+[[ -f AGENTS.md ]] && _agents_real=$(readlink -f AGENTS.md)
+[[ -f CLAUDE.md ]] && _claude_real=$(readlink -f CLAUDE.md)
+
+[[ -n "$_agents_real" ]] && inject_aztec_section AGENTS.md
+[[ -n "$_claude_real" && "$_claude_real" != "$_agents_real" ]] && inject_aztec_section CLAUDE.md
+
+# --- Done ---
+
+echo ""
+echo "[xendev] aztec dev setup complete"
+echo "  platforms : ${platforms[*]}"
+echo "  version   : $version"
+echo "  mcp cache : aztec=${AZTEC_MCP_REPOS_DIR}  noir=${NOIR_MCP_REPOS_DIR}"
