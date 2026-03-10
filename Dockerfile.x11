@@ -130,6 +130,7 @@ RUN \
     ca-certificates \
     curl \
     gnupg \
+    libnotify-bin \
     software-properties-common \
     unzip \
     wget \
