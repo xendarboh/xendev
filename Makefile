@@ -5,7 +5,8 @@ export BUILDKIT_PROGRESS := plain
 include .env
 export
 MAKEFILE_LIST = Makefile
-COMPOSE_MODELS := docker compose -f docker-compose.models.yml
+COMPOSE_BUILD := docker compose --profile build
+COMPOSE_MODELS := docker compose --profile models
 
 .PHONY: help build-tty rebuild-tty install-x11docker fetch-nvidia-driver build retag rebuild models-up models-down models-logs models-status
 
@@ -14,10 +15,10 @@ help: ## print this help message with some nifty mojo
 	@grep -E '^[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
 build-tty: ## build tty-only docker image
-	time docker compose build xen-dev
+	time $(COMPOSE_BUILD) build xen-dev
 
 rebuild-tty: ## (re)build tty-only docker image with --no-cache --pull
-	time docker compose build --no-cache --pull xen-dev
+	time $(COMPOSE_BUILD) build --no-cache --pull xen-dev
 
 install-x11docker: ## install or update x11docker and pull xserver image
 	curl -fsSL https://raw.githubusercontent.com/mviereck/x11docker/master/x11docker | sudo bash -s -- --update
@@ -32,9 +33,9 @@ fetch-nvidia-driver: ## fetch versioned NVIDIA driver for x11docker
 	curl -fL --progress-bar "https://http.download.nvidia.com/XFree86/Linux-x86_64/$$V/NVIDIA-Linux-x86_64-$$V.run" -o "$$DL/NVIDIA-Linux-x86_64-$$V.run"
 
 build: ## build docker images
-	time docker compose build xen-x11
-	time docker compose build --build-arg IMAGE_BASE=xen/x11 xen-dev
-	time docker compose build xen-sys
+	time $(COMPOSE_BUILD) build xen-x11
+	time $(COMPOSE_BUILD) build --build-arg IMAGE_BASE=xen/x11 xen-dev
+	time $(COMPOSE_BUILD) build xen-sys
 
 retag: ## tag docker images: latest --> prev
 	-docker rmi xen/sys:prev xen/dev:prev xen/x11:prev
@@ -44,9 +45,9 @@ retag: ## tag docker images: latest --> prev
 
 rebuild: ## rebuild docker images (no cache, pull latest base images)
 	time docker pull ${IMAGE_BASE}
-	time docker compose build --no-cache --pull xen-x11
-	time docker compose build --no-cache --build-arg IMAGE_BASE=xen/x11 xen-dev
-	time docker compose build --no-cache xen-sys
+	time $(COMPOSE_BUILD) build --no-cache --pull xen-x11
+	time $(COMPOSE_BUILD) build --no-cache --build-arg IMAGE_BASE=xen/x11 xen-dev
+	time $(COMPOSE_BUILD) build --no-cache xen-sys
 
 models-up: ## start local model runner + Open WebUI
 	$(COMPOSE_MODELS) up -d

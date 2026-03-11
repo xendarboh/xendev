@@ -1,5 +1,7 @@
 services:
+  # ─── BUILD-ONLY
   xen-x11:
+    profiles: [build]
     build:
       context: ./
       dockerfile: Dockerfile.x11
@@ -10,12 +12,14 @@ services:
     image: xen/x11
 
   xen-sys:
+    profiles: [build]
     build:
       context: ./
       dockerfile: Dockerfile.sys
     image: xen/sys
 
   xen-dev:
+    profiles: [build]
     build:
       context: ./
       args:
@@ -50,3 +54,32 @@ services:
         - VERSION_OHMYOPENCODE
         - VERSION_TOMB
     image: xen/dev
+
+  # ─── RUNTIME: LOCAL AI MODELS
+  # Optional local model runner stack (Docker Model Runner + Open WebUI)
+  # Configure via MODELS_* vars in .env — see .env-example
+  open-webui:
+    profiles: [models]
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: xendev-open-webui
+    ports:
+      - ${MODELS_WEBUI_PORT:-12444}:8080
+    environment:
+      - GUNICORN_TIMEOUT=300
+      - WEBUI_AUTH=false
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ${HOME}/.local/share/xendev/xndv-ai/open-webui:/app/backend/data
+    models:
+      - llm-primary
+
+  # ─── RUNTIME: MCP SERVERS
+  # Add local MCP server services here with profiles: [mcp]
+
+# ─── DOCKER MODEL RUNNER
+# Top-level `models:` is not affected by profiles — always active.
+# Requires Docker Compose v2.38+ with Docker Model Runner enabled.
+models:
+  llm-primary:
+    model: ${MODELS_PRIMARY}
