@@ -51,17 +51,18 @@ return {
       default_bindings = false,
     },
     keys = {
-      { "<leader>aD", "", desc = "+aider", mode = { "n", "v" } },
+      { "<leader>a", "", desc = "+ai", mode = { "n", "x" } },
+      { "<leader>ad", "", desc = "+aider", mode = { "n", "v" } },
 
       {
-        "<leader>aDo",
+        "<leader>ado",
         function()
           toggle("vsplit")
         end,
         desc = "Toggle vsplit",
       },
       {
-        "<leader>aDf",
+        "<leader>adf",
         function()
           toggle("editor")
         end,
@@ -69,29 +70,29 @@ return {
       },
 
       {
-        "<leader>aDa",
+        "<leader>ada",
         function()
           send("/add " .. current_file())
         end,
         desc = "Add file",
       },
       {
-        "<leader>aDr",
+        "<leader>adr",
         function()
           send("/read-only " .. current_file())
         end,
         desc = "Add file (readonly)",
       },
       {
-        "<leader>aDd",
+        "<leader>add",
         function()
           send("/drop " .. current_file())
         end,
         desc = "Drop file",
       },
-      { "<leader>aDm", "<cmd>AiderAddModifiedFiles<CR>", desc = "Add modified files" },
+      { "<leader>adm", "<cmd>AiderAddModifiedFiles<CR>", desc = "Add modified files" },
       {
-        "<leader>aDB",
+        "<leader>adB",
         function()
           for _, buf in ipairs(vim.api.nvim_list_bufs()) do
             local name = vim.api.nvim_buf_get_name(buf)
@@ -103,7 +104,7 @@ return {
         desc = "Add all buffers",
       },
       {
-        "<leader>aDR",
+        "<leader>adR",
         function()
           send("/reset")
         end,
@@ -111,7 +112,7 @@ return {
       },
 
       {
-        "<leader>aDs",
+        "<leader>ads",
         function()
           local path = vim.fn.expand("%:.")
           local sl, el = vim.fn.line("'<"), vim.fn.line("'>")
@@ -123,7 +124,7 @@ return {
         mode = "v",
       },
       {
-        "<leader>aDx",
+        "<leader>adx",
         function()
           local diags = vim.diagnostic.get(0)
           if #diags == 0 then
@@ -140,7 +141,7 @@ return {
         desc = "Send diagnostics",
       },
       {
-        "<leader>aDp",
+        "<leader>adp",
         function()
           send("/paste")
         end,
@@ -148,14 +149,14 @@ return {
       },
 
       {
-        "<leader>aDc",
+        "<leader>adc",
         function()
           send("/chat-mode code")
         end,
         desc = "Code mode",
       },
       {
-        "<leader>aDt",
+        "<leader>adt",
         function()
           send("/chat-mode architect")
         end,
@@ -163,14 +164,14 @@ return {
       },
 
       {
-        "<leader>aDu",
+        "<leader>adu",
         function()
           send("/undo")
         end,
         desc = "Undo",
       },
       {
-        "<leader>aDl",
+        "<leader>adl",
         function()
           send("/clear")
         end,
