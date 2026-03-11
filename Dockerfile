@@ -49,6 +49,7 @@ RUN \
     jq \
     less \
     libtool \
+    lsof \
     locales \
     man-db \
     ncdu \
