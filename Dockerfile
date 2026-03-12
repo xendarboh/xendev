@@ -49,10 +49,11 @@ RUN \
     jq \
     less \
     libtool \
-    lsof \
     locales \
+    lsof \
     man-db \
     ncdu \
+    netcat-openbsd \
     ninja-build \
     openssh-client \
     pinentry-curses \
