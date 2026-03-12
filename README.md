@@ -263,7 +263,7 @@ Scripts in [bin/](bin/) are available inside the container:
 
 Optional tools installed on-demand via [setup.d/](setup.d/):
 
-- [Aztec](https://github.com/AztecProtocol/aztec-packages): Privacy-first L2 (requires `sys` mode)
+- [Aztec Toolchain](https://github.com/AztecProtocol/aztec-packages): Privacy-first L2
 - [WhisperX](https://github.com/m-bain/whisperX): Speech recognition with timestamps
 
 ## Build

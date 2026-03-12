@@ -7,6 +7,7 @@ export PATH=${PNPM_HOME}:${PATH}
 export PATH=~/.yarn/bin:${PATH}
 export PATH=./node_modules/.bin:${PATH}
 export PATH=~/.aztec/bin:${PATH}
+export PATH=~/.aztec/current/bin:~/.aztec/current/node_modules/.bin:${PATH}
 export PATH=${XENDEV_DIR}/bin:${PATH}
 
 export GPG_TTY=$(tty)
