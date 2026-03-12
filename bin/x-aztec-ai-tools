@@ -20,8 +20,9 @@ Usage: $(basename "$0") [--platforms <p1> [p2 ...]] [--version <ver>]
   --platforms   Platforms to configure (space-separated).
                 Values: claude opencode cursor codex ...
                 Default: auto-detect from installed binaries
-  --version     Aztec version pin (e.g. v4.0.0-devnet.2-patch.1)
-                Default: Nargo.toml > \$VERSION_AZTEC > latest
+  --version     Aztec version pin (e.g. 4.0.0-devnet.2-patch.1)
+                Default: \$VERSION_AZTEC > .aztecrc (walks up to \$HOME)
+                Required if neither source is available
   -h, --help    Show this help
 
 Info: https://docs.aztec.network/developers/ai_tooling
@@ -80,12 +81,28 @@ fi
 
 # --- Version resolution ---
 
-if [[ -z "$version" && -f Nargo.toml ]]; then
-  _v=$(sed -n 's/.*aztec_version\s*=\s*"\([^"]*\)".*/\1/p' Nargo.toml 2>/dev/null | head -1 || true)
-  [[ -n "$_v" ]] && version="$_v" && echo "[xendev] Aztec version from Nargo.toml: $version"
+if [[ -z "$version" && -n "${VERSION_AZTEC:-}" ]]; then
+  version="$VERSION_AZTEC"
+  echo "[xendev] Aztec version from \$VERSION_AZTEC: $version"
 fi
-[[ -z "$version" && -n "${VERSION_AZTEC:-}" ]] && version="$VERSION_AZTEC" && echo "[xendev] Aztec version from \$VERSION_AZTEC: $version"
-[[ -z "$version" ]] && version="latest"
+
+if [[ -z "$version" ]]; then
+  _dir="$PWD"
+  while [[ "$_dir" != "$HOME" && "$_dir" != "/" ]]; do
+    if [[ -f "$_dir/.aztecrc" ]]; then
+      _v=$(tr -d '[:space:]' <"$_dir/.aztecrc")
+      [[ -n "$_v" ]] && version="$_v" && echo "[xendev] Aztec version from $_dir/.aztecrc: $version"
+      break
+    fi
+    _dir=$(dirname "$_dir")
+  done
+fi
+
+if [[ -z "$version" ]]; then
+  echo "[xendev] ERROR: Aztec version not found." >&2
+  echo "[xendev]   Provide it via --version, \$VERSION_AZTEC, or a .aztecrc file." >&2
+  exit 1
+fi
 
 AZTEC_MCP_REPOS_DIR="${AZTEC_MCP_REPOS_BASE}/${version}"
 
@@ -118,33 +135,17 @@ build_aztec_mcp_entry() {
   local repos_dir="$1" ver="$2" fmt="$3"
   local pkg="${AZTEC_MCP_NPM_PKG}@latest"
   if [[ "$fmt" == "opencode" ]]; then
-    if [[ "$ver" == "latest" ]]; then
-      jq -n --arg rd "$repos_dir" --arg pkg "$pkg" '{
-        type: "local",
-        command: ["npx", "--prefer-online", "-y", $pkg],
-        environment: {AZTEC_MCP_REPOS_DIR: $rd}
-      }'
-    else
-      jq -n --arg rd "$repos_dir" --arg v "$ver" --arg pkg "$pkg" '{
-        type: "local",
-        command: ["npx", "--prefer-online", "-y", $pkg],
-        environment: {AZTEC_MCP_REPOS_DIR: $rd, AZTEC_DEFAULT_VERSION: $v}
-      }'
-    fi
+    jq -n --arg rd "$repos_dir" --arg v "$ver" --arg pkg "$pkg" '{
+      type: "local",
+      command: ["npx", "--prefer-online", "-y", $pkg],
+      environment: {AZTEC_MCP_REPOS_DIR: $rd, AZTEC_DEFAULT_VERSION: $v}
+    }'
   else
-    if [[ "$ver" == "latest" ]]; then
-      jq -n --arg rd "$repos_dir" --arg pkg "$pkg" '{
-        command: "npx",
-        args: ["--prefer-online", "-y", $pkg],
-        env: {AZTEC_MCP_REPOS_DIR: $rd}
-      }'
-    else
-      jq -n --arg rd "$repos_dir" --arg v "$ver" --arg pkg "$pkg" '{
-        command: "npx",
-        args: ["--prefer-online", "-y", $pkg],
-        env: {AZTEC_MCP_REPOS_DIR: $rd, AZTEC_DEFAULT_VERSION: $v}
-      }'
-    fi
+    jq -n --arg rd "$repos_dir" --arg v "$ver" --arg pkg "$pkg" '{
+      command: "npx",
+      args: ["--prefer-online", "-y", $pkg],
+      env: {AZTEC_MCP_REPOS_DIR: $rd, AZTEC_DEFAULT_VERSION: $v}
+    }'
   fi
 }
 
@@ -224,7 +225,7 @@ aztec-up use           # switches to the version in .aztecrc
 If `.aztecrc` is missing, create it with the correct version before switching:
 
 ```sh
-echo "0.85.0" > .aztecrc
+echo "4.0.0-devnet.2-patch.1" > .aztecrc
 aztec-up use
 ```
 
