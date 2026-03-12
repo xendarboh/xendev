@@ -4,7 +4,7 @@ set -euo pipefail
 
 AZTEC_MCP_REPOS_BASE="${HOME}/.local/share/xendev/mcp/aztec"
 NOIR_MCP_REPOS_DIR="${HOME}/.local/share/xendev/mcp/noir"
-AZTEC_SECTION_MARKER="<!-- aztec-dev-setup: do not remove this marker -->"
+AZTEC_SECTION_MARKER="<!-- aztec-ai-tools: do not remove this marker -->"
 
 # --- External sources ---
 AZTEC_CLAUDE_PLUGIN_PKG="gh@critesjosh/aztec-claude-plugin"
@@ -199,6 +199,49 @@ This is an Aztec smart contract project. Always use the `aztec` CLI wrapper inst
 - **Compile**: `aztec compile` (NOT `nargo compile`). Using `nargo compile` alone produces incomplete artifacts.
 - **Test**: `aztec test` (NOT `nargo test`).
 - **Other nargo commands** like `nargo fmt` and `nargo doc` are fine to use directly.
+
+## Aztec Version Management
+
+Aztec tooling is strictly version-specific. The CLI, local testnet, and compiled artifacts must all use the same version. Cross-version artifacts are not compatible.
+
+**Project version is defined in `.aztecrc`** (in the project root or a parent directory up to `$HOME`).
+
+### Before starting any Aztec work
+
+Verify the active version matches the project:
+
+```sh
+aztec --version        # check active version
+cat .aztecrc           # check required version
+```
+
+If they differ — or if `.aztecrc` does not exist — run:
+
+```sh
+aztec-up use           # switches to the version in .aztecrc
+```
+
+If `.aztecrc` is missing, create it with the correct version before switching:
+
+```sh
+echo "0.85.0" > .aztecrc
+aztec-up use
+```
+
+Inform the user whenever `.aztecrc` was missing or a version switch was performed.
+
+### When you hit version-related errors
+
+Version mismatches surface as unexpected CLI errors, missing features, or artifact incompatibilities. When this happens:
+
+1. Check `aztec --version` vs `.aztecrc`.
+2. Run `aztec-up use` to realign to the project version.
+3. Recompile any artifacts that were built under the wrong version.
+
+### Rules
+
+- **Never run `aztec-up install` or change the installed version** without explicit user approval — version upgrades affect the entire project.
+- The local testnet must run the **same version** as the CLI. If the local testnet is already running under a different version, flag this to the user rather than switching unilaterally.
 AZTEC_SECTION
   echo "[xendev] $file: appended Aztec CLI instructions"
 }
