@@ -133,6 +133,7 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
 - [exa](https://github.com/ogham/exa): Modern replacement for 'ls'
 - [fd](https://github.com/sharkdp/fd): Simple, fast alternative to 'find'
 - [fish-shell](https://github.com/fish-shell/fish-shell): User-friendly command line shell
+  - [bass](https://github.com/edc/bass): Make Bash utilities usable in Fish shell
   - [fish-exa](https://github.com/gazorby/fish-exa): exa aliases for fish
   - [fish-nx](https://github.com/jukben/fish-nx): Fish completions for Nx
   - [fisher](https://github.com/jorgebucaran/fisher): Plugin manager for Fish
