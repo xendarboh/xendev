@@ -68,6 +68,11 @@ function nx
     commandline -f execute
 end
 
+# 20260313: fix tuicr broken clipboard copy
+function tuicr
+    command tuicr --no-update-check --stdout $argv | tee /dev/tty | xclip -selection clipboard
+end
+
 function on_variable_pwd --on-variable PWD
     # update tmux-window-name upon directory change (iff running tmux)
     test ! -z "$TMUX_PLUGIN_MANAGER_PATH" \

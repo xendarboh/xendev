@@ -491,6 +491,7 @@ RUN \
     spacer \
     starship \
     tree-sitter-cli \
+    tuicr \
     watchexec-cli \
     websocat \
     zoxide \
