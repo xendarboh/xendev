@@ -116,7 +116,9 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
   - [aider.nvim](https://github.com/joshuavial/aider.nvim): Neovim integration for aider
 - [claude-code](https://github.com/anthropics/claude-code): Agentic coding tool in your terminal _(INSTALL_CLAUDECODE)_
   - [GSD](https://github.com/gsd-build/get-shit-done): Meta-prompting and spec-driven development system
+- [CLIProxyAPIPlus](https://github.com/router-for-me/CLIProxyAPI): OAuth adapter for login-based LLM providers
 - [Docker Model Runner](https://docs.docker.com/ai/model-runner/) (DMR): Run LLMs locally via Docker
+- [LiteLLM](https://github.com/BerriAI/litellm): Unified LLM proxy — 100+ providers, one endpoint, cost tracking, caching
 - [llmfit](https://github.com/AlexsJones/llmfit): Score and rank LLMs by hardware fit (RAM, CPU, GPU)
 - [Open WebUI](https://github.com/open-webui/open-webui): Chat UI for local LLMs
 - [OpenCode](https://github.com/anomalyco/opencode): Open source coding agent _(INSTALL_OPENCODE)_ `{oc}`
@@ -349,8 +351,9 @@ Run local AI model(s) with [Docker Model Runner](https://docs.docker.com/ai/mode
 ```sh
 # Edit MODELS_* vars in .env (see .env-example) to configure the model
 make models-up
-# Access open-webui at http://localhost:12444
 ```
+
+Access Open Webui at <http://localhost:12444>
 
 Model downloads on first start. See `docker model list` and use `docker model` for management.
 
@@ -370,4 +373,56 @@ make models-up      # Start docker containers (detached)
 make models-down    # Stop
 make models-logs    # Follow logs
 make models-status  # Show containers
+```
+
+## LLM Gateway
+
+Route LLM traffic through a local [LiteLLM](https://github.com/BerriAI/litellm) proxy for unified observability, cost tracking, and response caching across AI clients and model providers. This is an optional, independent component of the main environment.
+
+### Quick Start
+
+```sh
+cp conf.local-example/xendev/litellm.yaml conf.local/xendev/
+# Edit conf.local/xendev/litellm.yaml for your setup
+make gateway-up          # on docker host
+# set ENABLE_GATEWAY=1 in .env, then restart shell in container
+```
+
+Access LiteLLM UI at <http://localhost:4000>
+
+### Configuration
+
+| Variable                  | Description                                              |
+| :------------------------ | :------------------------------------------------------- |
+| `ENABLE_GATEWAY`          | Set to `1` to activate gateway routing in the container  |
+| `GATEWAY_MASTER_KEY`      | LiteLLM master key (used as default client auth)         |
+| `GATEWAY_PROXY_PORT`      | LiteLLM proxy port (default: `4000`)                     |
+| `GATEWAY_OAUTH_PORT`      | CLIProxyAPIPlus OAuth port (default: `8317`)             |
+| `GATEWAY_API_KEY_*`       | Provider API keys passed to LiteLLM                      |
+| `GATEWAY_CLIENT_BASE_URL` | Override gateway URL (default: `http://localhost:PORT`)  |
+| `GATEWAY_CLIENT_API_KEY`  | Override client auth key (default: `GATEWAY_MASTER_KEY`) |
+
+### OAuth Providers
+
+Route login-based providers through the gateway via [CLIProxyAPIPlus](https://github.com/router-for-me/CLIProxyAPIPlus):
+
+```sh
+cp conf.local-example/xendev/cliproxyapi.yaml conf.local/xendev/
+make gateway-up
+make gateway-login                         # see list of supported providers
+make gateway-login PROVIDER=someprovider   # one-time per account: follow the URL to authorize
+```
+
+Supports any provider available in CLIProxyAPIPlus. Run once per account. Re-run if a token is revoked or to add accounts for load balancing.
+
+After logging in, uncomment the corresponding entries in `conf.local/xendev/litellm.yaml` and restart the gateway. Each model can have multiple deployments across providers and accounts — the gateway tries them in priority order, falling back to the next if one is rate-limited or down.
+
+### Management
+
+```sh
+make gateway-up      # Start gateway (detached)
+make gateway-down    # Stop
+make gateway-logs    # Follow logs
+make gateway-status  # Show containers
+make gateway-login PROVIDER=<provider>  # OAuth login
 ```

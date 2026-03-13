@@ -74,6 +74,83 @@ services:
     models:
       - llm-primary
 
+  # ─── RUNTIME: LLM GATEWAY
+  # LiteLLM unified proxy for all LLM providers — observability, caching, fallback routing
+  # Configure via GATEWAY_* vars in .env — see .env-example
+  # Edit conf.local/xendev/litellm.yaml to set providers and API keys
+  gateway:
+    profiles: [gateway]
+    image: ghcr.io/berriai/litellm:main-latest
+    container_name: xendev-gateway
+    command: ["--config", "/app/config.yaml", "--port", "4000"]
+    ports:
+      - ${GATEWAY_PROXY_PORT:-4000}:4000
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      - API_KEY_ANTHROPIC=${GATEWAY_API_KEY_ANTHROPIC:-}
+      - API_KEY_GOOGLE=${GATEWAY_API_KEY_GOOGLE:-}
+      - API_KEY_OPENAI=${GATEWAY_API_KEY_OPENAI:-}
+      - API_KEY_OPENCODE_ZEN=${GATEWAY_API_KEY_OPENCODE_ZEN:-}
+      - DMR_MODEL=openai/${MODELS_PRIMARY}
+      - DATABASE_URL=postgresql://litellm:litellm@gateway-db:5432/litellm
+      - LITELLM_MASTER_KEY=${GATEWAY_MASTER_KEY:-}
+      - REDIS_HOST=gateway-redis
+      - REDIS_PORT=6379
+    volumes:
+      - ./conf.local/xendev/litellm.yaml:/app/config.yaml:ro
+    depends_on:
+      gateway-db:
+        condition: service_healthy
+      gateway-redis:
+        condition: service_healthy
+
+  gateway-db:
+    profiles: [gateway]
+    image: postgres:16-alpine
+    container_name: xendev-gateway-db
+    environment:
+      - POSTGRES_DB=litellm
+      - POSTGRES_PASSWORD=litellm
+      - POSTGRES_USER=litellm
+    volumes:
+      - ${HOME}/.local/share/xendev/xndv-ai/gateway/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U litellm"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  gateway-redis:
+    profiles: [gateway]
+    image: redis:7-alpine
+    container_name: xendev-gateway-redis
+    volumes:
+      - ${HOME}/.local/share/xendev/xndv-ai/gateway/redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # CLIProxyAPI — OAuth adapter for login-based LLM providers
+  # Login: make gateway-login PROVIDER=claude
+  gateway-oauth:
+    profiles: [gateway]
+    image: eceasy/cli-proxy-api-plus:latest
+    container_name: xendev-gateway-oauth
+    ports:
+      - ${GATEWAY_OAUTH_PORT:-8317}:8317
+    volumes:
+      - ./conf.local/xendev/cliproxyapi.yaml:/CLIProxyAPI/config.yaml:ro
+      - ${HOME}/.local/share/xendev/xndv-ai/gateway/cliproxyapi-auth:/root/.cli-proxy-api
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8317/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
   # ─── RUNTIME: MCP SERVERS
   # Add local MCP server services here with profiles: [mcp]
 

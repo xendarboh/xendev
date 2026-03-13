@@ -61,6 +61,7 @@ base() {
     --verbose
   )
   ARGS_DOCKER=(
+    --add-host=host.docker.internal:host-gateway
     --tmpfs=/tmp:exec
   )
   TAGS=(
@@ -128,6 +129,7 @@ mode_tty() {
   IMAGE="xen/dev"
   SHELL_CMD="/bin/bash -l"
   ARGS_DOCKER=(
+    --add-host=host.docker.internal:host-gateway
     --network=host
     --tmpfs=/tmp:exec
   )

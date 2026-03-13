@@ -110,6 +110,37 @@ dirmap
 F="${XENDEV_DIR}/conf.local/xendev/bash.sh"
 test -f ${F} && source ${F}
 
+# source env vars
+set -a
+source <(sed 's/=\(.*\)/="\1"/' "${XENDEV_DIR}/.env")
+set +a
+
+# Gateway routing: set ENABLE_GATEWAY=1 in .env to activate
+if [[ "${ENABLE_GATEWAY:-0}" == "1" ]]; then
+  echo "[xendev] LLM Gateway routing enabled"
+
+  # given a model prefix, get the versioned model name from the opencode config
+  get_model() {
+    jq -r '
+      .provider.litellm.models
+      | to_entries
+      | map(select(.key | test("^" + $prefix)))
+      | .[].key
+    ' --arg prefix "${1}" ~/.config/opencode/opencode.json
+  }
+
+  # used by opencode
+  export GATEWAY_CLIENT_BASE_URL="${GATEWAY_CLIENT_BASE_URL:-http://localhost:${GATEWAY_PROXY_PORT}}"
+  export GATEWAY_CLIENT_API_KEY="${GATEWAY_CLIENT_API_KEY:-${GATEWAY_MASTER_KEY}}"
+
+  # used by claude code
+  export ANTHROPIC_BASE_URL="${GATEWAY_CLIENT_BASE_URL}"
+  export ANTHROPIC_AUTH_TOKEN="${GATEWAY_CLIENT_API_KEY}"
+  export ANTHROPIC_DEFAULT_OPUS_MODEL=$(get_model claude-opus)
+  export ANTHROPIC_DEFAULT_SONNET_MODEL=$(get_model claude-sonnet)
+  export ANTHROPIC_DEFAULT_HAIKU_MODEL=$(get_model claude-haiku)
+fi
+
 ####################################
 # drop into fish shell
 # - only if the parent process is not fish

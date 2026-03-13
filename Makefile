@@ -7,8 +7,9 @@ export
 MAKEFILE_LIST = Makefile
 COMPOSE_BUILD := docker compose --profile build
 COMPOSE_MODELS := docker compose --profile models
+COMPOSE_GATEWAY := docker compose --profile gateway
 
-.PHONY: help build-tty rebuild-tty install-x11docker fetch-nvidia-driver build retag rebuild models-up models-down models-logs models-status
+.PHONY: help build-tty rebuild-tty install-x11docker fetch-nvidia-driver build retag rebuild models-up models-down models-logs models-status gateway-up gateway-down gateway-logs gateway-status gateway-login
 
 # https://blog.testdouble.com/posts/2017-04-17-makefile-usability-tips/#step-3-parse-annotations
 help: ## print this help message with some nifty mojo
@@ -60,3 +61,25 @@ models-logs: ## show local model service logs
 
 models-status: ## show local model service status
 	$(COMPOSE_MODELS) ps
+
+gateway-up: ## start LLM gateway (LiteLLM proxy)
+	$(COMPOSE_GATEWAY) up -d
+
+gateway-down: ## stop LLM gateway services
+	$(COMPOSE_GATEWAY) down
+
+gateway-logs: ## show LLM gateway service logs
+	$(COMPOSE_GATEWAY) logs -f
+
+gateway-status: ## show LLM gateway service status
+	$(COMPOSE_GATEWAY) ps
+
+gateway-login: ## login to OAuth provider for gateway (PROVIDER=<provider>)
+	@test -n "$(PROVIDER)" || { \
+		echo "[xendev] Usage: make gateway-login PROVIDER=<provider>"; \
+		echo "[xendev] See the following --<provider>-login options for supported providers"; \
+		echo ""; \
+		$(COMPOSE_GATEWAY) exec gateway-oauth ./CLIProxyAPIPlus --help; \
+		exit 1; \
+	}
+	$(COMPOSE_GATEWAY) exec gateway-oauth ./CLIProxyAPIPlus --$(PROVIDER)-login -no-browser

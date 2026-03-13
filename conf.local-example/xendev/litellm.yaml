@@ -1,0 +1,232 @@
+model_list:
+  # Models within model groups are tried in order (1 = first).
+  # Uncomment/add entries to match your accounts and providers.
+  # anthropic provider appends /v1/messages automatically to api_base
+  # openai-compatible provider expects api_base to include /v1
+
+  # ── claude-opus-4-6 ─────────────────────────────────────────
+
+  # via CLIProxyAPI(Plus) | $ make gateway-login PROVIDER=claude
+  - model_name: claude-opus-4-6
+    litellm_params:
+      model: anthropic/claude-opus-4-6
+      api_base: http://gateway-oauth:8317/api/provider/claude
+      api_key: sk-cliproxy
+      tags: ["provider=claude"]
+      order: 1
+    model_info:
+      id: claude-opus-4-6__claude
+
+  # via CLIProxyAPIPlus | $ make gateway-login PROVIDER=github-copilot
+  - model_name: claude-opus-4-6
+    litellm_params:
+      model: anthropic/claude-opus-4-6
+      api_base: http://gateway-oauth:8317/api/provider/github-copilot
+      api_key: sk-cliproxy
+      tags: ["provider=copilot"]
+      order: 2
+    model_info:
+      id: claude-opus-4-6__copilot
+
+  # via OpenCode Zen API
+  - model_name: claude-opus-4-6
+    litellm_params:
+      model: anthropic/claude-opus-4-6
+      api_base: https://opencode.ai/zen
+      api_key: os.environ/API_KEY_OPENCODE_ZEN
+      tags: ["provider=opencode-zen"]
+      order: 3
+    model_info:
+      id: claude-opus-4-6__opencode-zen
+
+  # ── claude-sonnet-4-6 ─────────────────────────────────────────
+
+  # via CLIProxyAPI(Plus) | $ make gateway-login PROVIDER=claude
+  - model_name: claude-sonnet-4-6
+    litellm_params:
+      model: anthropic/claude-sonnet-4-6
+      api_base: http://gateway-oauth:8317/api/provider/claude
+      api_key: sk-cliproxy
+      tags: ["provider=claude"]
+      order: 1
+    model_info:
+      id: claude-sonnet-4-6__claude
+
+  # via CLIProxyAPIPlus | $ make gateway-login PROVIDER=github-copilot
+  - model_name: claude-sonnet-4-6
+    litellm_params:
+      model: anthropic/claude-sonnet-4-6
+      api_base: http://gateway-oauth:8317/api/provider/github-copilot
+      api_key: sk-cliproxy
+      tags: ["provider=copilot"]
+      order: 2
+    model_info:
+      id: claude-sonnet-4-6__copilot
+
+  # via OpenCode Zen API
+  - model_name: claude-sonnet-4-6
+    litellm_params:
+      model: anthropic/claude-sonnet-4-6
+      api_base: https://opencode.ai/zen
+      api_key: os.environ/API_KEY_OPENCODE_ZEN
+      tags: ["provider=opencode-zen"]
+      order: 3
+    model_info:
+      id: claude-sonnet-4-6__opencode-zen
+
+  # ── claude-haiku-4-5 ─────────────────────────────────────────
+
+  # via CLIProxyAPI(Plus) | $ make gateway-login PROVIDER=claude
+  - model_name: claude-haiku-4-5
+    litellm_params:
+      model: anthropic/claude-haiku-4-5
+      api_base: http://gateway-oauth:8317/api/provider/claude
+      api_key: sk-cliproxy
+      tags: ["provider=claude"]
+      order: 1
+    model_info:
+      id: claude-haiku-4-5__claude
+
+  # via CLIProxyAPIPlus | $ make gateway-login PROVIDER=github-copilot
+  - model_name: claude-haiku-4-5
+    litellm_params:
+      model: anthropic/claude-haiku-4-5
+      api_base: http://gateway-oauth:8317/api/provider/github-copilot
+      api_key: sk-cliproxy
+      tags: ["provider=copilot"]
+      order: 2
+    model_info:
+      id: claude-haiku-4-5__copilot
+
+  # via OpenCode Zen API
+  - model_name: claude-haiku-4-5
+    litellm_params:
+      model: anthropic/claude-haiku-4-5
+      api_base: https://opencode.ai/zen
+      api_key: os.environ/API_KEY_OPENCODE_ZEN
+      tags: ["provider=opencode-zen"]
+      order: 3
+    model_info:
+      id: claude-haiku-4-5__opencode-zen
+
+  # ── gemini-3-flash-preview ──────────────────────────
+  # ── gemini-3.1-pro-preview ──────────────────────────
+  # ── glm-5 ───────────────────────────────────────────
+  # ── gpt-5.3-codex ───────────────────────────────────
+  # ── gpt-5.4 ─────────────────────────────────────────
+
+  # ?: - model_name: gpt-4o
+  # ?:   litellm_params:
+  # ?:     model: openai/gpt-4o
+  # ?:     api_key: os.environ/API_KEY_OPENAI
+
+  # ?: - model_name: gemini-2.5-pro
+  # ?:   litellm_params:
+  # ?:     model: gemini/gemini-2.5-pro
+  # ?:     api_key: os.environ/API_KEY_GOOGLE
+
+  # ── OpenCode Zen ───────────────────────────────────
+
+  - model_name: zen-claude-opus-4.6
+    litellm_params:
+      model: anthropic/claude-opus-4-6
+      api_base: https://opencode.ai/zen
+      api_key: os.environ/API_KEY_OPENCODE_ZEN
+      tags: ["provider=opencode-zen"]
+
+  - model_name: zen-claude-sonnet-4-6
+    litellm_params:
+      model: anthropic/claude-sonnet-4-6
+      api_base: https://opencode.ai/zen
+      api_key: os.environ/API_KEY_OPENCODE_ZEN
+      tags: ["provider=opencode-zen"]
+
+  - model_name: zen-claude-haiku-4-5
+    litellm_params:
+      model: anthropic/claude-haiku-4-5
+      api_base: https://opencode.ai/zen
+      api_key: os.environ/API_KEY_OPENCODE_ZEN
+      tags: ["provider=opencode-zen"]
+
+  - model_name: zen-gpt-5.4
+    litellm_params:
+      model: openai/gpt-5.4
+      api_base: https://opencode.ai/zen/v1
+      api_key: os.environ/API_KEY_OPENCODE_ZEN
+      tags: ["provider=opencode-zen"]
+
+  - model_name: zen-gpt-5.3-codex
+    litellm_params:
+      model: openai/gpt-5.3-codex
+      api_base: https://opencode.ai/zen/v1
+      api_key: os.environ/API_KEY_OPENCODE_ZEN
+      tags: ["provider=opencode-zen"]
+
+  - model_name: zen-glm-5
+    litellm_params:
+      model: openai/glm-5
+      api_base: https://opencode.ai/zen/v1
+      api_key: os.environ/API_KEY_OPENCODE_ZEN
+      tags: ["provider=opencode-zen"]
+      input_cost_per_token: 0.00000100 # $1.00 / 1M
+      output_cost_per_token: 0.00000320 # $3.20 / 1M
+
+  - model_name: zen-kimi-k2.5
+    litellm_params:
+      model: openai/kimi-k2.5
+      api_base: https://opencode.ai/zen/v1
+      api_key: os.environ/API_KEY_OPENCODE_ZEN
+      tags: ["provider=opencode-zen"]
+      input_cost_per_token: 0.00000060 # $0.60 / 1M
+      output_cost_per_token: 0.00000300 # $3.00 / 1M
+
+  - model_name: zen-minimax-m2.5
+    litellm_params:
+      model: openai/minimax-m2.5
+      api_base: https://opencode.ai/zen/v1
+      api_key: os.environ/API_KEY_OPENCODE_ZEN
+      tags: ["provider=opencode-zen"]
+      input_cost_per_token: 0.00000030 # $0.30 / 1M
+      output_cost_per_token: 0.00000120 # $1.20 / 1M
+
+  # ── Docker Model Runner (local) ───────────────────────────────────
+  - model_name: local
+    litellm_params:
+      model: os.environ/DMR_MODEL
+      # ?: api_base: http://host.docker.internal:12434/engines
+      api_base: http://localhost:12434/v1
+      api_key: not-needed
+      tags: ["provider=local"]
+
+router_settings:
+  routing_strategy: simple-shuffle
+  enable_pre_call_checks: true # required for 'order' to work
+  allowed_fails: 2 # cooldown model if it fails > 1 call in a minute.
+  cooldown_time: 300 # (in seconds) how long to cooldown model if fails/min > allowed_fails
+  retry_after: 5 # wait min seconds before retrying request
+  num_retries: 2
+  # fallbacks:
+  #   - model_name: claude-sonnet-4-20250514
+  #     fallback: [gpt-4o]
+  # model_group_alias:
+  #   code: claude-sonnet-4-6
+  #   research: claude-haiku-4-5
+
+litellm_settings:
+  drop_params: true # drop unsupported parameter instead of raising an exception
+  turn_off_message_logging: false # store request/response content in spend logs
+  cache: true
+  cache_params:
+    type: redis
+    host: gateway-redis
+    port: 6379
+
+general_settings:
+  disable_error_logs: false # Disable writing error logs to DB
+  disable_spend_logs: false # Disable writing spend logs to DB
+  maximum_spend_logs_retention_interval: "1d" # Optional: how often to run cleanup
+  maximum_spend_logs_retention_period: "7d" # Delete logs older than this
+  store_model_in_db: true # Persist model info to DB (suggested by request/reponse logging)
+  store_prompts_in_spend_logs: true # Store request/response content in spend logs
+  # background_health_checks: true # NOTE: health checks eat tokens (small but not nil)
+  # health_check_interval: 300

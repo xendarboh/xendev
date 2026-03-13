@@ -19,6 +19,19 @@
       "options": {
         "baseURL": "http://localhost:12434/v1"
       }
+    },
+    "litellm": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "LiteLLM Gateway",
+      "options": {
+        "baseURL": "{env:GATEWAY_CLIENT_BASE_URL}/v1",
+        "apiKey": "{env:GATEWAY_CLIENT_API_KEY}"
+      },
+      "models": {
+        "claude-opus-4-6": { "name": "Claude Opus 4.6" },
+        "claude-sonnet-4-6": { "name": "Claude Sonnet 4.6" },
+        "claude-haiku-4-5": { "name": "Claude Haiku 4.5" }
+      }
     }
   }
 }
