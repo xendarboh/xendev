@@ -6,6 +6,14 @@
     "opencode-antigravity-auth",
     "opencode-openai-codex-auth"
   ],
+  "permission": {
+    "read": {
+      "~/.config/opencode/get-shit-done/*": "allow"
+    },
+    "external_directory": {
+      "~/.config/opencode/get-shit-done/*": "allow"
+    }
+  },
   "provider": {
     "dmr": {
       "npm": "@ai-sdk/openai-compatible",
