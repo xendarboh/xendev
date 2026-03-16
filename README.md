@@ -87,6 +87,8 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
 
 ## Tools
 
+> `{alias}` — invoke via shell alias (like `oc-omo` for oh-my-opencode).
+
 ### Powered By
 
 - [x11docker](https://github.com/mviereck/x11docker): Secure GUI containers
@@ -117,9 +119,9 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
 - [Docker Model Runner](https://docs.docker.com/ai/model-runner/) (DMR): Run LLMs locally via Docker
 - [llmfit](https://github.com/AlexsJones/llmfit): Score and rank LLMs by hardware fit (RAM, CPU, GPU)
 - [Open WebUI](https://github.com/open-webui/open-webui): Chat UI for local LLMs
-- [OpenCode](https://github.com/anomalyco/opencode): Open source coding agent _(INSTALL_OPENCODE)_
+- [OpenCode](https://github.com/anomalyco/opencode): Open source coding agent _(INSTALL_OPENCODE)_ `{oc}`
   - [GSD](https://github.com/gsd-build/get-shit-done): Meta-prompting and spec-driven development system
-  - [oh-my-opencode](https://github.com/code-yeongyu/oh-my-opencode): Batteries-included agent harness
+  - [oh-my-opencode](https://github.com/code-yeongyu/oh-my-opencode): Batteries-included agent harness `{oc-omo}`
   - [opencode-wakatime](https://github.com/angristan/opencode-wakatime): OpenCode usage time tracking
   - [opencode.nvim](https://github.com/nickjvandyke/opencode.nvim): Neovim integration for opencode
 - [OpenPackage](https://github.com/enulus/openpackage): Universal package manager for AI coding agent skills/rules/commands
@@ -169,7 +171,7 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
     - gfr-lint-history: Lint all non-binary files across history
     - gfr-signed-off-by: Add Signed-off-by tags to commit range
   - [git-lfs](https://github.com/git-lfs/git-lfs): Large file versioning
-  - [lazygit](https://github.com/jesseduffield/lazygit): Terminal UI for git
+  - [lazygit](https://github.com/jesseduffield/lazygit): Terminal UI for git `{lz}`
 
 ### Languages & Runtimes
 
