@@ -619,7 +619,7 @@ RUN \
     wget -qN -P /dlu/claude-code https://claude.ai/install.sh \
     && bash /dlu/claude-code/install.sh \
     # 2026-03: claude is dir-dumb, hack it into shape
-    && mv ~/.local/share/claude/versions/* ~/.local/bin/claude \
+    && mv ${CLAUDE_CONFIG_DIR}/versions/* ~/.local/bin/claude \
     # install extras
     && npx get-shit-done-cc --claude --global \
   ; fi
