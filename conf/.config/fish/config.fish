@@ -68,6 +68,12 @@ function nx
     commandline -f execute
 end
 
+# load oh-my-opencode via a custom config to preserve the base opencode and available agents
+function oc-omo
+    set -lx OPENCODE_CONFIG "$XENDEV_DIR/conf/.config/opencode/opencode-omo.jsonc"
+    command opencode $argv
+end
+
 # 20260313: fix tuicr broken clipboard copy
 function tuicr
     command tuicr --no-update-check --stdout $argv | tee /dev/tty | xclip -selection clipboard
@@ -94,6 +100,7 @@ abbr b 'git branch -av'
 abbr s 'git status'
 abbr gl 'git log --show-signature'
 abbr lz lazygit
+abbr oc opencode
 abbr tc 'tinty cycle'
 
 # INSTALL_BROWSER_BRAVE
