@@ -1,3 +1,5 @@
+"$schema" = "https://starship.rs/config-schema.json"
+
 format = """
 $all\
 """
@@ -17,6 +19,6 @@ truncation_length = 8
 truncation_symbol = "…/"
 
 [time]
-disabled = false
+disabled = true
 format = '[  $time ]($style) '
 time_format = "%Y-%m-%d %H:%M:%S"
