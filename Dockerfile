@@ -646,7 +646,6 @@ RUN --mount=type=cache,id=dlu,target=/dlu,sharing=locked,uid=${_USER_ID} \
   wget -qN -P /dlu/fisher https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish \
   && source /dlu/fisher/fisher.fish \
   && fisher install \
-    edc/bass \
     gazorby/fish-exa \
     jukben/fish-nx \
     jorgebucaran/fisher
