@@ -14,7 +14,7 @@
       "variant": "high"
     },
     "librarian": {
-      "model": "opencode/glm-4.7-free"
+      "model": "opencode/glm-5"
     },
     "explore": {
       "model": "anthropic/claude-haiku-4-5"
