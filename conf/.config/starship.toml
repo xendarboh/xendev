@@ -2,11 +2,10 @@
 
 format = """
 $all\
-"""
-
-right_format = """
+$fill\
 $time\
-"""
+$line_break\
+$character"""
 
 # remove '⬢ [Systemd]'
 # https://github.com/starship/starship/issues/4216
@@ -19,6 +18,6 @@ truncation_length = 8
 truncation_symbol = "…/"
 
 [time]
-disabled = true
-format = '[  $time ]($style) '
+disabled = false
+format = '[$time]($style) '
 time_format = "%Y-%m-%d %H:%M:%S"
