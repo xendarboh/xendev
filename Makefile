@@ -87,3 +87,6 @@ gateway-login: ## login to OAuth provider for gateway (PROVIDER=<provider>)
 		exit 1; \
 	}
 	$(COMPOSE_GATEWAY) exec gateway-oauth ./CLIProxyAPIPlus --$(PROVIDER)-login -no-browser
+
+gateway-login-google: ## login to OAuth provider for gateway (PROVIDER=google)
+	$(COMPOSE_GATEWAY) exec gateway-oauth ./CLIProxyAPIPlus -login -no-browser
