@@ -21,7 +21,7 @@ cd ~/src/xendev
 cp .env-example .env                 # edit to enable optional tools
 cp -a conf.local-example conf.local  # local overrides (see Customization)
 make build
-./xendev
+./bin.host/xndv
 ```
 
 ## Philosophy
@@ -49,7 +49,7 @@ make build
 
 ### Launcher
 
-The `./xendev` launcher provides an interactive menu (via `rofi`, `dmenu`, or `fzf`) for selecting modes, naming containers, and toggling volume mounts.
+The `bin.host/xndv` launcher provides an interactive menu (via `rofi`, `dmenu`, or `fzf`) for selecting modes, naming containers, and toggling volume mounts.
 
 | Mode  | Description                                                       | X11 |   GPU    | Use Case                           |
 | ----- | ----------------------------------------------------------------- | :-: | :------: | ---------------------------------- |
@@ -60,7 +60,7 @@ The `./xendev` launcher provides an interactive menu (via `rofi`, `dmenu`, or `f
 
 All modes are containerized and sandboxed; the difference is capability and host integration.
 
-**Selector**: The launcher probes for an available selector. Override with `XENDEV_SELECTOR` or `./xendev -s fzf`.
+**Selector**: The launcher probes for an available selector. Override with `bin.host/xndv -s <selector>`.
 
 ### No Launcher
 
@@ -262,6 +262,10 @@ Scripts in [bin/](bin/) are available inside the container:
   - auto-selects local LLM (DMR) when available, falls back to opencode
   - opens editor (neovim) with N alternatives for final selection
   - invoke from lazygit with `CTRL+a`
+
+Scripts in [bin.host/](bin.host/) run on the host (outside the container):
+
+- [xndv](bin.host/xndv): Interactive launcher — select mode, name container, toggle mounts, attach to running instances
 
 ### Runtime Scripts
 
