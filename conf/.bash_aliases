@@ -20,7 +20,7 @@ vimgit() { nvim ${@:2} $(git status --porcelain | grep "$1 " | awk '{print $2}')
 # https://www.topbug.net/blog/2016/09/27/make-gnu-less-more-powerful/
 alias less='less -F -i -J -M -R -W -x4 -X -z-4'
 
-alias x="cd ${XENDEV_DIR} && vim"
+alias x="cd ${XNDV_DIR} && vim"
 
 # ~INSTALL_BROWSER_BRAVE
 command -v brave-browser >/dev/null && alias brave-browser='brave-browser --no-sandbox'

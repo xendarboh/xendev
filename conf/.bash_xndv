@@ -8,7 +8,7 @@ export PATH=~/.yarn/bin:${PATH}
 export PATH=./node_modules/.bin:${PATH}
 export PATH=~/.aztec/bin:${PATH}
 export PATH=~/.aztec/current/bin:~/.aztec/current/node_modules/.bin:${PATH}
-export PATH=${XENDEV_DIR}/bin:${PATH}
+export PATH=${XNDV_DIR}/bin:${PATH}
 
 export GPG_TTY=$(tty)
 
@@ -55,7 +55,7 @@ export _ZO_ECHO=1
 # symlink to tinty data-dir baked into the image so it exists upon ~/.local/share/ volume mount
 D=~/.local/share/tinted-theming
 if [ ! -e ${D}/tinty ]; then
-  echo "[xendev] symlinking ~/.tinty -> ${D}/tinty"
+  echo "[xndv] symlinking ~/.tinty -> ${D}/tinty"
   mkdir -p ${D}
   ln -sfn ~/.tinty ${D}/tinty
   tinty apply $(tinty current) # (re)apply current theme for the terminal (kitty)
@@ -64,7 +64,7 @@ fi
 # symlink aztec home dir so it persists within ~/.local/share/ volume mount
 D=~/.local/share/xndv/aztec
 if [ ! -e ~/.aztec ]; then
-  echo "[xendev] symlinking ~/.aztec -> ${D}"
+  echo "[xndv] symlinking ~/.aztec -> ${D}"
   mkdir -p ${D}
   ln -sfn ${D} ~/.aztec
 fi
@@ -73,12 +73,12 @@ fi
 F=~/.config/opencode/antigravity-accounts.json && test ! -L ${F} && rm -f ${F}
 
 # ensure files exist for proper stow'ing
-D="${XENDEV_DIR}/conf.local/.config/opencode" && mkdir -p ${D} && touch ${D}/antigravity-accounts.json # ~INSTALL_OPENCODE
+D="${XNDV_DIR}/conf.local/.config/opencode" && mkdir -p ${D} && touch ${D}/antigravity-accounts.json # ~INSTALL_OPENCODE
 # stow the local conf files
 stow \
-  --ignore=xendev \
+  --ignore=xndv \
   --target=/home/$(whoami)/ \
-  --dir=${XENDEV_DIR} \
+  --dir=${XNDV_DIR} \
   conf.local
 
 ls ~/.bash/*.sh &>/dev/null && source ~/.bash/*.sh
@@ -90,33 +90,33 @@ test ! -f ${spelldir} && mkdir -p ${spelldir}
 # Workaround issue whereby tmux new window using current pwd does not respect symlinks.
 # This reads and applies a file of directory mappings of the format "from:to".
 dirmap() {
-  F="${XENDEV_DIR}/conf.local/xendev/directory_map.txt"
+  F="${XNDV_DIR}/conf.local/xndv/directory_map.txt"
   test -f "${F}" || return
   for line in $(cat "${F}"); do
     from=$(echo "$line" | cut -d':' -f1)
     to=$(echo "$line" | cut -d':' -f2)
 
     if [[ $PWD =~ ^$from ]]; then
-      XENDEV_DIRMAP_MSG="[xendev] directory map: $from --> $to"
-      XENDEV_DIRMAP_PWD=$(echo "$PWD" | sed -e "s|^${from}|${to}|")
-      echo ${XENDEV_DIRMAP_MSG} && cd ${XENDEV_DIRMAP_PWD}
+      XNDV_DIRMAP_MSG="[xndv] directory map: $from --> $to"
+      XNDV_DIRMAP_PWD=$(echo "$PWD" | sed -e "s|^${from}|${to}|")
+      echo ${XNDV_DIRMAP_MSG} && cd ${XNDV_DIRMAP_PWD}
     fi
   done
 }
 dirmap
 
 # source bash config from mapped volume at run-time
-F="${XENDEV_DIR}/conf.local/xendev/bash.sh"
+F="${XNDV_DIR}/conf.local/xndv/bash.sh"
 test -f ${F} && source ${F}
 
 # source env vars
 set -a
-source <(sed 's/=\(.*\)/="\1"/' "${XENDEV_DIR}/.env")
+source <(sed 's/=\(.*\)/="\1"/' "${XNDV_DIR}/.env")
 set +a
 
 # Gateway routing: set ENABLE_GATEWAY=1 in .env to activate
 if [[ "${ENABLE_GATEWAY:-0}" == "1" ]]; then
-  echo "[xendev] LLM Gateway routing enabled"
+  echo "[xndv] LLM Gateway routing enabled"
 
   # given a model prefix, get the versioned model name from the opencode config
   get_model() {

@@ -43,14 +43,14 @@ while [[ $# -gt 0 ]]; do
       shift
     done
     [[ ${#platforms[@]} -eq 0 ]] && {
-      echo "[xendev] ERROR: --platforms requires at least one value" >&2
+      echo "[xndv] ERROR: --platforms requires at least one value" >&2
       exit 1
     }
     ;;
   --version)
     version="${2:-}"
     [[ -z "$version" ]] && {
-      echo "[xendev] ERROR: --version requires a value" >&2
+      echo "[xndv] ERROR: --version requires a value" >&2
       exit 1
     }
     shift 2
@@ -60,7 +60,7 @@ while [[ $# -gt 0 ]]; do
     exit 0
     ;;
   *)
-    echo "[xendev] ERROR: unknown argument: $1" >&2
+    echo "[xndv] ERROR: unknown argument: $1" >&2
     usage >&2
     exit 1
     ;;
@@ -73,17 +73,17 @@ if [[ ${#platforms[@]} -eq 0 ]]; then
   command -v claude >/dev/null 2>&1 && platforms+=("claude")
   command -v opencode >/dev/null 2>&1 && platforms+=("opencode")
   if [[ ${#platforms[@]} -eq 0 ]]; then
-    echo "[xendev] ERROR: no platforms detected (claude/opencode not in PATH). Use --platforms." >&2
+    echo "[xndv] ERROR: no platforms detected (claude/opencode not in PATH). Use --platforms." >&2
     exit 1
   fi
-  echo "[xendev] auto-detected platforms: ${platforms[*]}"
+  echo "[xndv] auto-detected platforms: ${platforms[*]}"
 fi
 
 # --- Version resolution ---
 
 if [[ -z "$version" && -n "${VERSION_AZTEC:-}" ]]; then
   version="$VERSION_AZTEC"
-  echo "[xendev] Aztec version from \$VERSION_AZTEC: $version"
+  echo "[xndv] Aztec version from \$VERSION_AZTEC: $version"
 fi
 
 if [[ -z "$version" ]]; then
@@ -91,7 +91,7 @@ if [[ -z "$version" ]]; then
   while [[ "$_dir" != "$HOME" && "$_dir" != "/" ]]; do
     if [[ -f "$_dir/.aztecrc" ]]; then
       _v=$(tr -d '[:space:]' <"$_dir/.aztecrc")
-      [[ -n "$_v" ]] && version="$_v" && echo "[xendev] Aztec version from $_dir/.aztecrc: $version"
+      [[ -n "$_v" ]] && version="$_v" && echo "[xndv] Aztec version from $_dir/.aztecrc: $version"
       break
     fi
     _dir=$(dirname "$_dir")
@@ -99,15 +99,15 @@ if [[ -z "$version" ]]; then
 fi
 
 if [[ -z "$version" ]]; then
-  echo "[xendev] ERROR: Aztec version not found." >&2
-  echo "[xendev]   Provide it via --version, \$VERSION_AZTEC, or a .aztecrc file." >&2
+  echo "[xndv] ERROR: Aztec version not found." >&2
+  echo "[xndv]   Provide it via --version, \$VERSION_AZTEC, or a .aztecrc file." >&2
   exit 1
 fi
 
 AZTEC_MCP_REPOS_DIR="${AZTEC_MCP_REPOS_BASE}/${version}"
 
-echo "[xendev] platforms : ${platforms[*]}"
-echo "[xendev] version   : $version"
+echo "[xndv] platforms : ${platforms[*]}"
+echo "[xndv] version   : $version"
 echo ""
 
 # --- Helpers ---
@@ -186,7 +186,7 @@ inject_aztec_section() {
   real_file=$(readlink -f "$file")
 
   if grep -qF "$AZTEC_SECTION_MARKER" "$real_file" 2>/dev/null; then
-    echo "[xendev] $file: Aztec section already present, skipping"
+    echo "[xndv] $file: Aztec section already present, skipping"
     return
   fi
 
@@ -244,7 +244,7 @@ Version mismatches surface as unexpected CLI errors, missing features, or artifa
 - **Never run `aztec-up install` or change the installed version** without explicit user approval — version upgrades affect the entire project.
 - The local testnet must run the **same version** as the CLI. If the local testnet is already running under a different version, flag this to the user rather than switching unilaterally.
 AZTEC_SECTION
-  echo "[xendev] $file: appended Aztec CLI instructions"
+  echo "[xndv] $file: appended Aztec CLI instructions"
 }
 
 # --- Ensure MCP repos cache dirs exist (persistent volume) ---
@@ -253,15 +253,15 @@ mkdir -p "$AZTEC_MCP_REPOS_DIR" "$NOIR_MCP_REPOS_DIR"
 
 # --- 1. opkg: aztec-claude-plugin (skills, commands, agents) ---
 
-echo "[xendev] installing aztec-claude-plugin..."
+echo "[xndv] installing aztec-claude-plugin..."
 opkg install "$AZTEC_CLAUDE_PLUGIN_PKG" --platforms "${platforms[@]}"
 
-echo "[xendev] installing noir-claude-plugin..."
+echo "[xndv] installing noir-claude-plugin..."
 opkg install "$NOIR_CLAUDE_PLUGIN_PKG" --platforms "${platforms[@]}"
 
 # --- 2. NethermindEth/aztec-skills (direct clone + copy; no openpackage.yml) ---
 
-echo "[xendev] installing NethermindEth/aztec-skills..."
+echo "[xndv] installing NethermindEth/aztec-skills..."
 _tmpdir=$(mktemp -d)
 trap 'rm -rf "$_tmpdir"' EXIT
 
@@ -271,14 +271,14 @@ mapfile -t _nethermind_skills < <(
   find "$_tmpdir/aztec-skills" -maxdepth 2 -name "SKILL.md" -printf "%h\n" |
     xargs -I{} basename {}
 )
-echo "[xendev]   discovered ${#_nethermind_skills[@]} skills: ${_nethermind_skills[*]}"
+echo "[xndv]   discovered ${#_nethermind_skills[@]} skills: ${_nethermind_skills[*]}"
 
 for _p in "${platforms[@]}"; do
   _skills_dir=$(platform_skills_dir "$_p")
   mkdir -p "$_skills_dir"
   for _skill in "${_nethermind_skills[@]}"; do
     cp -r "$_tmpdir/aztec-skills/${_skill}" "$_skills_dir/"
-    echo "[xendev]   ${_skill} → ${_skills_dir}/"
+    echo "[xndv]   ${_skill} → ${_skills_dir}/"
   done
 done
 
@@ -287,7 +287,7 @@ done
 # to add AZTEC_MCP_REPOS_DIR and the version pin.
 
 if has_platform "claude" || has_platform "claudecode"; then
-  echo "[xendev] writing .mcp.json..."
+  echo "[xndv] writing .mcp.json..."
   _aztec_entry=$(build_aztec_mcp_entry "$AZTEC_MCP_REPOS_DIR" "$version" "claude")
   _noir_entry=$(build_noir_mcp_entry "$NOIR_MCP_REPOS_DIR" "claude")
 
@@ -295,14 +295,14 @@ if has_platform "claude" || has_platform "claudecode"; then
     ".mcpServers.aztec = \$a | .mcpServers.noir = \$n" \
     "{mcpServers: {aztec: \$a, noir: \$n}}" \
     "$_aztec_entry" "$_noir_entry"
-  echo "[xendev]   wrote .mcp.json"
+  echo "[xndv]   wrote .mcp.json"
 fi
 
 # --- 4. MCP config: OpenCode (.opencode/opencode.json) ---
 # OpenCode uses key "mcp" (not "mcpServers") in its config.
 
 if has_platform "opencode"; then
-  echo "[xendev] writing .opencode/opencode.json..."
+  echo "[xndv] writing .opencode/opencode.json..."
   mkdir -p .opencode
   _aztec_entry=$(build_aztec_mcp_entry "$AZTEC_MCP_REPOS_DIR" "$version" "opencode")
   _noir_entry=$(build_noir_mcp_entry "$NOIR_MCP_REPOS_DIR" "opencode")
@@ -312,7 +312,7 @@ if has_platform "opencode"; then
     ".mcp.aztec = \$a | .mcp.noir = \$n" \
     "{\"\$schema\": \"https://opencode.ai/config.json\", mcp: {aztec: \$a, noir: \$n}}" \
     "$_aztec_entry" "$_noir_entry"
-  echo "[xendev]   wrote $_oc_file"
+  echo "[xndv]   wrote $_oc_file"
 fi
 
 # --- 5. AGENTS.md / CLAUDE.md: inject Aztec CLI instructions ---
@@ -330,7 +330,7 @@ _claude_real=""
 # --- Done ---
 
 echo ""
-echo "[xendev] aztec dev setup complete"
+echo "[xndv] aztec dev setup complete"
 echo "  platforms : ${platforms[*]}"
 echo "  version   : $version"
 echo "  mcp cache : aztec=${AZTEC_MCP_REPOS_DIR}  noir=${NOIR_MCP_REPOS_DIR}"

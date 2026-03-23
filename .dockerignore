@@ -9,4 +9,3 @@ _/
 bin.host/
 docker-compose.yml
 test/
-xendev

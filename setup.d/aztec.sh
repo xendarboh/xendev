@@ -1,5 +1,5 @@
 #!/bin/bash
-test $(whoami) = "root" && echo "[xendev] ERROR: must not be root" && exit 1
+test $(whoami) = "root" && echo "[xndv] ERROR: must not be root" && exit 1
 
 source $(readlink -f $(dirname $0))/../.env 2>/dev/null
 export VERSION=${VERSION_AZTEC:-$VERSION}
@@ -13,4 +13,4 @@ curl -sL https://install.aztec.network/${VERSION} |
   NON_INTERACTIVE=1 SHELL= bash
 
 echo ""
-echo "[xendev] Aztec toolchain installed!"
+echo "[xndv] Aztec toolchain installed!"

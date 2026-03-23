@@ -47,7 +47,7 @@ function fish_greeting
 end
 
 function dirmap
-    set F "$XENDEV_DIR/conf.local/xendev/directory_map.txt"
+    set F "$XNDV_DIR/conf.local/xndv/directory_map.txt"
     test -f "$F" || return
     for line in (cat "$F")
         set from (echo "$line" | cut -d':' -f1)
@@ -55,9 +55,9 @@ function dirmap
 
         set match (string match --regex ^$from $PWD)
         if test ! -z "$match"
-            set XENDEV_DIRMAP_MSG "[xendev] directory map: $from --> $to"
-            set XENDEV_DIRMAP_PWD (echo "$PWD" | sed -e "s|^$from|$to|")
-            echo $XENDEV_DIRMAP_MSG && cd $XENDEV_DIRMAP_PWD
+            set XNDV_DIRMAP_MSG "[xndv] directory map: $from --> $to"
+            set XNDV_DIRMAP_PWD (echo "$PWD" | sed -e "s|^$from|$to|")
+            echo $XNDV_DIRMAP_MSG && cd $XNDV_DIRMAP_PWD
         end
     end
 end
@@ -72,7 +72,7 @@ end
 
 # load oh-my-opencode via a custom config to preserve the base opencode and available agents
 function oc-omo
-    set -lx OPENCODE_CONFIG "$XENDEV_DIR/conf/.config/opencode/opencode-omo.jsonc"
+    set -lx OPENCODE_CONFIG "$XNDV_DIR/conf/.config/opencode/opencode-omo.jsonc"
     command opencode $argv
 end
 

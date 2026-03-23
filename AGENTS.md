@@ -4,7 +4,7 @@ Instructions for AI coding agents working in this repository.
 
 ## Project Overview
 
-xendev is a dockerized terminal-based vim-centric development environment. It's "overpowered dotfiles" packaged as Docker images using x11docker for security-focused containerization.
+xndv is a dockerized terminal-based vim-centric development environment. It's "overpowered dotfiles" packaged as Docker images using x11docker for security-focused containerization.
 
 ## Build Commands (Human Operator Only)
 
@@ -123,7 +123,7 @@ target: ## Description for help output
 
 | Context               | Convention           | Example                        |
 | --------------------- | -------------------- | ------------------------------ |
-| Environment variables | SCREAMING_SNAKE_CASE | `XENDEV_DIR`, `IMAGE_BASE`     |
+| Environment variables | SCREAMING_SNAKE_CASE | `XNDV_DIR`, `IMAGE_BASE`       |
 | Local shell variables | snake_case           | `name`, `arg_set`              |
 | Shell functions       | snake_case           | `dirmap()`, `my_function()`    |
 | Makefile targets      | kebab-case           | `build-tty`, `rebuild`         |
@@ -134,7 +134,7 @@ target: ## Description for help output
 
 ```
 conf/                      # Built-in dotfiles (stowed during build)
-  .bash_xendev             # Main bash config
+  .bash_xndv             # Main bash config
   .bash_aliases            # Shell aliases
   .config/nvim-lazyvim/    # Neovim LazyVim distribution
   .config/fish/            # Fish shell config
@@ -142,7 +142,7 @@ conf/                      # Built-in dotfiles (stowed during build)
   .tmux.conf               # Tmux configuration
 
 conf.local/                # User dotfiles (gitignored, stowed during runtime)
-  xendev/bash.sh           # Custom env vars (GH_TOKEN, etc.)
+  xndv/bash.sh           # Custom env vars (GH_TOKEN, etc.)
 
 setup.d/                   # Optional runtime setup scripts
 test/                      # Manual verification scripts
@@ -151,8 +151,8 @@ test/                      # Manual verification scripts
 ## Important Notes
 
 1. **GNU Stow**: Configs use stow for symlinks. Files in `conf/` become `~/.file`.
-2. **Shell behavior**: Bash auto-drops into Fish (see `.bash_xendev` lines 101-104).
-3. **x11docker**: The `./xendev` launcher uses `--user=RETAIN` to preserve host UID.
+2. **Shell behavior**: Bash auto-drops into Fish (see `.bash_xndv` lines 101-104).
+3. **x11docker**: The `./xndv` launcher uses `--user=RETAIN` to preserve host UID.
 4. **No package.json**: Build system is Make + Docker Compose.
 5. **No `make` for agents**: AI agents must not run build commands.
 
@@ -217,7 +217,7 @@ The Tools section is an **Awesome-List** style curated collection with strict co
 
 ### Modify shell config
 
-1. Edit files in `conf/` (`.bash_xendev`, `.bash_aliases`, `config.fish`)
+1. Edit files in `conf/` (`.bash_xndv`, `.bash_aliases`, `config.fish`)
 2. Changes take effect on next container start (stowed at runtime)
 
 ### Add a new script
@@ -228,7 +228,7 @@ Scripts live in different directories depending on their purpose. Match the conv
 
 | Directory   | Purpose                                             | Extension | Naming            | Added to PATH via         |
 | ----------- | --------------------------------------------------- | --------- | ----------------- | ------------------------- |
-| `bin/`      | Container-internal utilities                        | none      | `x-kebab-case`    | `${XENDEV_DIR}/bin`       |
+| `bin/`      | Container-internal utilities                        | none      | `x-kebab-case`    | `${XNDV_DIR}/bin`         |
 | `bin.host/` | Host-side utilities (run on host, not in container) | none      | `x-kebab-case`    | manual                    |
 | `bin.sys/`  | Sysbox-mode wrappers (override system binaries)     | none      | exact binary name | placed before system PATH |
 | `setup.d/`  | Optional on-demand setup scripts                    | `.sh`     | `kebab-case.sh`   | run manually              |
@@ -292,7 +292,7 @@ Emit usage to `stderr` on bad input (`usage >&2`); emit normally for `-h`/`--hel
 
 #### Output Style
 
-- Diagnostic messages and errors: `echo "[xendev] message" >&2` or `echo "[xendev] ERROR: message" >&2`
+- Diagnostic messages and errors: `echo "[xndv] message" >&2` or `echo "[xndv] ERROR: message" >&2`
 - Interactive output (TTY check): `[[ -t 0 && -t 1 ]] && echo "..."` before prompting
 - Colored output (sparingly): ANSI escapes via `echo -e "\033[1;32mText\033[0m"` for visibility
 
@@ -311,7 +311,7 @@ Verify with `ls -la` — all scripts in this repo have `-rwxr-xr-x` or `-rwxr--r
 - `bin/` and `bin.host/`: prefix with `x-` + kebab-case (e.g., `x-git-commit`, `x-fix-gpg-hang`)
 - `bin.sys/`: exact name of the binary being wrapped (e.g., `docker`, `brave-browser`)
 - `setup.d/` and `test/`: kebab-case with `.sh` (e.g., `whisperx.sh`, `test-fonts.sh`)
-- Root scripts: no extension (e.g., `xendev`)
+- Root scripts: no extension (e.g., `xndv`)
 
 #### Sourcing `.env`
 

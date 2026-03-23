@@ -16,8 +16,8 @@ Run it as a:
 ## Quickstart
 
 ```sh
-git clone https://github.com/xendarboh/xendev.git ~/src/xendev
-cd ~/src/xendev
+git clone https://github.com/xendarboh/xendev.git ~/src/xndv
+cd ~/src/xndv
 cp .env-example .env                 # edit to enable optional tools
 cp -a conf.local-example conf.local  # local overrides (see Customization)
 make build
@@ -83,7 +83,7 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
 
 **Tradeoffs**: No direct GPU (uses `--gpu` fallback), bridged networking (no `--network=host`).
 
-**Persistence**: Inner Docker data stored at `~/.local/share/xendev/xndv/sysbox/docker`.
+**Persistence**: Inner Docker data stored at `~/.local/share/xndv/xndv/sysbox/docker`.
 
 ## Tools
 
@@ -292,7 +292,7 @@ make help       # All available targets
 
 ### Dotfiles
 
-- `conf/` — Built-in configs, shipped with xendev source, baked into image
+- `conf/` — Built-in configs, shipped with xndv source, baked into image
 - `conf.local/` — Your customizations go here; gitignored, volume-mapped at runtime
 
 Both directories are [stow](https://github.com/aspiers/stow)'d to the user's home directory at container start (ex: `conf.local/.aws/` → `~/.aws/`).
@@ -303,21 +303,21 @@ cp -a conf.local-example conf.local
 
 Notable files in `conf.local/`, for example:
 
-| File                       | Purpose                                             |
-| :------------------------- | :-------------------------------------------------- |
-| `xendev/bash.sh`           | Custom env vars (`GH_TOKEN`, `FLEEK_API_KEY`, etc.) |
-| `xendev/directory_map.txt` | Path mappings for tmux/kitty CWD preservation       |
-| `.wakatime.cfg`            | Wakatime/Wakapi config                              |
-| `.aws/`                    | AWS credentials                                     |
+| File                     | Purpose                                             |
+| :----------------------- | :-------------------------------------------------- |
+| `xndv/bash.sh`           | Custom env vars (`GH_TOKEN`, `FLEEK_API_KEY`, etc.) |
+| `xndv/directory_map.txt` | Path mappings for tmux/kitty CWD preservation       |
+| `.wakatime.cfg`          | Wakatime/Wakapi config                              |
+| `.aws/`                  | AWS credentials                                     |
 
 ### Git Config
 
-Include xendev's git config conditionally:
+Include xndv's git config conditionally:
 
 ```gitconfig
 # ~/.config/git/config
-[includeIf "gitdir:/home/xendev"]
-  path = ~/src/xendev/conf/gitconfig
+[includeIf "gitdir:/home/xndv"]
+  path = ~/src/xndv/conf/gitconfig
 ```
 
 ### Themes
@@ -348,7 +348,7 @@ Verify terminal capabilities with scripts in [test/](test/):
 
 ## Local AI Models
 
-Run local AI model(s) with [Docker Model Runner](https://docs.docker.com/ai/model-runner/) and interact via [Open WebUI](https://github.com/open-webui/open-webui), [OpenCode](https://github.com/anomalyco/opencode), or `bin/x-ai`. Optional, independent of the main xendev build.
+Run local AI model(s) with [Docker Model Runner](https://docs.docker.com/ai/model-runner/) and interact via [Open WebUI](https://github.com/open-webui/open-webui), [OpenCode](https://github.com/anomalyco/opencode), or `bin/x-ai`. Optional, independent of the main xndv build.
 
 ### Quick Start
 
@@ -386,8 +386,8 @@ Route LLM traffic through a local [LiteLLM](https://github.com/BerriAI/litellm) 
 ### Quick Start
 
 ```sh
-cp conf.local-example/xendev/litellm.yaml conf.local/xendev/
-# Edit conf.local/xendev/litellm.yaml for your setup
+cp conf.local-example/xndv/litellm.yaml conf.local/xndv/
+# Edit conf.local/xndv/litellm.yaml for your setup
 make gateway-up          # on docker host
 # set ENABLE_GATEWAY=1 in .env, then restart shell in container
 ```
@@ -411,7 +411,7 @@ Access LiteLLM UI at <http://localhost:4000>
 Route login-based providers through the gateway via [CLIProxyAPIPlus](https://github.com/router-for-me/CLIProxyAPIPlus):
 
 ```sh
-cp conf.local-example/xendev/cliproxyapi.yaml conf.local/xendev/
+cp conf.local-example/xndv/cliproxyapi.yaml conf.local/xndv/
 make gateway-up
 make gateway-login                         # see list of supported providers
 make gateway-login PROVIDER=someprovider   # one-time per account: follow the URL to authorize
@@ -419,7 +419,7 @@ make gateway-login PROVIDER=someprovider   # one-time per account: follow the UR
 
 Supports any provider available in CLIProxyAPIPlus. Run once per account. Re-run if a token is revoked or to add accounts for load balancing.
 
-After logging in, uncomment the corresponding entries in `conf.local/xendev/litellm.yaml` and restart the gateway. Each model can have multiple deployments across providers and accounts — the gateway tries them in priority order, falling back to the next if one is rate-limited or down.
+After logging in, uncomment the corresponding entries in `conf.local/xndv/litellm.yaml` and restart the gateway. Each model can have multiple deployments across providers and accounts — the gateway tries them in priority order, falling back to the next if one is rate-limited or down.
 
 ### Management
 

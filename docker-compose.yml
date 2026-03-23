@@ -61,7 +61,7 @@ services:
   open-webui:
     profiles: [models]
     image: ghcr.io/open-webui/open-webui:main
-    container_name: xendev-open-webui
+    container_name: xndv-open-webui
     ports:
       - ${MODELS_WEBUI_PORT:-12444}:8080
     environment:
@@ -70,18 +70,18 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
-      - ${HOME}/.local/share/xendev/xndv/ai/open-webui:/app/backend/data
+      - ${HOME}/.local/share/xndv/xndv/ai/open-webui:/app/backend/data
     models:
       - llm-primary
 
   # ─── RUNTIME: LLM GATEWAY
   # LiteLLM unified proxy for all LLM providers — observability, caching, fallback routing
   # Configure via GATEWAY_* vars in .env — see .env-example
-  # Edit conf.local/xendev/litellm.yaml to set providers and API keys
+  # Edit conf.local/xndv/litellm.yaml to set providers and API keys
   gateway:
     profiles: [gateway]
     image: ghcr.io/berriai/litellm:main-latest
-    container_name: xendev-gateway
+    container_name: xndv-gateway
     command: ["--config", "/app/config.yaml", "--port", "4000"]
     ports:
       - ${GATEWAY_PROXY_PORT:-4000}:4000
@@ -98,7 +98,7 @@ services:
       - REDIS_HOST=gateway-redis
       - REDIS_PORT=6379
     volumes:
-      - ./conf.local/xendev/litellm.yaml:/app/config.yaml:ro
+      - ./conf.local/xndv/litellm.yaml:/app/config.yaml:ro
     depends_on:
       gateway-db:
         condition: service_healthy
@@ -108,13 +108,13 @@ services:
   gateway-db:
     profiles: [gateway]
     image: postgres:16-alpine
-    container_name: xendev-gateway-db
+    container_name: xndv-gateway-db
     environment:
       - POSTGRES_DB=litellm
       - POSTGRES_PASSWORD=litellm
       - POSTGRES_USER=litellm
     volumes:
-      - ${HOME}/.local/share/xendev/xndv/ai/gateway/postgres:/var/lib/postgresql/data
+      - ${HOME}/.local/share/xndv/xndv/ai/gateway/postgres:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U litellm"]
       interval: 5s
@@ -124,9 +124,9 @@ services:
   gateway-redis:
     profiles: [gateway]
     image: redis:7-alpine
-    container_name: xendev-gateway-redis
+    container_name: xndv-gateway-redis
     volumes:
-      - ${HOME}/.local/share/xendev/xndv/ai/gateway/redis:/data
+      - ${HOME}/.local/share/xndv/xndv/ai/gateway/redis:/data
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
@@ -138,12 +138,12 @@ services:
   gateway-oauth:
     profiles: [gateway]
     image: eceasy/cli-proxy-api-plus:latest
-    container_name: xendev-gateway-oauth
+    container_name: xndv-gateway-oauth
     ports:
       - ${GATEWAY_OAUTH_PORT:-8317}:8317
     volumes:
-      - ./conf.local/xendev/cliproxyapi.yaml:/CLIProxyAPI/config.yaml:ro
-      - ${HOME}/.local/share/xendev/xndv/ai/gateway/cliproxyapi-auth:/root/.cli-proxy-api
+      - ./conf.local/xndv/cliproxyapi.yaml:/CLIProxyAPI/config.yaml:ro
+      - ${HOME}/.local/share/xndv/xndv/ai/gateway/cliproxyapi-auth:/root/.cli-proxy-api
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "-q", "--spider", "http://localhost:8317/"]

@@ -80,8 +80,8 @@ gateway-status: ## show LLM gateway service status
 
 gateway-login: ## login to OAuth provider for gateway (PROVIDER=<provider>)
 	@test -n "$(PROVIDER)" || { \
-		echo "[xendev] Usage: make gateway-login PROVIDER=<provider>"; \
-		echo "[xendev] See the following --<provider>-login options for supported providers"; \
+		echo "[xndv] Usage: make gateway-login PROVIDER=<provider>"; \
+		echo "[xndv] See the following --<provider>-login options for supported providers"; \
 		echo ""; \
 		$(COMPOSE_GATEWAY) exec gateway-oauth ./CLIProxyAPIPlus --help; \
 		exit 1; \

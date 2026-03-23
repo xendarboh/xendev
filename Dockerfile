@@ -5,16 +5,16 @@ FROM ${IMAGE_BASE}
 
 # configuration
 ARG _LOCALE=en_US.UTF-8
-ARG _USER=xendev
+ARG _USER=xndv
 ARG _USER_GROUPS=audio,dialout,video
 ARG _USER_ID=1000
 
 # persist _USER for use in inheriting images
-ENV XENDEV_USER=${_USER}
+ENV XNDV_USER=${_USER}
 
-# xendev source directory volume mount point when running container
+# xndv source directory volume mount point when running container
 # used for configuration files as symlinks
-ENV XENDEV_DIR=/home/${_USER}/src/xendev
+ENV XNDV_DIR=/home/${_USER}/src/xndv
 
 # use the "noninteractive" debconf frontend
 ENV DEBIAN_FRONTEND=noninteractive
@@ -714,8 +714,8 @@ RUN \
   ; fi
 
 # copy configuration files so that links to them work during docker build
-RUN mkdir -p ${XENDEV_DIR}
-COPY --chown=${_USER}:${_USER} . ${XENDEV_DIR}
+RUN mkdir -p ${XNDV_DIR}
+COPY --chown=${_USER}:${_USER} . ${XNDV_DIR}
 
 # link configuration files so that a mounted volume may override at container execution time
 RUN \
@@ -725,7 +725,7 @@ RUN \
     /home/${_USER}/.config/opencode/opencode.json \
   ) \
   && for file in "${files_to_stash[@]}"; do \
-    mkdir -p ~/.xendev/stash/$(dirname "$file") && mv "$file" ~/.xendev/stash/$(dirname "$file")/; \
+    mkdir -p ~/.xndv/stash/$(dirname "$file") && mv "$file" ~/.xndv/stash/$(dirname "$file")/; \
   done \
   # create dirs so stow symlinks files and not dirs
   && mkdir -p \
@@ -735,14 +735,14 @@ RUN \
     /home/${_USER}/.config/opencode \
   # stow the conf files!
   && stow \
-    --dir=${XENDEV_DIR} \
+    --dir=${XNDV_DIR} \
     --target=/home/${_USER}/ \
     --ignore=gitconfig \
     --verbose \
     conf
 
 # source bash configuration
-RUN /bin/echo -e "\ntest -f ~/.bash_xendev && . ~/.bash_xendev\n" >> .bashrc
+RUN /bin/echo -e "\ntest -f ~/.bash_xndv && . ~/.bash_xndv\n" >> .bashrc
 
 # install smart-splits Kitty multiplexer support
 # Kitty conf expects the kittens so don't wait for nvim lazy load
@@ -781,15 +781,15 @@ ENV NVIM_APPNAME=${OPTIONS_NVIM_APPNAME}
 USER root
 
 # /home/${_USER} --> /etc/skel
-# symlink xendev user's home to /etc/skel to support x11docker user home
+# symlink xndv user's home to /etc/skel to support x11docker user home
 RUN mv /etc/skel /etc/skel.bak \
   && mkdir /etc/skel \
   && (ln -sv /home/${_USER}/{.,}* /etc/skel/ || true)
 
-# record xendev release
+# record xndv release
 RUN echo \
     "VERSION=$(date +'%Y%m%d%H%M%S')" \
-    > /etc/xendev-release
+    > /etc/xndv-release
 
 # record cache state
 RUN \
@@ -797,7 +797,7 @@ RUN \
   --mount=type=cache,id=apt-lists,target=/var/lib/apt,sharing=locked \
   --mount=type=cache,id=dl,target=/dl,sharing=locked \
   --mount=type=cache,id=dlu,target=/dlu,sharing=locked,uid=${_USER_ID} \
-  du -hs /dl /dlu /var/cache/apt/archives /var/lib/apt/lists | sort -h > /etc/xendev-cache-stats
+  du -hs /dl /dlu /var/cache/apt/archives /var/lib/apt/lists | sort -h > /etc/xndv-cache-stats
 
 # unminimize to install docs
 ARG INSTALL_DOCS=0

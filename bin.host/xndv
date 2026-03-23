@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SELECTOR_CHAIN="${XENDEV_SELECTOR:-rofi dmenu fzf}"
-CONTAINER_PREFIX="xendev"
-XENDEV_USER="xendev"
+SELECTOR_CHAIN="${XNDV_SELECTOR:-rofi dmenu fzf}"
+CONTAINER_PREFIX="xndv"
+XNDV_USER="xndv"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -38,7 +38,7 @@ MOUNTS=(
   "$HOME/src.priv::priv"
   "$HOME/src::core"
   "$HOME/sshfs::core:rshared"
-  "$HOME/.local/share/xendev:/home/${XENDEV_USER}/.local/share:data"
+  "$HOME/.local/share/xndv:/home/${XNDV_USER}/.local/share:data"
   "/media"
   "/mnt"
   "/srv"
@@ -103,7 +103,7 @@ mode_sys() {
     --cap-add=SYS_ADMIN
   )
   MOUNTS+=(
-    "$HOME/.local/share/xendev/xndv/sysbox/docker:/var/lib/docker:sys"
+    "$HOME/.local/share/xndv/xndv/sysbox/docker:/var/lib/docker:sys"
   )
   TAGS+=(
     "sys"
@@ -142,9 +142,9 @@ main() {
   #---------------------------------------------------------------------------
   mapfile -t options < <(
     echo "+ New Instance"
-    docker ps --filter "name=^${CONTAINER_PREFIX}-" --format '{{.Names}} │ {{.Label "xendev.mode"}}' 2>/dev/null || true
+    docker ps --filter "name=^${CONTAINER_PREFIX}-" --format '{{.Names}} │ {{.Label "xndv.mode"}}' 2>/dev/null || true
   )
-  sel=$(ui "xendev" <<<"$(printf '%s\n' "${options[@]}")")
+  sel=$(ui "xndv" <<<"$(printf '%s\n' "${options[@]}")")
   [[ -z "$sel" ]] && exit 0
   [[ "$sel" != "+ New Instance" ]] && { exec docker exec -it "${sel%% *}" /bin/bash; }
 
@@ -208,13 +208,13 @@ main() {
   vol_args=()
   for i in "${!selected[@]}"; do
     IFS=':' read -r src dst tag opts <<<"${MOUNTS[$i]}"
-    dst="${dst:-/home/${XENDEV_USER}/${src#$HOME/}}"
+    dst="${dst:-/home/${XNDV_USER}/${src#$HOME/}}"
     [[ ! -d "$src" ]] && mkdir -p "$src"
     vol_args+=("--volume" "$src:$dst${opts:+:$opts}")
   done
 
   "mode_$mode"
-  ARGS_DOCKER+=(--label xendev.mode=$mode)
+  ARGS_DOCKER+=(--label xndv.mode=$mode)
   [[ "$RUNNER" == "x11docker" ]] &&
     cmd="x11docker --name $inst ${ARGS_X11DOCKER[*]} -- ${ARGS_DOCKER[*]} ${vol_args[*]} -- $IMAGE $SHELL_CMD $inst" ||
     cmd="docker run -it --rm --name $inst ${ARGS_DOCKER[*]} ${vol_args[*]} $IMAGE $SHELL_CMD"
