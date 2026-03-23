@@ -73,7 +73,12 @@ end
 # load oh-my-opencode via a custom config to preserve the base opencode and available agents
 function oc-omo
     set -lx OPENCODE_CONFIG "$XNDV_DIR/conf/.config/opencode/opencode-omo.jsonc"
-    command opencode $argv
+    set -lx OPENCODE_PORT 5000
+    if test -z "$TMUX"
+        exec tmux new-session -s oc-omo "OPENCODE_CONFIG='$OPENCODE_CONFIG' OPENCODE_PORT=$OPENCODE_PORT opencode --port 5000 $argv"
+    else
+        command opencode --port 5000 $argv
+    end
 end
 
 # 20260313: fix tuicr broken clipboard copy
