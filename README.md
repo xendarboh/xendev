@@ -265,7 +265,9 @@ Scripts in [bin/](bin/) are available inside the container:
 
 Scripts in [bin.host/](bin.host/) run on the host (outside the container):
 
-- [xndv](bin.host/xndv): Interactive launcher — select mode, name container, toggle mounts, attach to running instances
+- [xndv](bin.host/xndv): Interactive menu for managing the xndv environment
+  - `launch`: Select mode, name container, toggle mounts, attach to running instances
+  - `clean`: Disk monitor and selective cleanup for host-persistent directories
 
 ### Runtime Scripts
 

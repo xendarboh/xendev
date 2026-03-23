@@ -3,6 +3,7 @@ set -euo pipefail
 
 SELECTOR_CHAIN="${XNDV_SELECTOR:-rofi dmenu fzf}"
 CONTAINER_PREFIX="xndv"
+XNDV_HOST_DATA="${HOME}/.local/share/xndv"
 XNDV_USER="xndv"
 
 while [[ $# -gt 0 ]]; do
@@ -29,6 +30,41 @@ ui() {
   fzf) fzf --prompt "$p> " --reverse --height 40% --query "$f" --print-query | tail -1 || true ;;
   esac
 }
+
+# TTY: show command and prompt; GUI: auto-run
+confirm_and_run() {
+  local label="$1" cmd="$2"
+  if [[ -t 0 && -t 1 ]]; then
+    echo -e "\n\033[1;32m${label}:\033[0m\n$cmd\n"
+    read -rp "Proceed? [Y/n] " confirm
+    [[ "${confirm,,}" == "y" || -z "$confirm" ]] && eval "$cmd"
+  else
+    eval "$cmd"
+  fi
+}
+
+require_sudo() {
+  # Check if stdin (0) is NOT a terminal
+  if [ ! -t 0 ]; then
+    # rofi -e "Error: This command requires sudo. Please run it from a terminal."
+    ui "Error: This command requires sudo. Please run \`$(basename ${0})\` from a terminal."
+    exit 1
+  fi
+
+  # Ensure sudo credentials are cached upfront — du and rm need root for Docker-owned dirs.
+  # Prompt once here so subsequent sudo calls are silent.
+  if ! sudo -n true 2>/dev/null; then
+    echo "[xndv] sudo required for this command." >&2
+    sudo -v || {
+      echo "[xndv] sudo authentication failed." >&2
+      exit 1
+    }
+  fi
+}
+
+#---------------------------------------------------------------------------
+# LAUNCH
+#---------------------------------------------------------------------------
 
 # src:[dest]:[tag]:[options]
 MOUNTS=(
@@ -136,7 +172,7 @@ mode_tty() {
   TAGS=("core")
 }
 
-main() {
+cmd_launch() {
   #---------------------------------------------------------------------------
   # 1. Action Selection — attach to existing container or create new instance
   #---------------------------------------------------------------------------
@@ -219,14 +255,141 @@ main() {
     cmd="x11docker --name $inst ${ARGS_X11DOCKER[*]} -- ${ARGS_DOCKER[*]} ${vol_args[*]} -- $IMAGE $SHELL_CMD $inst" ||
     cmd="docker run -it --rm --name $inst ${ARGS_DOCKER[*]} ${vol_args[*]} $IMAGE $SHELL_CMD"
 
-  # TTY: show command and prompt; GUI: auto-launch
-  if [[ -t 0 && -t 1 ]]; then
-    echo -e "\n\033[1;32mGenerated Command:\033[0m\n$cmd\n"
-    read -p "Launch? [Y/n] " confirm
-    [[ "${confirm,,}" == "y" || -z "$confirm" ]] && eval "$cmd"
-  else
-    eval "$cmd"
+  confirm_and_run "Generated Command" "$cmd"
+}
+
+#---------------------------------------------------------------------------
+# CLEAN
+#---------------------------------------------------------------------------
+
+# Host-persistent data dirs for selective cleanup
+# Format: tag:path:label
+#   cache — safe to delete; data is auto-regenerated (binaries, analytics, caches)
+#   state — active config or auth; deletion causes friction (re-login, reconfiguration)
+DIRS=(
+  "cache:${XNDV_HOST_DATA}/xndv/ai/gateway/postgres:LiteLLM Postgres"
+  "cache:${XNDV_HOST_DATA}/xndv/ai/gateway/redis:LiteLLM Redis"
+  "cache:${XNDV_HOST_DATA}/xndv/ai/open-webui:Open WebUI data"
+  "cache:${XNDV_HOST_DATA}/xndv/aztec:Aztec versioned binaries"
+  "cache:${XNDV_HOST_DATA}/xndv/mcp/aztec:Aztec MCP server data"
+  "cache:${XNDV_HOST_DATA}/xndv/mcp/noir:Noir MCP repos"
+  "cache:${XNDV_HOST_DATA}/xndv/sysbox/docker:Sysbox /var/lib/docker storage"
+  "state:${XNDV_HOST_DATA}/xndv/ai/gateway/cliproxyapi-auth:OAuth tokens (re-login required)"
+)
+
+cmd_clean() {
+  require_sudo
+
+  if [[ ! -d "$XNDV_HOST_DATA" ]]; then
+    echo "[xndv] Data directory not found: $XNDV_HOST_DATA" >&2
+    exit 1
   fi
+
+  #---------------------------------------------------------------------------
+  # 1. Measure disk usage — cache entries sorted by size desc, state at bottom
+  #---------------------------------------------------------------------------
+  # Build a sorted index into DIRS: cache entries (size desc) then state entries
+  local cache_idx=() state_idx=() sorted_idx=()
+  local sizes=()
+  for i in "${!DIRS[@]}"; do
+    IFS=':' read -r tag path label <<<"${DIRS[$i]}"
+    local size="-"
+    [[ -d "$path" ]] && size=$(sudo du -sh "$path" 2>/dev/null | cut -f1)
+    sizes[$i]="$size"
+    [[ "$tag" == "state" ]] && state_idx+=("$i") || cache_idx+=("$i")
+  done
+
+  # Sort cache indices by size descending
+  local cache_sorted
+  mapfile -t cache_sorted < <(
+    for i in "${cache_idx[@]}"; do printf '%s %s\n' "${sizes[$i]}" "$i"; done |
+      sort -k1 -h -r | awk '{print $2}'
+  )
+  sorted_idx=("${cache_sorted[@]}" "${state_idx[@]}")
+
+  #---------------------------------------------------------------------------
+  # 2. Directory Selection — toggle dirs to delete, confirm with ▶ CLEAN
+  #---------------------------------------------------------------------------
+  declare -A selected
+  while true; do
+    local menu_lines=("▶ CLEAN")
+    for i in "${sorted_idx[@]}"; do
+      IFS=':' read -r tag path label <<<"${DIRS[$i]}"
+      local chk="[ ]"
+      [[ -n "${selected[$i]:-}" ]] && chk="[x]"
+      local rel="${path#"${XNDV_HOST_DATA}/"}"
+      local line
+      printf -v line "%s %-5s  %6s  %-46s %s" "$chk" "$tag" "${sizes[$i]}" "$rel" "$label"
+      menu_lines+=("$line")
+    done
+
+    local choice
+    choice=$(ui "Clean" <<<"$(printf '%s\n' "${menu_lines[@]}")")
+
+    [[ -z "$choice" ]] && exit 0
+    [[ "$choice" == "▶ CLEAN" ]] && break
+
+    # Toggle selection by stripping checkbox prefix then extracting relpath (field 3)
+    local choice_rel
+    choice_rel=$(sed 's/^\[.\] //' <<<"$choice" | awk '{print $3}')
+    for i in "${sorted_idx[@]}"; do
+      IFS=':' read -r tag path label <<<"${DIRS[$i]}"
+      local rel="${path#"${XNDV_HOST_DATA}/"}"
+      if [[ "$rel" == "$choice_rel" ]]; then
+        if [[ -n "${selected[$i]:-}" ]]; then unset "selected[$i]"; else selected[$i]=1; fi
+        break
+      fi
+    done
+  done
+
+  local selected_paths=() selected_state_paths=()
+  for i in "${!selected[@]}"; do
+    IFS=':' read -r tag path label <<<"${DIRS[$i]}"
+    selected_paths+=("$path")
+    [[ "$tag" == "state" ]] && selected_state_paths+=("$path")
+  done
+
+  [[ ${#selected_paths[@]} -eq 0 ]] && exit 0
+
+  #---------------------------------------------------------------------------
+  # 3. State Warning — extra TTY confirmation for auth/config directories
+  #---------------------------------------------------------------------------
+  if [[ ${#selected_state_paths[@]} -gt 0 ]]; then
+    echo ""
+    echo "[xndv] WARNING: the following require re-login or reconfiguration after deletion:"
+    for p in "${selected_state_paths[@]}"; do
+      echo "  [state]  $p"
+    done
+    echo ""
+    read -rp "Type YES to confirm deletion of state directories: " confirm_state
+    [[ "$confirm_state" != "YES" ]] && echo "[xndv] Cancelled." >&2 && exit 0
+  fi
+
+  #---------------------------------------------------------------------------
+  # 4. Build Command & Confirm Deletion
+  #---------------------------------------------------------------------------
+  local total_freed
+  total_freed=$(sudo du -shc "${selected_paths[@]}" 2>/dev/null | tail -1 | cut -f1)
+  local n="${#selected_paths[@]}" noun
+  [[ "$n" -eq 1 ]] && noun="directory" || noun="directories"
+
+  local cmd="sudo rm -rf $(printf '"%s" ' "${selected_paths[@]}")"
+  echo ""
+  echo "[xndv] Will delete ${n} ${noun} (~${total_freed}):"
+  for p in "${selected_paths[@]}"; do echo "  $p"; done
+
+  confirm_and_run "Delete Command" "$cmd"
+}
+
+#---------------------------------------------------------------------------
+# MAIN
+#---------------------------------------------------------------------------
+
+main() {
+  cmds=($(declare -F | sort -r | grep " cmd_" | sed 's/.* cmd_//'))
+  c_sel=$(ui "xndv" <<<"$(printf '%s\n' "${cmds[@]}")")
+  [[ -z "$c_sel" ]] && exit 0
+  "cmd_${c_sel}"
 }
 
 main
