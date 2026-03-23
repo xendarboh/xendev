@@ -71,11 +71,11 @@ function nx
 end
 
 # load oh-my-opencode via a custom config to preserve the base opencode and available agents
-function oc-omo
+function omo
     set -lx OPENCODE_CONFIG "$XNDV_DIR/conf/.config/opencode/opencode-omo.jsonc"
     set -lx OPENCODE_PORT 5000
     if test -z "$TMUX"
-        exec tmux new-session -s oc-omo "OPENCODE_CONFIG='$OPENCODE_CONFIG' OPENCODE_PORT=$OPENCODE_PORT opencode --port 5000 $argv"
+        exec tmux new-session -s omo "OPENCODE_CONFIG='$OPENCODE_CONFIG' OPENCODE_PORT=$OPENCODE_PORT opencode --port 5000 $argv"
     else
         command opencode --port 5000 $argv
     end
