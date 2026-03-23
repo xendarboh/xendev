@@ -24,8 +24,8 @@ export VISUAL=/usr/bin/vim
 # https://github.com/neovim/neovim/issues/6982#issuecomment-313879899
 export COLORTERM=truecolor
 
-if [ -f ~/.bash_prompt  ]; then
-    . ~/.bash_prompt
+if [ -f ~/.bash_prompt ]; then
+  . ~/.bash_prompt
 fi
 
 command -v buf >/dev/null && eval "$(buf completion bash)"
@@ -92,8 +92,7 @@ test ! -f ${spelldir} && mkdir -p ${spelldir}
 dirmap() {
   F="${XENDEV_DIR}/conf.local/xendev/directory_map.txt"
   test -f "${F}" || return
-  for line in $(cat "${F}")
-  do
+  for line in $(cat "${F}"); do
     from=$(echo "$line" | cut -d':' -f1)
     to=$(echo "$line" | cut -d':' -f2)
 
@@ -148,8 +147,7 @@ fi
 # https://wiki.archlinux.org/title/fish#Modify_.bashrc_to_drop_into_fish
 ####################################
 
-if [[ $(ps --no-header --pid=$PPID --format=comm) != "fish" && -z ${BASH_EXECUTION_STRING} ]]
-then
+if [[ $(ps --no-header --pid=$PPID --format=comm) != "fish" && -z ${BASH_EXECUTION_STRING} ]]; then
   exec fish
 fi
 
