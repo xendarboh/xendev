@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/dev/assets/oh-my-opencode.schema.json",
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
   "agents": {
     "sisyphus": {
       "model": "anthropic/claude-opus-4-6",
@@ -12,9 +12,6 @@
     "oracle": {
       "model": "openai/gpt-5.4",
       "variant": "high"
-    },
-    "librarian": {
-      "model": "opencode/glm-5"
     },
     "explore": {
       "model": "anthropic/claude-haiku-4-5"
@@ -37,6 +34,9 @@
     },
     "atlas": {
       "model": "anthropic/claude-sonnet-4-6"
+    },
+    "sisyphus-junior": {
+      "model": "anthropic/claude-sonnet-4-6"
     }
   },
   "categories": {
@@ -45,7 +45,7 @@
       "variant": "high"
     },
     "ultrabrain": {
-      "model": "openai/gpt-5.3-codex",
+      "model": "openai/gpt-5.4",
       "variant": "xhigh"
     },
     "deep": {
