@@ -47,7 +47,7 @@ require_sudo() {
   # Check if stdin (0) is NOT a terminal
   if [ ! -t 0 ]; then
     # rofi -e "Error: This command requires sudo. Please run it from a terminal."
-    ui "Error: This command requires sudo. Please run \`$(basename ${0})\` from a terminal."
+    ui "Error: This command requires sudo. Please run \`$(basename "${0}")\` from a terminal."
     exit 1
   fi
 
@@ -177,13 +177,26 @@ cmd_launch() {
   #---------------------------------------------------------------------------
   # 1. Action Selection — attach to existing container or create new instance
   #---------------------------------------------------------------------------
-  mapfile -t options < <(
-    echo "+ New Instance"
-    docker ps --filter "name=^${CONTAINER_PREFIX}-" --format '{{.Names}} │ {{.Label "xndv.mode"}}' 2>/dev/null || true
-  )
+  local primary_options=() aux_options=() options=()
+  local row container_name container_mode
+
+  mapfile -t options < <(docker ps --filter "name=^${CONTAINER_PREFIX}-" --format '{{.Names}}|{{.Label "xndv.mode"}}' 2>/dev/null || true)
+  for row in "${options[@]}"; do
+    IFS='|' read -r container_name container_mode <<<"$row"
+    [[ -z "$container_name" ]] && continue
+    [[ -z "$container_mode" ]] && container_mode="aux"
+    printf -v row "%-3s │ %s" "$container_mode" "$container_name"
+    if [[ "$container_mode" == "aux" ]]; then
+      aux_options+=("$row")
+    else
+      primary_options+=("$row")
+    fi
+  done
+
+  options=("+ New Instance" "${primary_options[@]}" "${aux_options[@]}")
   sel=$(ui "xndv" <<<"$(printf '%s\n' "${options[@]}")")
   [[ -z "$sel" ]] && exit 0
-  [[ "$sel" != "+ New Instance" ]] && { exec docker exec -it "${sel%% *}" /bin/bash; }
+  [[ "$sel" != "+ New Instance" ]] && { exec docker exec -it "${sel##* }" sh -c 'bash || sh'; }
 
   #---------------------------------------------------------------------------
   # 2. Mode Selection — choose environment preset (max, min, sys, tty)
