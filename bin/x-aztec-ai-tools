@@ -2,8 +2,8 @@
 
 set -euo pipefail
 
-AZTEC_MCP_REPOS_BASE="${HOME}/.local/share/xendev/mcp/aztec"
-NOIR_MCP_REPOS_DIR="${HOME}/.local/share/xendev/mcp/noir"
+AZTEC_MCP_REPOS_BASE="${HOME}/.local/share/xndv/mcp/aztec"
+NOIR_MCP_REPOS_DIR="${HOME}/.local/share/xndv/mcp/noir"
 AZTEC_SECTION_MARKER="<!-- aztec-ai-tools: do not remove this marker -->"
 
 # --- External sources ---

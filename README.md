@@ -83,7 +83,7 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
 
 **Tradeoffs**: No direct GPU (uses `--gpu` fallback), bridged networking (no `--network=host`).
 
-**Persistence**: Inner Docker data stored at `~/.local/share/xendev/sysbox/var-lib-docker`.
+**Persistence**: Inner Docker data stored at `~/.local/share/xendev/xndv/sysbox/docker`.
 
 ## Tools
 

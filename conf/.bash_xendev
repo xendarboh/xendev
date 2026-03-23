@@ -62,7 +62,7 @@ if [ ! -e ${D}/tinty ]; then
 fi
 
 # symlink aztec home dir so it persists within ~/.local/share/ volume mount
-D=~/.local/share/xendev/aztec
+D=~/.local/share/xndv/aztec
 if [ ! -e ~/.aztec ]; then
   echo "[xendev] symlinking ~/.aztec -> ${D}"
   mkdir -p ${D}

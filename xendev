@@ -19,7 +19,7 @@ for s in $SELECTOR_CHAIN; do command -v "$s" &>/dev/null && {
   CONF_SELECTOR="$s"
   break
 }; done
-[[ -z "${CONF_SELECTOR:-}" ]] && echo "No selector in: $SELECTOR_CHAIN" >&2 && exit 1
+[[ -z "${CONF_SELECTOR:-}" ]] && echo "No selector found in: $SELECTOR_CHAIN" >&2 && exit 1
 
 ui() {
   local p="$1" f="${2:-}"
@@ -85,7 +85,7 @@ mode_max() {
 }
 
 # uses sysbox runtime for docker-in-docker
-# persists docker storage at ~/.local/share/xendev/sysbox/var-lib-docker
+# persists docker storage in host data volume
 # not compatible with x11docker --gpu=direct or --network=host
 mode_sys() {
   base
@@ -103,7 +103,7 @@ mode_sys() {
     --cap-add=SYS_ADMIN
   )
   MOUNTS+=(
-    "$HOME/.local/share/xendev/sysbox/var-lib-docker:/var/lib/docker:sys"
+    "$HOME/.local/share/xendev/xndv/sysbox/docker:/var/lib/docker:sys"
   )
   TAGS+=(
     "sys"

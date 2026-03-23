@@ -70,7 +70,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
-      - ${HOME}/.local/share/xendev/xndv-ai/open-webui:/app/backend/data
+      - ${HOME}/.local/share/xendev/xndv/ai/open-webui:/app/backend/data
     models:
       - llm-primary
 
@@ -114,7 +114,7 @@ services:
       - POSTGRES_PASSWORD=litellm
       - POSTGRES_USER=litellm
     volumes:
-      - ${HOME}/.local/share/xendev/xndv-ai/gateway/postgres:/var/lib/postgresql/data
+      - ${HOME}/.local/share/xendev/xndv/ai/gateway/postgres:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U litellm"]
       interval: 5s
@@ -126,7 +126,7 @@ services:
     image: redis:7-alpine
     container_name: xendev-gateway-redis
     volumes:
-      - ${HOME}/.local/share/xendev/xndv-ai/gateway/redis:/data
+      - ${HOME}/.local/share/xendev/xndv/ai/gateway/redis:/data
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
@@ -143,7 +143,7 @@ services:
       - ${GATEWAY_OAUTH_PORT:-8317}:8317
     volumes:
       - ./conf.local/xendev/cliproxyapi.yaml:/CLIProxyAPI/config.yaml:ro
-      - ${HOME}/.local/share/xendev/xndv-ai/gateway/cliproxyapi-auth:/root/.cli-proxy-api
+      - ${HOME}/.local/share/xendev/xndv/ai/gateway/cliproxyapi-auth:/root/.cli-proxy-api
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "-q", "--spider", "http://localhost:8317/"]
