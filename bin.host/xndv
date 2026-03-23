@@ -66,19 +66,19 @@ require_sudo() {
 # LAUNCH
 #---------------------------------------------------------------------------
 
-# src:[dest]:[tag]:[options]
+# tag:src:[dest]:[options]
 MOUNTS=(
-  "$HOME/.config/git::priv"
-  "$HOME/.gnupg::priv"
-  "$HOME/.ssh::priv"
-  "$HOME/src.priv::priv"
-  "$HOME/src::core"
-  "$HOME/sshfs::core:rshared"
-  "${XNDV_HOST_DATA}:/home/${XNDV_USER}/.local/share:data"
-  "${XNDV_HOST_DATA}/xndv/cache:/home/${XNDV_USER}/.cache:data"
-  "/media"
-  "/mnt"
-  "/srv"
+  "priv:$HOME/.config/git"
+  "priv:$HOME/.gnupg"
+  "priv:$HOME/.ssh"
+  "priv:$HOME/src.priv"
+  "core:$HOME/src"
+  "core:$HOME/sshfs::rshared"
+  "data:${XNDV_HOST_DATA}:/home/${XNDV_USER}/.local/share"
+  "data:${XNDV_HOST_DATA}/xndv/cache:/home/${XNDV_USER}/.cache"
+  "misc:/media"
+  "misc:/mnt"
+  "misc:/srv"
 )
 
 # Mode Definitions
@@ -140,7 +140,7 @@ mode_sys() {
     --cap-add=SYS_ADMIN
   )
   MOUNTS+=(
-    "$HOME/.local/share/xndv/xndv/sysbox/docker:/var/lib/docker:sys"
+    "sys:$HOME/.local/share/xndv/xndv/sysbox/docker:/var/lib/docker"
   )
   TAGS+=(
     "sys"
@@ -177,26 +177,26 @@ cmd_launch() {
   #---------------------------------------------------------------------------
   # 1. Action Selection — attach to existing container or create new instance
   #---------------------------------------------------------------------------
-  local primary_options=() aux_options=() options=()
-  local row container_name container_mode
+  local options=("+ New Instance") primary=() aux=() row name mode
 
-  mapfile -t options < <(docker ps --filter "name=^${CONTAINER_PREFIX}-" --format '{{.Names}}|{{.Label "xndv.mode"}}' 2>/dev/null || true)
-  for row in "${options[@]}"; do
-    IFS='|' read -r container_name container_mode <<<"$row"
-    [[ -z "$container_name" ]] && continue
-    [[ -z "$container_mode" ]] && container_mode="aux"
-    printf -v row "%-3s │ %s" "$container_mode" "$container_name"
-    if [[ "$container_mode" == "aux" ]]; then
-      aux_options+=("$row")
-    else
-      primary_options+=("$row")
-    fi
+  # Mapfile with a process substitution that formats the string immediately
+  mapfile -t rows < <(docker ps --filter "name=^${CONTAINER_PREFIX}-" --format '{{.Names}}|{{.Label "xndv.mode"}}' 2>/dev/null || true)
+
+  for row in "${rows[@]}"; do
+    IFS='|' read -r name mode <<<"$row"
+    [[ -z "$name" ]] && continue
+
+    # Format the row; default mode to "aux" if empty
+    printf -v formatted "%-3s │ %s" "${mode:-aux}" "$name"
+
+    # Sort into respective arrays based on mode
+    [[ "${mode:-aux}" == "aux" ]] && aux+=("$formatted") || primary+=("$formatted")
   done
 
-  options=("+ New Instance" "${primary_options[@]}" "${aux_options[@]}")
-  sel=$(ui "xndv" <<<"$(printf '%s\n' "${options[@]}")")
+  options+=("${primary[@]}" "${aux[@]}")
+  sel=$(printf '%s\n' "${options[@]}" | ui "xndv")
   [[ -z "$sel" ]] && exit 0
-  [[ "$sel" != "+ New Instance" ]] && { exec docker exec -it "${sel##* }" sh -c 'bash || sh'; }
+  [[ "$sel" != "+ New Instance" ]] && { echo "[xndv] docker exec into container ${sel##* }" && exec docker exec -it "${sel##* }" sh -c 'bash || sh'; }
 
   #---------------------------------------------------------------------------
   # 2. Mode Selection — choose environment preset (max, min, sys, tty)
@@ -221,7 +221,7 @@ cmd_launch() {
   "mode_$mode"
   declare -A selected
   for i in "${!MOUNTS[@]}"; do
-    IFS=':' read -r src dst tag opts <<<"${MOUNTS[$i]}"
+    IFS=':' read -r tag src dst opts <<<"${MOUNTS[$i]}"
     for dt in "${TAGS[@]:-}"; do
       [[ -n "$tag" && "$tag" == "$dt" ]] && selected[$i]=1
     done
@@ -232,8 +232,9 @@ cmd_launch() {
     for i in "${!MOUNTS[@]}"; do
       state="[ ]"
       [[ -n "${selected[$i]:-}" ]] && state="[x]"
-      IFS=':' read -r src dst tag opts <<<"${MOUNTS[$i]}"
-      printf -v line "%s %-40s%s" "$state" "$src" "${tag:+ │ :$tag}"
+      IFS=':' read -r tag src dst opts <<<"${MOUNTS[$i]}"
+      printf -v line "%s %-4s │ %s" "$state" "$tag" "$src"
+      [[ -n "$dst" ]] && line+=" 󰧂 $dst"
       menu_lines+=("$line")
     done
 
@@ -242,9 +243,9 @@ cmd_launch() {
     [[ -z "$choice" ]] && exit 0
     [[ "$choice" == "▶ LAUNCH" ]] && break
 
-    choice_path=$(echo "$choice" | sed 's/^\[.\] //; s/  *│.*//; s/ *$//')
+    choice_path=$(echo "$choice" | sed 's/^\[.\] [^ ]* │ //; s/ *$//')
     for i in "${!MOUNTS[@]}"; do
-      IFS=':' read -r src dst tag opts <<<"${MOUNTS[$i]}"
+      IFS=':' read -r tag src dst opts <<<"${MOUNTS[$i]}"
       if [[ "$src" == "$choice_path" ]]; then
         if [[ -n "${selected[$i]:-}" ]]; then unset "selected[$i]"; else selected[$i]=1; fi
         break
@@ -257,7 +258,7 @@ cmd_launch() {
   #---------------------------------------------------------------------------
   vol_args=()
   for i in "${!selected[@]}"; do
-    IFS=':' read -r src dst tag opts <<<"${MOUNTS[$i]}"
+    IFS=':' read -r tag src dst opts <<<"${MOUNTS[$i]}"
     dst="${dst:-/home/${XNDV_USER}/${src#$HOME/}}"
     [[ ! -d "$src" ]] && mkdir -p "$src"
     vol_args+=("--volume" "$src:$dst${opts:+:$opts}")
