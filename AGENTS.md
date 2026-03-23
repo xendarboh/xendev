@@ -10,13 +10,6 @@ xndv is a dockerized terminal-based vim-centric development environment. It's "o
 
 **AI agents must NOT run `make`** — builds are slow and typically unavailable in agent environments.
 
-```sh
-make build       # Build full image (xen/x11, xen/dev, xen/sys)
-make build-tty   # Build tty-only image (no X11, smaller)
-make rebuild     # Build from scratch without cache
-make help        # Show all make targets
-```
-
 ## Testing
 
 No automated tests exist. Manual verification scripts in `test/`:
@@ -26,6 +19,7 @@ No automated tests exist. Manual verification scripts in `test/`:
 ./test/truecolor.sh   # Terminal truecolor support
 ./test/glyphs.sh      # Font glyph rendering
 ./test/italics.sh     # Italic text rendering
+./test/ai-gateway.sh  # Verify AI Gateway connectivity
 ```
 
 ## Code Style
@@ -35,12 +29,12 @@ No automated tests exist. Manual verification scripts in `test/`:
 - **Indentation**: 2 spaces (Bash, Lua, Dockerfile), 4 spaces (Fish)
 - **Line endings**: Unix (LF)
 - **Trailing whitespace**: Remove
-- **Vim modelines**: Use at file end when helpful (e.g., `# vim:syntax=sh`)
+- **Vim modelines**: Use at file end when helpful (e.g., `# vim: ft=sh`)
 
 ### Shell Scripts (Bash)
 
 ```bash
-#!/bin/bash                       # Use /bin/bash, not /usr/bin/env bash
+#!/usr/bin/env bash               # Use /usr/bin/env bash
 name="${1:-default}"              # Quote variables, provide defaults
 [ -f "$file" ] && source "$file"  # Guard file sources
 
@@ -92,9 +86,9 @@ Plugin structure: `lua/config/` for core settings, `lua/plugins/` for one file p
 ### Dockerfile
 
 ```dockerfile
-ARG VERSION_TOOL                  # ARGs at top for versioning
+ARG VERSION_TOOL                # ARGs usually directly proceed their usage
 
-# Chain RUN + cleanup in same layer
+# Chain RUN + cleanup in same layer, notice the indentation for readability
 RUN apt update \
   && apt install --no-install-recommends -y -q \
     package1 \
@@ -134,7 +128,7 @@ target: ## Description for help output
 
 ```
 conf/                      # Built-in dotfiles (stowed during build)
-  .bash_xndv             # Main bash config
+  .bash_xndv               # Main bash config
   .bash_aliases            # Shell aliases
   .config/nvim-lazyvim/    # Neovim LazyVim distribution
   .config/fish/            # Fish shell config
@@ -142,7 +136,7 @@ conf/                      # Built-in dotfiles (stowed during build)
   .tmux.conf               # Tmux configuration
 
 conf.local/                # User dotfiles (gitignored, stowed during runtime)
-  xndv/bash.sh           # Custom env vars (GH_TOKEN, etc.)
+  xndv/bash.sh             # Custom env vars (GH_TOKEN, etc.)
 
 setup.d/                   # Optional runtime setup scripts
 test/                      # Manual verification scripts
