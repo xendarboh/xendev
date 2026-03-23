@@ -109,21 +109,123 @@ model_list:
     model_info:
       id: claude-haiku-4-5__opencode-zen
 
-  # ── gemini-3-flash-preview ──────────────────────────
-  # ── gemini-3.1-pro-preview ──────────────────────────
-  # ── glm-5 ───────────────────────────────────────────
   # ── gpt-5.3-codex ───────────────────────────────────
+
+  # via CLIProxyAPI(Plus) | $ make gateway-login PROVIDER=codex(-device)
+  - model_name: gpt-5.3-codex
+    litellm_params:
+      model: openai/gpt-5.3-codex
+      api_base: http://gateway-oauth:8317/api/provider/openai
+      api_key: sk-cliproxy
+      tags: ["provider=openai"]
+      order: 1
+    model_info:
+      id: gpt-5.3-codex__openai
+
+  # via CLIProxyAPIPlus | $ make gateway-login PROVIDER=github-copilot
+  - model_name: gpt-5.3-codex
+    litellm_params:
+      model: openai/gpt-5.3-codex
+      api_base: http://gateway-oauth:8317/api/provider/github-copilot
+      api_key: sk-cliproxy
+      tags: ["provider=copilot"]
+      order: 2
+    model_info:
+      id: gpt-5.3-codex__copilot
+
+  # via OpenCode Zen API
+  - model_name: gpt-5.3-codex
+    litellm_params:
+      model: openai/gpt-5.3-codex
+      api_base: https://opencode.ai/zen/v1
+      api_key: os.environ/API_KEY_OPENCODE_ZEN
+      tags: ["provider=opencode-zen"]
+      order: 3
+    model_info:
+      id: gpt-5.3-codex__opencode-zen
+
   # ── gpt-5.4 ─────────────────────────────────────────
 
-  # ?: - model_name: gpt-4o
-  # ?:   litellm_params:
-  # ?:     model: openai/gpt-4o
-  # ?:     api_key: os.environ/API_KEY_OPENAI
+  # via CLIProxyAPI(Plus) | $ make gateway-login PROVIDER=codex(-device)
+  - model_name: gpt-5.4
+    litellm_params:
+      model: openai/gpt-5.4
+      api_base: http://gateway-oauth:8317/api/provider/openai
+      api_key: sk-cliproxy
+      tags: ["provider=openai"]
+      order: 1
+    model_info:
+      id: gpt-5.4__openai
 
-  # ?: - model_name: gemini-2.5-pro
-  # ?:   litellm_params:
-  # ?:     model: gemini/gemini-2.5-pro
-  # ?:     api_key: os.environ/API_KEY_GOOGLE
+  # via CLIProxyAPIPlus | $ make gateway-login PROVIDER=github-copilot
+  - model_name: gpt-5.4
+    litellm_params:
+      model: openai/gpt-5.4
+      api_base: http://gateway-oauth:8317/api/provider/github-copilot
+      api_key: sk-cliproxy
+      tags: ["provider=copilot"]
+      order: 2
+    model_info:
+      id: gpt-5.4__copilot
+
+  # via OpenCode Zen API
+  - model_name: gpt-5.4
+    litellm_params:
+      model: openai/gpt-5.4
+      api_base: https://opencode.ai/zen/v1
+      api_key: os.environ/API_KEY_OPENCODE_ZEN
+      tags: ["provider=opencode-zen"]
+      order: 3
+    model_info:
+      id: gpt-5.4__opencode-zen
+
+  # ── gemini-3-flash-preview ──────────────────────────
+
+  # via CLIProxyAPI(Plus) | $ make gateway-login-google
+  - model_name: gemini-3-flash-preview
+    litellm_params:
+      model: openai/gemini-3-flash-preview
+      api_base: http://gateway-oauth:8317/api/provider/google
+      api_key: sk-cliproxy
+      tags: ["provider=google"]
+      order: 1
+    model_info:
+      id: gemini-3-flash-preview__google
+
+  # via CLIProxyAPIPlus | $ make gateway-login PROVIDER=github-copilot
+  - model_name: gemini-3-flash-preview
+    litellm_params:
+      model: openai/gemini-3-flash-preview
+      api_base: http://gateway-oauth:8317/api/provider/github-copilot
+      api_key: sk-cliproxy
+      tags: ["provider=copilot"]
+      order: 2
+    model_info:
+      id: gemini-3-flash-preview__copilot
+
+  # ── gemini-3.1-pro-preview ──────────────────────────
+
+  # via CLIProxyAPI(Plus) | $ make gateway-login-google
+  - model_name: gemini-3.1-pro-preview
+    litellm_params:
+      model: openai/gemini-3.1-pro-preview
+      api_base: http://gateway-oauth:8317/api/provider/google
+      api_key: sk-cliproxy
+      tags: ["provider=google"]
+      order: 1
+    model_info:
+      id: gemini-3.1-pro-preview__google
+
+  # via CLIProxyAPIPlus | $ make gateway-login PROVIDER=github-copilot
+  - model_name: gemini-3.1-pro-preview
+    litellm_params:
+      model: openai/gemini-3.1-pro-preview
+      api_base: http://gateway-oauth:8317/api/provider/github-copilot
+      api_key: sk-cliproxy
+      tags: ["provider=copilot"]
+      order: 2
+    model_info:
+      id: gemini-3.1-pro-preview__copilot
 
   # ── OpenCode Zen ───────────────────────────────────
 
