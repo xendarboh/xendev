@@ -1,8 +1,8 @@
-# xen/dev:latest
+# XNDV ~ xen/dev:latest
 
-[![GPLv3 License](https://img.shields.io/badge/license-GPLv3-blue.svg)](LICENSE)
+XNDV is a sandboxed, GPU-accelerated, terminal-first development environment. A ready-to-run box of overpowered dotfiles, like a living Awesome List of development tools, all wired into the same AI control plane.
 
-Overpowered dotfiles in a box. A sandboxed, GPU-accelerated, terminal-first development environment.
+Unify agentic tools through a local AI gateway for greater visibility, multi-provider resilience, OAuth-friendly logins, and optional local LLMs.
 
 Run it as a:
 
@@ -16,7 +16,7 @@ Run it as a:
 ## Quickstart
 
 ```sh
-git clone https://github.com/xendarboh/xendev.git ~/src/xndv
+git clone https://github.com/xendarboh/xndv.git ~/src/xndv
 cd ~/src/xndv
 cp .env-example .env                 # edit to enable optional tools
 cp -a conf.local-example conf.local  # local overrides (see Customization)
