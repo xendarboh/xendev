@@ -219,6 +219,7 @@ cmd_launch() {
   # 4. Mount Selection — toggle volume mounts before launching
   #---------------------------------------------------------------------------
   "mode_$mode"
+  symbol_arrow=' -> '
   declare -A selected
   for i in "${!MOUNTS[@]}"; do
     IFS=':' read -r tag src dst opts <<<"${MOUNTS[$i]}"
@@ -233,21 +234,22 @@ cmd_launch() {
       state="[ ]"
       [[ -n "${selected[$i]:-}" ]] && state="[x]"
       IFS=':' read -r tag src dst opts <<<"${MOUNTS[$i]}"
-      printf -v line "%s %-4s │ %s" "$state" "$tag" "$src"
-      [[ -n "$dst" ]] && line+=" 󰧂 $dst"
+      printf -v line "%s %-4s │ %s%s" "$state" "$tag" "$src" "${dst:+$symbol_arrow$dst}"
       menu_lines+=("$line")
     done
 
     choice=$(ui "Mounts" <<<"$(printf '%s\n' "${menu_lines[@]}")")
 
-    [[ -z "$choice" ]] && exit 0
-    [[ "$choice" == "▶ LAUNCH" ]] && break
+    [[ -z "$choice" || "$choice" == "▶ LAUNCH" ]] && break
 
-    choice_path=$(echo "$choice" | sed 's/^\[.\] [^ ]* │ //; s/ *$//')
+    # Bash-fu: Strip prefix up to "│ ", then strip everything from arrow symbol onwards
+    choice_path="${choice#*│ }"
+    choice_path="${choice_path%%${symbol_arrow}*}"
+
     for i in "${!MOUNTS[@]}"; do
       IFS=':' read -r tag src dst opts <<<"${MOUNTS[$i]}"
       if [[ "$src" == "$choice_path" ]]; then
-        if [[ -n "${selected[$i]:-}" ]]; then unset "selected[$i]"; else selected[$i]=1; fi
+        [[ -n "${selected[$i]:-}" ]] && unset "selected[$i]" || selected[$i]=1
         break
       fi
     done
