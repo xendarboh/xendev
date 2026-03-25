@@ -261,7 +261,7 @@ cmd_launch() {
   vol_args=()
   for i in "${!selected[@]}"; do
     IFS=':' read -r tag src dst opts <<<"${MOUNTS[$i]}"
-    dst="${dst:-/home/${XNDV_USER}/${src#$HOME/}}"
+    [[ -z "$dst" && "$src" == "$HOME"* ]] && dst="/home/${XNDV_USER}/${src#$HOME/}" || dst="$src"
     [[ ! -d "$src" ]] && mkdir -p "$src"
     vol_args+=("--volume" "$src:$dst${opts:+:$opts}")
   done
