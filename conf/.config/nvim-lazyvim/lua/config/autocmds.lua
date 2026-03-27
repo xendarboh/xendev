@@ -6,3 +6,17 @@
 --
 -- Or remove existing autocmds by their group name (which is prefixed with `lazyvim_` for the defaults)
 -- e.g. vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
+
+local function augroup(name)
+  return vim.api.nvim_create_augroup("xndv_" .. name, { clear = true })
+end
+
+-- Disable spelling and diagnostics for some buffers by default
+vim.api.nvim_create_autocmd("FileType", {
+  group = augroup("text_quiet"),
+  pattern = { "markdown" },
+  callback = function(ev)
+    vim.opt_local.spell = false
+    vim.diagnostic.enable(false, { bufnr = ev.buf })
+  end,
+})
