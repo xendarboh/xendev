@@ -142,6 +142,14 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
   - [fish-nx](https://github.com/jukben/fish-nx): Fish completions for Nx
   - [fisher](https://github.com/jorgebucaran/fisher): Plugin manager for Fish
   - [nix-env.fish](https://github.com/lilyball/nix-env.fish): Nix environment for fish _(INSTALL_NIX)_
+  - Shortcuts:
+    - `b` git branch
+    - `s` git status
+    - `gg` git grep
+    - `gl` git log
+    - `gr [N]` git interactive rebase `HEAD~N` (auto-detect ahead count)
+    - `kt-*` kitty kittens
+    - `tc` tinty cycle configured themes
 - [fzf](https://github.com/junegunn/fzf): Command-line fuzzy finder
 - [htop](https://github.com/htop-dev/htop): Interactive process viewer
 - [jq](https://github.com/stedolan/jq): Command-line JSON processor
