@@ -114,6 +114,7 @@ end
 
 abbr b 'git branch -av'
 abbr s 'git status'
+abbr gg 'git grep'
 abbr gl 'git log --show-signature'
 abbr lz lazygit
 abbr oc opencode
