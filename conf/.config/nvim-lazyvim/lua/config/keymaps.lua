@@ -19,3 +19,7 @@ vim.keymap.set("n", "<leader><C-h>", require("smart-splits").swap_buf_left, { de
 vim.keymap.set("n", "<leader><C-j>", require("smart-splits").swap_buf_down, { desc = "smart swap buffer down" })
 vim.keymap.set("n", "<leader><C-k>", require("smart-splits").swap_buf_up, { desc = "smart swap buffer up" })
 vim.keymap.set("n", "<leader><C-l>", require("smart-splits").swap_buf_right, { desc = "smart swap buffer right" })
+
+-- reload current file
+-- 20260328: a hack for treesitter/syntax issue
+vim.keymap.set("n", "<leader>re", "<cmd>edit<cr>", { desc = "Reload File" })
