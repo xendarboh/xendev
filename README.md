@@ -124,6 +124,7 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
 - [OpenCode](https://github.com/anomalyco/opencode): Open source coding agent _(INSTALL_OPENCODE)_ `{oc}`
   - [GSD](https://github.com/gsd-build/get-shit-done): Meta-prompting and spec-driven development system
   - [oh-my-opencode](https://github.com/code-yeongyu/oh-my-opencode): Batteries-included agent harness `{omo}`
+  - [opencode-notifier](https://github.com/mohak34/opencode-notifier): Desktop notifications for OpenCode
   - [opencode-wakatime](https://github.com/angristan/opencode-wakatime): OpenCode usage time tracking
   - [opencode.nvim](https://github.com/nickjvandyke/opencode.nvim): Neovim integration for opencode
 - [OpenPackage](https://github.com/enulus/openpackage): Universal package manager for AI coding agent skills/rules/commands

@@ -1,6 +1,10 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "plugin": ["opencode-anthropic-auth", "opencode-antigravity-auth"],
+  "plugin": [
+    "@mohak34/opencode-notifier@latest",
+    "opencode-anthropic-auth",
+    "opencode-antigravity-auth"
+  ],
   "permission": {
     "read": {
       "~/.config/opencode/get-shit-done/*": "allow"
