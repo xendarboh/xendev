@@ -2,8 +2,10 @@
   "$schema": "https://opencode.ai/config.json",
   "plugin": [
     "@mohak34/opencode-notifier@latest",
+    "opencode-agent-tmux",
     "opencode-anthropic-auth",
-    "opencode-antigravity-auth"
+    "opencode-antigravity-auth",
+    "opentmux"
   ],
   "permission": {
     "read": {

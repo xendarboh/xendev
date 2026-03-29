@@ -634,6 +634,7 @@ RUN \
     && export PATH=/home/${_USER}/.opencode/bin:${PATH} \
     && bunx oh-my-opencode@${VERSION_OHMYOPENCODE} install --no-tui ${OPTIONS_OHMYOPENCODE} \
     && sudo npm i -g opencode-wakatime && opencode-wakatime --install \
+    && sudo npm i -g opentmux \
     && npx get-shit-done-cc --opencode --global \
   ; fi
 

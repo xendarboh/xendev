@@ -1,0 +1,7 @@
+{
+  "enabled": true,
+  "port": 4096,
+  "layout": "main-vertical",
+  "main_pane_size": 60,
+  "auto_close": true
+}
