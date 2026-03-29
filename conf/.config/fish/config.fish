@@ -103,6 +103,12 @@ set -Ux EXA_STANDARD_OPTIONS \
 set -Ux EXA_LL_OPTIONS --sort changed
 set -Ux EXA_LT_OPTIONS --ignore-glob '.git|node_modules' --tree --level
 
+function ga
+    set -l n (git rev-list --count @{upstream}..HEAD 2>/dev/null)
+    test -z "$n" -o "$n" = 0 && echo "[xndv] ERROR: no commits ahead of upstream" >&2 && return 1
+    git absorb --base HEAD~$n $argv
+end
+
 function gr
     set -l n $argv[1]
     if test -z "$n"
