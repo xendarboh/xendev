@@ -417,8 +417,10 @@ Access LiteLLM UI at <http://localhost:4000>
 | `GATEWAY_PROXY_PORT`      | LiteLLM proxy port (default: `4000`)                     |
 | `GATEWAY_OAUTH_PORT`      | CLIProxyAPIPlus OAuth port (default: `8317`)             |
 | `GATEWAY_API_KEY_*`       | Provider API keys passed to LiteLLM                      |
-| `GATEWAY_CLIENT_BASE_URL` | Override gateway URL (default: `http://localhost:PORT`)  |
+| `GATEWAY_CLIENT_BASE_URL` | Override gateway URL (default: `http://${XNDV_HOSTNAME}:PORT`) |
 | `GATEWAY_CLIENT_API_KEY`  | Override client auth key (default: `GATEWAY_MASTER_KEY`) |
+
+`XNDV_HOSTNAME` is injected by the launcher at runtime so containers can reach host-exposed services across modes. It defaults to `localhost` in host-networked modes and `host.docker.internal` in isolated modes such as `sys` and `min`.
 
 ### OAuth Providers
 

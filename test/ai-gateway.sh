@@ -6,12 +6,15 @@
 source $(readlink -f $(dirname $0))/../.env 2>/dev/null
 
 MODEL="${1:-claude-haiku-4-5}"
-GATEWAY_URL="http://localhost:${GATEWAY_PROXY_PORT:-4000}"
-OAUTH_URL="http://localhost:${GATEWAY_OAUTH_PORT:-8317}"
+GATEWAY_PORT="${GATEWAY_PROXY_PORT:-4000}"
+OAUTH_PORT="${GATEWAY_OAUTH_PORT:-8317}"
+XNDV_HOSTNAME="${XNDV_HOSTNAME:-localhost}"
+GATEWAY_URL="http://${XNDV_HOSTNAME}:${GATEWAY_PORT}"
+OAUTH_URL="http://${XNDV_HOSTNAME}:${OAUTH_PORT}"
 PAYLOAD="$(jq -n --arg model "$MODEL" '{model: $model, max_tokens: 64, messages: [{role: "user", content: "Reply with exactly: ok"}]}')"
 
 echo "=== Gateway Health ==="
-curl -sf "${GATEWAY_URL}/health" | jq . || echo "FAIL: gateway not reachable"
+curl -sf "${GATEWAY_URL}/health" | jq . || echo "FAIL: gateway not reachable at ${GATEWAY_URL}"
 echo ""
 
 echo "=== API Route (Anthropic format) ==="

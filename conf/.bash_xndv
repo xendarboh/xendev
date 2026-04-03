@@ -129,8 +129,7 @@ if [[ "${ENABLE_GATEWAY:-0}" == "1" ]]; then
     ' --arg prefix "${1}" ~/.config/opencode/opencode.json
   }
 
-  # used by opencode
-  export GATEWAY_CLIENT_BASE_URL="${GATEWAY_CLIENT_BASE_URL:-http://localhost:${GATEWAY_PROXY_PORT}}"
+  export GATEWAY_CLIENT_BASE_URL="${GATEWAY_CLIENT_BASE_URL:-http://${XNDV_HOSTNAME:-localhost}:${GATEWAY_PROXY_PORT}}"
   export GATEWAY_CLIENT_API_KEY="${GATEWAY_CLIENT_API_KEY:-${GATEWAY_MASTER_KEY}}"
 
   # used by claude code

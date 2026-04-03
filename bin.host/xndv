@@ -101,6 +101,9 @@ base() {
     --add-host=host.docker.internal:host-gateway
     --tmpfs=/tmp:exec
   )
+  ENV=(
+    "XNDV_HOSTNAME=localhost"
+  )
   TAGS=(
     "core"
     "data"
@@ -139,6 +142,9 @@ mode_sys() {
     --cap-add=NET_RAW
     --cap-add=SYS_ADMIN
   )
+  ENV=(
+    "XNDV_HOSTNAME=host.docker.internal"
+  )
   MOUNTS+=(
     "sys:$HOME/.local/share/xndv/xndv/sysbox/docker:/var/lib/docker"
   )
@@ -157,6 +163,9 @@ mode_min() {
     --user=RETAIN
     --verbose
   )
+  ENV=(
+    "XNDV_HOSTNAME=host.docker.internal"
+  )
   TAGS+=()
 }
 
@@ -169,6 +178,9 @@ mode_tty() {
     --add-host=host.docker.internal:host-gateway
     --network=host
     --tmpfs=/tmp:exec
+  )
+  ENV=(
+    "XNDV_HOSTNAME=localhost"
   )
   TAGS=("core")
 }
@@ -259,6 +271,7 @@ cmd_launch() {
   # 5. Build Command & Confirm Launch
   #---------------------------------------------------------------------------
   vol_args=()
+  env_args=()
   for i in "${!selected[@]}"; do
     IFS=':' read -r tag src dst opts <<<"${MOUNTS[$i]}"
     [[ -z "$dst" ]] && dst="${src/#$HOME\///home/${XNDV_USER}/}"
@@ -267,10 +280,13 @@ cmd_launch() {
   done
 
   "mode_$mode"
+  for env_var in "${ENV[@]}"; do
+    env_args+=(--env "$env_var")
+  done
   ARGS_DOCKER+=(--label xndv.mode=$mode)
   [[ "$RUNNER" == "x11docker" ]] &&
-    cmd="x11docker --name $inst ${ARGS_X11DOCKER[*]} -- ${ARGS_DOCKER[*]} ${vol_args[*]} -- $IMAGE $SHELL_CMD $inst" ||
-    cmd="docker run -it --rm --name $inst ${ARGS_DOCKER[*]} ${vol_args[*]} $IMAGE $SHELL_CMD"
+    cmd="x11docker --name $inst ${ARGS_X11DOCKER[*]} -- ${ARGS_DOCKER[*]} ${env_args[*]} ${vol_args[*]} -- $IMAGE $SHELL_CMD $inst" ||
+    cmd="docker run -it --rm --name $inst ${ARGS_DOCKER[*]} ${env_args[*]} ${vol_args[*]} $IMAGE $SHELL_CMD"
 
   confirm_and_run "Generated Command" "$cmd"
 }
