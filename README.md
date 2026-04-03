@@ -151,6 +151,7 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
     - `gl` git log
     - `ga` git absorb --base `HEAD~N` (auto-detect ahead count)
     - `gr [N]` git interactive rebase `HEAD~N` (auto-detect ahead count)
+    - `fm` fastmod --hidden
     - `kt-*` kitty kittens
     - `tc` tinty cycle configured themes
 - [fzf](https://github.com/junegunn/fzf): Command-line fuzzy finder
