@@ -5,7 +5,7 @@ set -euo pipefail
 
 config="${HOME}/.config/opencode/opencode.json"
 real=$(realpath "$config")
-models=$(curl -sf "http://localhost:12434/engines/v1/models" |
+models=$(curl -sf "http://${XNDV_HOSTNAME:-localhost}:12434/engines/v1/models" |
   jq '.data | map({(.id): {"name": .id}}) | add // {}')
 [[ -n "$models" && "$models" != "null" ]] &&
   tmp=$(mktemp "$(dirname "$real")/.opencode.json.XXXXXX") &&

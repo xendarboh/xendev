@@ -61,7 +61,7 @@ git rev-parse --is-inside-work-tree >/dev/null 2>&1 || {
   exit 1
 }
 
-dmr_available() { curl -sf --connect-timeout 1 http://localhost:12434/v1/models >/dev/null 2>&1; }
+dmr_available() { curl -sf --connect-timeout 1 "http://${XNDV_HOSTNAME:-localhost}:12434/v1/models" >/dev/null 2>&1; }
 opencode_available() { command -v opencode >/dev/null 2>&1; }
 
 if [[ -z "$backend" ]]; then
@@ -70,12 +70,12 @@ if [[ -z "$backend" ]]; then
   elif opencode_available; then
     backend="opencode"
   else
-    echo "ERROR: no backend available (DMR not reachable at localhost:12434, opencode not in PATH)" >&2
+    echo "ERROR: no backend available (DMR not reachable at ${XNDV_HOSTNAME:-localhost}:12434, opencode not in PATH)" >&2
     exit 1
   fi
 elif [[ "$backend" == "local" ]]; then
   dmr_available || {
-    echo "ERROR: DMR not reachable at localhost:12434" >&2
+    echo "ERROR: DMR not reachable at ${XNDV_HOSTNAME:-localhost}:12434" >&2
     exit 1
   }
 elif [[ "$backend" == "opencode" ]]; then
@@ -136,7 +136,7 @@ $(cat "$diff_file")
 Recent commits:
 $(cat "$log_file")"
 
-  curl -sf "http://localhost:12434/v1/messages" \
+  curl -sf "http://${XNDV_HOSTNAME:-localhost}:12434/v1/messages" \
     -H "Content-Type: application/json" \
     -d "$(jq -n \
       --arg prompt "$context" \

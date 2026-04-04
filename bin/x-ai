@@ -18,7 +18,7 @@ set +a
 
 # Query the model via local API
 model="${MODELS_PRIMARY}"
-api_url="http://localhost:12434/v1/messages"
+api_url="http://${XNDV_HOSTNAME:-localhost}:12434/v1/messages"
 curl -s ${api_url} \
   -H "Content-Type: application/json" \
   -d "$(jq -n \
