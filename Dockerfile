@@ -409,10 +409,12 @@ RUN \
   wget -qN -P /dlu/uv https://astral.sh/uv/install.sh \
   && sh /dlu/uv/install.sh
 
-# install python support for neovim
 RUN \
   --mount=type=cache,id=uv-cache,target=${HOME}/.cache/uv,uid=${_USER_ID} \
-  uv tool install --upgrade pynvim
+  # install python support for neovim
+  uv tool install --upgrade pynvim \
+  # install grip (GitHub Markdown preview server)
+  && uv tool install --upgrade "git+https://github.com/joeyespo/grip.git"
 
 # install aider AI coding assistant
 # https://aider.chat
