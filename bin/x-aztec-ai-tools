@@ -180,6 +180,10 @@ write_json() {
 }
 
 # Append Aztec CLI instructions to a file (idempotent, symlink-safe)
+# Two heredocs are concatenated:
+#   AZTEC_UPSTREAM — verbatim copy of the Aztec docs recommended template
+#                    (https://docs.aztec.network/developers/ai_tooling)
+#   XNDV_CUSTOM    — xndv-specific additions that survive upstream syncs
 inject_aztec_section() {
   local file="$1"
   local real_file
@@ -190,9 +194,12 @@ inject_aztec_section() {
     return
   fi
 
-  # Write marker + content (single-quoted heredoc: no variable/backtick expansion)
   printf '\n%s\n' "$AZTEC_SECTION_MARKER" >>"$real_file"
-  cat >>"$real_file" <<'AZTEC_SECTION'
+
+  # --- Upstream: verbatim copy of docs.aztec.network recommended template ---
+  cat >>"$real_file" <<'AZTEC_UPSTREAM'
+# Aztec Project
+
 ## Critical: Use `aztec` CLI, not `nargo` directly
 
 This is an Aztec smart contract project. Always use the `aztec` CLI wrapper instead of calling `nargo` directly:
@@ -200,6 +207,32 @@ This is an Aztec smart contract project. Always use the `aztec` CLI wrapper inst
 - **Compile**: `aztec compile` (NOT `nargo compile`). Using `nargo compile` alone produces incomplete artifacts.
 - **Test**: `aztec test` (NOT `nargo test`).
 - **Other nargo commands** like `nargo fmt` and `nargo doc` are fine to use directly.
+
+## Error Handling
+
+- NEVER silently swallow errors or fall back to default values. If a value is required, throw if it's missing.
+- NEVER use fallback values like `AztecAddress.ZERO`, `"unknown"`, `0`, or `null` to mask missing data. These hide bugs and cause failures elsewhere that are harder to trace.
+- NEVER add retry/polling logic unless explicitly asked. Retry loops with long timeouts may brick application loops and mask the real error.
+- NEVER wrap calls in try/catch that returns null or a default. Let errors propagate.
+- If a precondition isn't met, throw immediately with a descriptive message — don't try to "work around" it.
+- Prefer `T` return types over `T | null` when null would indicate a bug rather than a valid state.
+- Do not add `.catch(() => defaultValue)` to promises. If something fails, the caller needs to know.
+
+## Version Compatibility
+
+The Aztec developer SDK/aztec-nr version (used for writing and compiling contracts) may differ from the node version (used by operators to run the network). For example, aztec-nr `4.2.0-aztecnr-rc.2` is compatible with node version `4.1.2`. Check the [Networks page](https://docs.aztec.network/networks) for current network versions. When in doubt, use the version from the developer docs you are reading — it is the correct SDK version for contract development on that network.
+
+## Hashing: Default to Poseidon2
+
+When writing Aztec.nr contract code that requires hashing, **always use Poseidon2** unless a specific protocol or interoperability requirement calls for a different hash.
+
+- **Default**: `use aztec::protocol::hash::poseidon2_hash;`
+- **Do NOT** default to Pedersen (`pedersen_hash`). Pedersen is available but Poseidon2 is cheaper in circuits and is the standard across Aztec.
+- If you are unsure which hash to use, use Poseidon2.
+AZTEC_UPSTREAM
+
+  # --- xndv custom: additions that survive upstream syncs ---
+  cat >>"$real_file" <<'XNDV_CUSTOM'
 
 ## Aztec Version Management
 
@@ -243,7 +276,7 @@ Version mismatches surface as unexpected CLI errors, missing features, or artifa
 
 - **Never run `aztec-up install` or change the installed version** without explicit user approval — version upgrades affect the entire project.
 - The local testnet must run the **same version** as the CLI. If the local testnet is already running under a different version, flag this to the user rather than switching unilaterally.
-AZTEC_SECTION
+XNDV_CUSTOM
   echo "[xndv] $file: appended Aztec CLI instructions"
 }
 
