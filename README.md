@@ -229,6 +229,7 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
 
 - [cpanminus](https://github.com/miyagawa/cpanminus): CPAN module installer
 - [cypress](https://github.com/cypress-io/cypress): Browser testing deps _(INSTALL_CYPRESS_DEPS)_
+- [dprint](https://github.com/dprint/dprint): Pluggable and configurable code formatting platform
 - [fastmod](https://github.com/facebookincubator/fastmod): Large-scale codebase refactors
 - [grip](https://github.com/joeyespo/grip): GitHub Markdown preview server _(INSTALL_GRIP)_
 - [ImageMagick](https://github.com/ImageMagick/ImageMagick): Image manipulation

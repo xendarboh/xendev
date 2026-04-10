@@ -483,6 +483,7 @@ RUN \
     --locked \
     bat \
     cargo-edit \
+    dprint \
     exa \
     fastmod \
     fd-find \
