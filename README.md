@@ -108,6 +108,7 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
     - [smart-splits.nvim](https://github.com/mrjones2014/smart-splits.nvim): Seamless navigation and resizing
     - [tinted-nvim](https://github.com/tinted-theming/tinted-nvim): Tinty colorscheme sync with native fallback
     - [tokyonight.nvim](https://github.com/folke/tokyonight.nvim): Tokyo Night colorscheme
+    - [tuicr.nvim](https://github.com/xendarboh/tuicr.nvim): Neovim integration for tuicr
     - [wakatime.nvim](https://github.com/wakatime/vim-wakatime): Automatic time tracking
 
 ### AI/Agentic Coding
