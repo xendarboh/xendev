@@ -145,10 +145,12 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
   - [fisher](https://github.com/jorgebucaran/fisher): Plugin manager for Fish
   - [nix-env.fish](https://github.com/lilyball/nix-env.fish): Nix environment for fish _(INSTALL_NIX)_
   - Shortcuts:
-    - `b` git branch
+    - `b` git branch -av
     - `s` git status
+    - `gb` git branch
     - `gg` git grep
     - `gl` git log
+    - `gln` git log --oneline | nl
     - `ga` git absorb --base `HEAD~N` (auto-detect ahead count)
     - `gr [N]` git interactive rebase `HEAD~N` (auto-detect ahead count)
     - `fm` fastmod --hidden
@@ -412,15 +414,15 @@ Access LiteLLM UI at <http://localhost:4000>
 
 ### Configuration
 
-| Variable                  | Description                                              |
-| :------------------------ | :------------------------------------------------------- |
-| `ENABLE_GATEWAY`          | Set to `1` to activate gateway routing in the container  |
-| `GATEWAY_MASTER_KEY`      | LiteLLM master key (used as default client auth)         |
-| `GATEWAY_PROXY_PORT`      | LiteLLM proxy port (default: `4000`)                     |
-| `GATEWAY_OAUTH_PORT`      | CLIProxyAPIPlus OAuth port (default: `8317`)             |
-| `GATEWAY_API_KEY_*`       | Provider API keys passed to LiteLLM                      |
+| Variable                  | Description                                                    |
+| :------------------------ | :------------------------------------------------------------- |
+| `ENABLE_GATEWAY`          | Set to `1` to activate gateway routing in the container        |
+| `GATEWAY_MASTER_KEY`      | LiteLLM master key (used as default client auth)               |
+| `GATEWAY_PROXY_PORT`      | LiteLLM proxy port (default: `4000`)                           |
+| `GATEWAY_OAUTH_PORT`      | CLIProxyAPIPlus OAuth port (default: `8317`)                   |
+| `GATEWAY_API_KEY_*`       | Provider API keys passed to LiteLLM                            |
 | `GATEWAY_CLIENT_BASE_URL` | Override gateway URL (default: `http://${XNDV_HOSTNAME}:PORT`) |
-| `GATEWAY_CLIENT_API_KEY`  | Override client auth key (default: `GATEWAY_MASTER_KEY`) |
+| `GATEWAY_CLIENT_API_KEY`  | Override client auth key (default: `GATEWAY_MASTER_KEY`)       |
 
 `XNDV_HOSTNAME` is injected by the launcher at runtime so containers can reach host-exposed services across modes. It defaults to `localhost` in host-networked modes and `host.docker.internal` in isolated modes such as `sys` and `min`.
 

@@ -120,8 +120,10 @@ end
 
 abbr b 'git branch -av'
 abbr s 'git status'
+abbr gb 'git branch'
 abbr gg 'git grep'
 abbr gl 'git log --show-signature'
+abbr gln 'git log --oneline | nl'
 abbr grip 'grip --theme=dark'
 abbr fm 'fastmod --hidden'
 abbr lz lazygit
