@@ -9,7 +9,7 @@ COMPOSE_BUILD := docker compose --profile build
 COMPOSE_MODELS := docker compose --profile models
 COMPOSE_GATEWAY := docker compose --profile gateway
 
-.PHONY: help build-tty rebuild-tty install-x11docker fetch-nvidia-driver build retag rebuild pull models-up models-down models-logs models-status gateway-up gateway-down gateway-logs gateway-status gateway-login gateway-quota
+.PHONY: help build-tty rebuild-tty install-x11docker fetch-nvidia-driver build retag rebuild refresh models-up models-down models-logs models-status gateway-up gateway-down gateway-logs gateway-status gateway-login gateway-quota
 
 # https://blog.testdouble.com/posts/2017-04-17-makefile-usability-tips/#step-3-parse-annotations
 help: ## print this help message with some nifty mojo
@@ -50,9 +50,10 @@ rebuild: ## rebuild docker images (no cache, pull latest base images)
 	time $(COMPOSE_BUILD) build --no-cache --build-arg IMAGE_BASE=xen/x11 xen-dev
 	time $(COMPOSE_BUILD) build --no-cache xen-sys
 
-pull: ## pull latest peripheral images
+refresh: ## pull latest peripheral images and rebuild external-source services
 	$(COMPOSE_MODELS) pull
 	$(COMPOSE_GATEWAY) pull
+	$(COMPOSE_GATEWAY) build --no-cache gateway-quota
 
 models-up: ## start local model runner + Open WebUI
 	$(COMPOSE_MODELS) up -d
