@@ -9,7 +9,7 @@ COMPOSE_BUILD := docker compose --profile build
 COMPOSE_MODELS := docker compose --profile models
 COMPOSE_GATEWAY := docker compose --profile gateway
 
-.PHONY: help build-tty rebuild-tty install-x11docker fetch-nvidia-driver build retag rebuild pull models-up models-down models-logs models-status gateway-up gateway-down gateway-logs gateway-status gateway-login
+.PHONY: help build-tty rebuild-tty install-x11docker fetch-nvidia-driver build retag rebuild pull models-up models-down models-logs models-status gateway-up gateway-down gateway-logs gateway-status gateway-login gateway-quota
 
 # https://blog.testdouble.com/posts/2017-04-17-makefile-usability-tips/#step-3-parse-annotations
 help: ## print this help message with some nifty mojo
@@ -90,3 +90,6 @@ gateway-login: ## login to OAuth provider for gateway (PROVIDER=<provider>)
 
 gateway-login-google: ## login to OAuth provider for gateway (PROVIDER=google)
 	$(COMPOSE_GATEWAY) exec gateway-oauth ./CLIProxyAPIPlus -login -no-browser
+
+gateway-quota: ## show quota/usage details from OAuth providers via CLIProxyAPI(Plus)
+	$(COMPOSE_GATEWAY) run --rm gateway-quota

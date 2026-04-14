@@ -156,6 +156,27 @@ services:
       timeout: 10s
       retries: 3
 
+  # CLIProxyAPI Quota Inspector — usage/quota visibility for CPA
+  gateway-quota:
+    profiles: [gateway]
+    build:
+      context: https://github.com/AllenReder/CLIProxyAPI-Quota-Inspector.git
+      dockerfile_inline: |
+        FROM golang:alpine AS build
+        WORKDIR /src
+        COPY go.mod go.sum ./
+        RUN go mod download
+        COPY . .
+        RUN CGO_ENABLED=0 go build -o /cpa-quota-inspector .
+        FROM alpine:latest
+        COPY --from=build /cpa-quota-inspector /usr/local/bin/
+        ENTRYPOINT ["cpa-quota-inspector"]
+    container_name: xndv-gateway-quota
+    network_mode: "service:gateway-oauth"
+    environment:
+      - COLORTERM=truecolor
+      - MANAGEMENT_PASSWORD=${GATEWAY_OAUTH_MANAGEMENT_PASSWORD:-password}
+
   # ─── RUNTIME: MCP SERVERS
   # Add local MCP server services here with profiles: [mcp]
 
