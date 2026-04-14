@@ -21,4 +21,3 @@ debug: false
 
 remote-management:
   allow-remote: false # keep false — localhost only (safe)
-  secret-key: "password" # choose any string; it auto-bcrypt-hashes on startup
