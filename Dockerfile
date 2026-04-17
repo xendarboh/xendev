@@ -230,6 +230,18 @@ RUN \
       done \
   ; fi
 
+# install latest cmake from Kitware APT repository
+# https://apt.kitware.com/
+RUN \
+  --mount=type=cache,id=apt-archives,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,id=apt-lists,target=/var/lib/apt,sharing=locked \
+  --mount=type=cache,id=dl,target=/dl,sharing=locked \
+  wget -qN -P /dl/kitware https://apt.kitware.com/kitware-archive.sh \
+  && bash /dl/kitware/kitware-archive.sh \
+  && apt update \
+  && apt install --no-install-recommends -y -q \
+    cmake
+
 # install solidity compiler
 RUN \
   --mount=type=cache,id=apt-archives,target=/var/cache/apt,sharing=locked \
