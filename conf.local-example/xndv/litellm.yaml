@@ -4,6 +4,41 @@ model_list:
   # anthropic provider appends /v1/messages automatically to api_base
   # openai-compatible provider expects api_base to include /v1
 
+  # ── claude-opus-4-7 ─────────────────────────────────────────
+
+  # via CLIProxyAPI(Plus) | $ make gateway-login PROVIDER=claude
+  - model_name: claude-opus-4-7
+    litellm_params:
+      model: anthropic/claude-opus-4-7
+      api_base: http://gateway-oauth:8317/api/provider/claude
+      api_key: sk-cliproxy
+      tags: ["provider=claude"]
+      order: 1
+    model_info:
+      id: claude-opus-4-7__claude
+
+  # via CLIProxyAPIPlus | $ make gateway-login PROVIDER=github-copilot
+  - model_name: claude-opus-4-7
+    litellm_params:
+      model: anthropic/claude-opus-4-7
+      api_base: http://gateway-oauth:8317/api/provider/github-copilot
+      api_key: sk-cliproxy
+      tags: ["provider=copilot"]
+      order: 2
+    model_info:
+      id: claude-opus-4-7__copilot
+
+  # via OpenCode Zen API
+  - model_name: claude-opus-4-7
+    litellm_params:
+      model: anthropic/claude-opus-4-7
+      api_base: https://opencode.ai/zen
+      api_key: os.environ/API_KEY_OPENCODE_ZEN
+      tags: ["provider=opencode-zen"]
+      order: 3
+    model_info:
+      id: claude-opus-4-7__opencode-zen
+
   # ── claude-opus-4-6 ─────────────────────────────────────────
 
   # via CLIProxyAPI(Plus) | $ make gateway-login PROVIDER=claude
@@ -229,12 +264,23 @@ model_list:
 
   # ── OpenCode Zen ───────────────────────────────────
 
+  - model_name: zen-claude-opus-4.7
+    litellm_params:
+      model: anthropic/claude-opus-4-7
+      api_base: https://opencode.ai/zen
+      api_key: os.environ/API_KEY_OPENCODE_ZEN
+      tags: ["provider=opencode-zen"]
+      input_cost_per_token: 0.00000500 # $5.00 / 1M
+      output_cost_per_token: 0.00002500 # $25.00 / 1M
+
   - model_name: zen-claude-opus-4.6
     litellm_params:
       model: anthropic/claude-opus-4-6
       api_base: https://opencode.ai/zen
       api_key: os.environ/API_KEY_OPENCODE_ZEN
       tags: ["provider=opencode-zen"]
+      input_cost_per_token: 0.00000500 # $5.00 / 1M
+      output_cost_per_token: 0.00002500 # $25.00 / 1M
 
   - model_name: zen-claude-sonnet-4-6
     litellm_params:
@@ -242,6 +288,8 @@ model_list:
       api_base: https://opencode.ai/zen
       api_key: os.environ/API_KEY_OPENCODE_ZEN
       tags: ["provider=opencode-zen"]
+      input_cost_per_token: 0.00000300 # $3.00 / 1M
+      output_cost_per_token: 0.00001500 # $15.00 / 1M
 
   - model_name: zen-claude-haiku-4-5
     litellm_params:
@@ -249,6 +297,8 @@ model_list:
       api_base: https://opencode.ai/zen
       api_key: os.environ/API_KEY_OPENCODE_ZEN
       tags: ["provider=opencode-zen"]
+      input_cost_per_token: 0.00000100 # $1.00 / 1M
+      output_cost_per_token: 0.00000500 # $5.00 / 1M
 
   - model_name: zen-gpt-5.4
     litellm_params:
@@ -256,6 +306,8 @@ model_list:
       api_base: https://opencode.ai/zen/v1
       api_key: os.environ/API_KEY_OPENCODE_ZEN
       tags: ["provider=opencode-zen"]
+      input_cost_per_token: 0.00000250 # $2.50 / 1M
+      output_cost_per_token: 0.00001500 # $15.00 / 1M
 
   - model_name: zen-gpt-5.3-codex
     litellm_params:
@@ -263,6 +315,8 @@ model_list:
       api_base: https://opencode.ai/zen/v1
       api_key: os.environ/API_KEY_OPENCODE_ZEN
       tags: ["provider=opencode-zen"]
+      input_cost_per_token: 0.00000175 # $1.75 / 1M
+      output_cost_per_token: 0.00001400 # $14.00 / 1M
 
   - model_name: zen-glm-5
     litellm_params:
@@ -272,6 +326,15 @@ model_list:
       tags: ["provider=opencode-zen"]
       input_cost_per_token: 0.00000100 # $1.00 / 1M
       output_cost_per_token: 0.00000320 # $3.20 / 1M
+
+  - model_name: zen-glm-5.1
+    litellm_params:
+      model: openai/glm-5.1
+      api_base: https://opencode.ai/zen/v1
+      api_key: os.environ/API_KEY_OPENCODE_ZEN
+      tags: ["provider=opencode-zen"]
+      input_cost_per_token: 0.00000140 # $1.40 / 1M
+      output_cost_per_token: 0.00000440 # $4.40 / 1M
 
   - model_name: zen-kimi-k2.5
     litellm_params:
@@ -290,6 +353,15 @@ model_list:
       tags: ["provider=opencode-zen"]
       input_cost_per_token: 0.00000030 # $0.30 / 1M
       output_cost_per_token: 0.00000120 # $1.20 / 1M
+
+  - model_name: zen-qwen3.6-plus
+    litellm_params:
+      model: openai/qwen3.6-plus
+      api_base: https://opencode.ai/zen/v1
+      api_key: os.environ/API_KEY_OPENCODE_ZEN
+      tags: ["provider=opencode-zen"]
+      input_cost_per_token: 0.00000050 # $0.50 / 1M
+      output_cost_per_token: 0.00000300 # $3.00 / 1M
 
   # ── Docker Model Runner (local) ───────────────────────────────────
   - model_name: local
