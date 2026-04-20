@@ -125,7 +125,7 @@ if [[ "${ENABLE_GATEWAY:-0}" == "1" ]]; then
       .provider.litellm.models
       | to_entries
       | map(select(.key | test("^" + $prefix)))
-      | .[].key
+      | .[0].key
     ' --arg prefix "${1}" ~/.config/opencode/opencode.json
   }
 
