@@ -92,4 +92,4 @@ function usernamehost() {
 # PS1="\[\e]2;$PWD\[\a\]\[\e]1;\]$(basename "$(dirname "$PWD")")/\W\[\a\]${BOLD}\$(usernamehost)\[$GREEN\]\w\$(git_info)\[$RESET\]\[$BOLD\]\n${PROMPTCHAR} \[$RESET\]"
 PS1="\[\e]2;$PWD\[\a\]\[\e]1;\]$(basename "$(dirname "$PWD")")/\W\[\a\]${BOLD}\$(usernamehost)\[$GREEN\]\w\[$RESET\]\[$BOLD\]\n${PROMPTCHAR} \[$RESET\]"
 
-# vim: ft=sh
+# vim: ft=bash
