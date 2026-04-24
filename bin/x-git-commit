@@ -143,7 +143,9 @@ $(cat "$log_file")"
       --arg model "$dmr_model" '{
         "model": $model,
         "messages": [{"role": "user", "content": $prompt}]
-      }')" | jq -r '.content[0].text' >"$out_file"
+      }')" |
+    jq -r '.content[] | select(.text != null) | .text' \
+      >"$out_file"
 fi
 
 sanitize() {

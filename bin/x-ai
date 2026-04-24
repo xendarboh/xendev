@@ -27,5 +27,5 @@ curl -s ${api_url} \
       "model": $model,
       "messages": [{"role": "user", "content": $prompt}]
     }')" |
-  jq -r '.content[0].text' |
+  jq -r '.content[] | select(.text != null) | .text' |
   bat -l markdown
