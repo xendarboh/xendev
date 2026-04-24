@@ -427,3 +427,5 @@ main() {
 }
 
 main
+
+# vim ft=bash
