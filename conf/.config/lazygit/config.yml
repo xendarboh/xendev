@@ -9,7 +9,12 @@ os:
 promptToReturnFromSubprocess: false # display confirmation when subprocess terminates
 customCommands:
   - key: <c-a>
-    description: Choose AI-generated commit
+    description: "[xndv] Choose AI-generated commit"
     command: x-git-commit
+    context: files
+    output: terminal
+  - key: <c-p>
+    description: "[xndv] Preview image with Kitty"
+    command: "kitty +kitten icat --hold {{.SelectedFile.Name}}"
     context: files
     output: terminal
