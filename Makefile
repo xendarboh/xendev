@@ -54,6 +54,7 @@ refresh: ## pull latest peripheral images and rebuild external-source services
 	$(COMPOSE_MODELS) pull
 	$(COMPOSE_GATEWAY) pull
 	$(COMPOSE_GATEWAY) build --no-cache gateway-quota
+	docker model reinstall-runner --backend $(MODELS_BACKEND)
 
 models-up: ## start local model runner + Open WebUI
 	$(COMPOSE_MODELS) up -d
