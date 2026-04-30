@@ -510,6 +510,7 @@ RUN \
     watchexec-cli \
     websocat \
     zoxide \
+  && cargo install --git https://github.com/rtk-ai/rtk \
   && rustup component add \
     rust-analyzer
 
@@ -652,6 +653,7 @@ RUN \
     && sudo npm i -g opencode-wakatime && opencode-wakatime --install \
     && sudo npm i -g opentmux \
     && npx get-shit-done-cc --opencode --global \
+    && rtk init -g --opencode \
   ; fi
 
 # install extra bash things

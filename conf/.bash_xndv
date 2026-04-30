@@ -74,11 +74,16 @@ F=~/.config/opencode/antigravity-accounts.json && test ! -L ${F} && rm -f ${F}
 
 # ensure files exist for proper stow'ing
 D="${XNDV_DIR}/conf.local/.config/opencode" && mkdir -p ${D} && touch ${D}/antigravity-accounts.json # ~INSTALL_OPENCODE
+# create dirs so stow symlinks files and not dirs
+mkdir -v -p \
+  ~/.claude \
+  | sed 's/^/[xndv] /'
 # stow the local conf files
 stow \
   --ignore=xndv \
   --target=/home/$(whoami)/ \
   --dir=${XNDV_DIR} \
+  --verbose \
   conf.local
 
 ls ~/.bash/*.sh &>/dev/null && source ~/.bash/*.sh
