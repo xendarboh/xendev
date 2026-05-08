@@ -119,6 +119,7 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
   - [GSD](https://github.com/gsd-build/get-shit-done): Meta-prompting and spec-driven development system
 - [CLIProxyAPIPlus](https://github.com/router-for-me/CLIProxyAPI): OAuth adapter for login-based LLM providers
   - [CLIProxyAPI Quota Inspector](https://github.com/AllenReder/CLIProxyAPI-Quota-Inspector): Terminal tool for monitoring CPA quota usage
+- [Codex](https://github.com/openai/codex): Lightweight coding agent that runs in your terminal _(INSTALL_CODEX)_
 - [Docker Model Runner](https://docs.docker.com/ai/model-runner/) (DMR): Run LLMs locally via Docker
 - [LiteLLM](https://github.com/BerriAI/litellm): Unified LLM proxy — 100+ providers, one endpoint, cost tracking, caching
 - [llmfit](https://github.com/AlexsJones/llmfit): Score and rank LLMs by hardware fit (RAM, CPU, GPU)

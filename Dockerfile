@@ -656,6 +656,14 @@ RUN \
     && rtk init -g --opencode \
   ; fi
 
+# install codex
+ARG INSTALL_CODEX=0
+ENV CODEX_HOME=/home/${_USER}/.local/share/codex
+RUN \
+  if [ "${INSTALL_CODEX}" = "1" ]; then \
+    sudo npm install -g @openai/codex \
+  ; fi
+
 # install extra bash things
 RUN mkdir ~/.bash
 
