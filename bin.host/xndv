@@ -286,7 +286,7 @@ cmd_launch() {
   ARGS_DOCKER+=(--label xndv.mode=$mode)
   [[ "$RUNNER" == "x11docker" ]] &&
     cmd="x11docker --name $inst ${ARGS_X11DOCKER[*]} -- ${ARGS_DOCKER[*]} ${env_args[*]} ${vol_args[*]} -- $IMAGE $SHELL_CMD $inst" ||
-    cmd="docker run -it --rm --name $inst ${ARGS_DOCKER[*]} ${env_args[*]} ${vol_args[*]} $IMAGE $SHELL_CMD"
+    cmd="docker run -it --name $inst ${ARGS_DOCKER[*]} ${env_args[*]} ${vol_args[*]} $IMAGE $SHELL_CMD"
 
   confirm_and_run "Generated Command" "$cmd"
 }
