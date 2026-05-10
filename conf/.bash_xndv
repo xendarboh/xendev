@@ -12,8 +12,6 @@ export PATH=${XNDV_DIR}/bin:${PATH}
 
 export GPG_TTY=$(tty)
 
-export TERM=screen-256color
-
 export EDITOR=/usr/bin/vim
 export VISUAL=/usr/bin/vim
 
