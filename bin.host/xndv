@@ -182,7 +182,11 @@ mode_tty() {
   ENV=(
     "XNDV_HOSTNAME=localhost"
   )
-  TAGS=("core")
+  TAGS=(
+    "core"
+    "data"
+    "misc"
+  )
 }
 
 cmd_launch() {
