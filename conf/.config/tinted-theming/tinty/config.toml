@@ -30,5 +30,5 @@ hook = "tmux run 2> /dev/null && tmux source-file %f"
 name = "tinted-terminal"
 path = "https://github.com/tinted-theming/tinted-terminal"
 themes-dir = "themes/kitty"
-hook = "kitten @ load-config"
 supported-systems = ["base16", "base24"]
+hook = "command -v kitten >/dev/null && kitten @ load-config"
