@@ -173,7 +173,7 @@ mode_tty() {
   DESC="TTY-only, no X11"
   RUNNER="docker"
   IMAGE="xen/dev"
-  SHELL_CMD="/bin/bash -l"
+  SHELL_CMD="sleep infinity"
   ARGS_DOCKER=(
     --add-host=host.docker.internal:host-gateway
     --network=host
@@ -286,7 +286,7 @@ cmd_launch() {
   ARGS_DOCKER+=(--label xndv.mode=$mode)
   [[ "$RUNNER" == "x11docker" ]] &&
     cmd="x11docker --name $inst ${ARGS_X11DOCKER[*]} -- ${ARGS_DOCKER[*]} ${env_args[*]} ${vol_args[*]} -- $IMAGE $SHELL_CMD $inst" ||
-    cmd="docker run -it --name $inst ${ARGS_DOCKER[*]} ${env_args[*]} ${vol_args[*]} $IMAGE $SHELL_CMD"
+    cmd="docker run -d --init --name $inst ${ARGS_DOCKER[*]} ${env_args[*]} ${vol_args[*]} $IMAGE $SHELL_CMD"
 
   confirm_and_run "Generated Command" "$cmd"
 }
