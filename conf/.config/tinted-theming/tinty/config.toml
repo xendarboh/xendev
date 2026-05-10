@@ -15,6 +15,7 @@ schemes = ["base24-gruvbox-dark-hard", "base24-tokyo-night-dark"]
 name = "tinted-shell"
 path = "https://github.com/tinted-theming/tinted-shell"
 themes-dir = "scripts"
+supported-systems = ["base24"]
 hook = ". %f"
 
 # tinted-tmux: Applies theme to tmux status bar and panes
@@ -22,6 +23,7 @@ hook = ". %f"
 name = "tinted-tmux"
 path = "https://github.com/tinted-theming/tinted-tmux"
 themes-dir = "colors"
+supported-systems = ["base24"]
 hook = "tmux run 2> /dev/null && tmux source-file %f"
 
 # tinted-kitty: Applies theme to kitty terminal
@@ -30,5 +32,5 @@ hook = "tmux run 2> /dev/null && tmux source-file %f"
 name = "tinted-terminal"
 path = "https://github.com/tinted-theming/tinted-terminal"
 themes-dir = "themes/kitty"
-supported-systems = ["base16", "base24"]
+supported-systems = ["base24"]
 hook = "command -v kitten >/dev/null && kitten @ load-config"
