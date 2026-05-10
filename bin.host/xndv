@@ -78,6 +78,7 @@ MOUNTS=(
   "data:${XNDV_HOST_DATA}/xndv/cache:/home/${XNDV_USER}/.cache"
   "misc:/media"
   "misc:/mnt"
+  "misc:/src"
   "misc:/srv"
 )
 
