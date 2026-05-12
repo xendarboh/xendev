@@ -24,7 +24,7 @@ name = "tinted-tmux"
 path = "https://github.com/tinted-theming/tinted-tmux"
 themes-dir = "colors"
 supported-systems = ["base24"]
-hook = "tmux run 2> /dev/null && tmux source-file %f"
+hook = "tmux run 2> /dev/null && tmux source-file %f && ~/src/xndv/bin/x-fix-tinted-tmux.sh"
 
 # tinted-kitty: Applies theme to kitty terminal
 # https://github.com/tinted-theming/tinted-terminal?tab=readme-ov-file#kitty
