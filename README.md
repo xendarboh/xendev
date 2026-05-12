@@ -117,7 +117,7 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
   - [aider.nvim](https://github.com/joshuavial/aider.nvim): Neovim integration for aider
 - [claude-code](https://github.com/anthropics/claude-code): Agentic coding tool in your terminal _(INSTALL_CLAUDECODE)_
   - [GSD](https://github.com/gsd-build/get-shit-done): Meta-prompting and spec-driven development system
-- [CLIProxyAPIPlus](https://github.com/router-for-me/CLIProxyAPI): OAuth adapter for login-based LLM providers
+- [CLIProxyAPI](https://github.com/router-for-me/CLIProxyAPI): OAuth adapter for login-based LLM providers
   - [CLIProxyAPI Quota Inspector](https://github.com/AllenReder/CLIProxyAPI-Quota-Inspector): Terminal tool for monitoring CPA quota usage
 - [Codex](https://github.com/openai/codex): Lightweight coding agent that runs in your terminal _(INSTALL_CODEX)_
 - [Docker Model Runner](https://docs.docker.com/ai/model-runner/) (DMR): Run LLMs locally via Docker
@@ -424,7 +424,7 @@ Access LiteLLM UI at <http://localhost:4000>
 | `ENABLE_GATEWAY`          | Set to `1` to activate gateway routing in the container        |
 | `GATEWAY_MASTER_KEY`      | LiteLLM master key (used as default client auth)               |
 | `GATEWAY_PROXY_PORT`      | LiteLLM proxy port (default: `4000`)                           |
-| `GATEWAY_OAUTH_PORT`      | CLIProxyAPIPlus OAuth port (default: `8317`)                   |
+| `GATEWAY_OAUTH_PORT`      | CLIProxyAPI OAuth port (default: `8317`)                       |
 | `GATEWAY_API_KEY_*`       | Provider API keys passed to LiteLLM                            |
 | `GATEWAY_CLIENT_BASE_URL` | Override gateway URL (default: `http://${XNDV_HOSTNAME}:PORT`) |
 | `GATEWAY_CLIENT_API_KEY`  | Override client auth key (default: `GATEWAY_MASTER_KEY`)       |
@@ -433,7 +433,7 @@ Access LiteLLM UI at <http://localhost:4000>
 
 ### OAuth Providers
 
-Route login-based providers through the gateway via [CLIProxyAPIPlus](https://github.com/router-for-me/CLIProxyAPIPlus):
+Route login-based providers through the gateway via [CLIProxyAPI](https://github.com/router-for-me/CLIProxyAPI):
 
 ```sh
 cp conf.local-example/xndv/cliproxyapi.yaml conf.local/xndv/
@@ -442,7 +442,7 @@ make gateway-login                         # see list of supported providers
 make gateway-login PROVIDER=someprovider   # one-time per account: follow the URL to authorize
 ```
 
-Supports any provider available in CLIProxyAPIPlus. Run once per account. Re-run if a token is revoked or to add accounts for load balancing.
+Supports any provider available in CLIProxyAPI. Run once per account. Re-run if a token is revoked or to add accounts for load balancing.
 
 After logging in, uncomment the corresponding entries in `conf.local/xndv/litellm.yaml` and restart the gateway. Each model can have multiple deployments across providers and accounts — the gateway tries them in priority order, falling back to the next if one is rate-limited or down.
 

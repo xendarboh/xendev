@@ -85,13 +85,13 @@ gateway-login: ## login to OAuth provider for gateway (PROVIDER=<provider>)
 		echo "[xndv] Usage: make gateway-login PROVIDER=<provider>"; \
 		echo "[xndv] See the following --<provider>-login options for supported providers"; \
 		echo ""; \
-		$(COMPOSE_GATEWAY) exec gateway-oauth ./CLIProxyAPIPlus --help; \
+		$(COMPOSE_GATEWAY) exec gateway-oauth ./CLIProxyAPI --help; \
 		exit 1; \
 	}
-	$(COMPOSE_GATEWAY) exec gateway-oauth ./CLIProxyAPIPlus --$(PROVIDER)-login -no-browser
+	$(COMPOSE_GATEWAY) exec gateway-oauth ./CLIProxyAPI --$(PROVIDER)-login -no-browser
 
 gateway-login-google: ## login to OAuth provider for gateway (PROVIDER=google)
-	$(COMPOSE_GATEWAY) exec gateway-oauth ./CLIProxyAPIPlus -login -no-browser
+	$(COMPOSE_GATEWAY) exec gateway-oauth ./CLIProxyAPI -login -no-browser
 
-gateway-quota: ## show quota/usage details from OAuth providers via CLIProxyAPI(Plus)
+gateway-quota: ## show quota/usage details from OAuth providers via CLIProxyAPI
 	$(COMPOSE_GATEWAY) run --rm gateway-quota

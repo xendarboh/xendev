@@ -138,7 +138,7 @@ services:
   # Login: make gateway-login PROVIDER=claude
   gateway-oauth:
     profiles: [gateway]
-    image: eceasy/cli-proxy-api-plus:latest
+    image: eceasy/cli-proxy-api:latest
     container_name: xndv-gateway-oauth
     ports:
       - ${GATEWAY_OAUTH_PORT:-8317}:8317
