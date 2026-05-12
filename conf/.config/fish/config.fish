@@ -111,11 +111,16 @@ end
 
 function gr
     set -l n $argv[1]
+    set -l opts $argv[2..-1]
     if test -z "$n"
         set n (git rev-list --count @{upstream}..HEAD 2>/dev/null)
         test -z "$n" -o "$n" = 0 && echo "[xndv] ERROR: no commits ahead of upstream" >&2 && return 1
     end
-    git rebase -i --autosquash HEAD~$n
+    git rebase -i --autosquash HEAD~$n $opts
+end
+
+function gra
+    gr "$argv[1]" --exec 'git commit --amend --reset-author --no-edit' $argv[2..-1]
 end
 
 abbr b 'git branch -av'

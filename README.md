@@ -157,6 +157,7 @@ The `sys` mode uses [sysbox](https://github.com/nestybox/sysbox) for secure, roo
     - `gln` git log --oneline | nl
     - `ga` git absorb --base `HEAD~N` (auto-detect ahead count)
     - `gr [N]` git interactive rebase `HEAD~N` (auto-detect ahead count)
+    - `gra [N]` `gr` + reset git author
     - `fm` fastmod --hidden
     - `kt-*` kitty kittens
     - `tc` tinty cycle configured themes
