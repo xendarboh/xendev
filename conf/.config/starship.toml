@@ -17,6 +17,10 @@ truncate_to_repo = false
 truncation_length = 8
 truncation_symbol = "…/"
 
+[fill]
+symbol = "."
+style = "bright-black"
+
 [time]
 disabled = false
 format = '[$time]($style) '
