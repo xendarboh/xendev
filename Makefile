@@ -69,6 +69,16 @@ models-logs: ## show local model service logs
 models-status: ## show local model service status
 	$(COMPOSE_MODELS) ps
 
+models-thinking-disable: ## configure model to disable thinking
+	docker model configure $(MODELS_BACKEND) -- \
+		--chat-template-kwargs '{"enable_thinking":false}' \
+		--reasoning-budget 0
+
+models-thinking-enable: ## configure model to enable thinking
+	docker model configure $(MODELS_BACKEND) -- \
+		--chat-template-kwargs '{"enable_thinking":true}' \
+		--reasoning-budget -1
+
 gateway-up: ## start LLM gateway (LiteLLM proxy)
 	$(COMPOSE_GATEWAY) up -d
 
