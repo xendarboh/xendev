@@ -85,7 +85,7 @@ services:
     container_name: xndv-gateway
     command: ["--config", "/app/config.yaml", "--port", "4000"]
     ports:
-      - ${GATEWAY_PROXY_PORT:-4000}:4000
+      - ${GATEWAY_BIND_HOST:-127.0.0.1}:${GATEWAY_PROXY_PORT:-4000}:4000
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
@@ -141,12 +141,12 @@ services:
     image: eceasy/cli-proxy-api:latest
     container_name: xndv-gateway-oauth
     ports:
-      - ${GATEWAY_OAUTH_PORT:-8317}:8317
-      - "8085:8085" # Gemini OAuth callback
-      # - "54545:54545" # Claude OAuth callback
-      # - "1455:1455" # Codex OAuth callback
-      # - "11451:11451" # iFlow OAuth callback
-      # - "51121:51121" # Antigravity OAuth callback
+      - ${GATEWAY_BIND_HOST:-127.0.0.1}:${GATEWAY_OAUTH_PORT:-8317}:8317
+      - ${GATEWAY_BIND_HOST:-127.0.0.1}:8085:8085 # Gemini OAuth callback
+      # - ${GATEWAY_BIND_HOST:-127.0.0.1}:54545:54545 # Claude OAuth callback
+      # - ${GATEWAY_BIND_HOST:-127.0.0.1}:1455:1455 # Codex OAuth callback
+      # - ${GATEWAY_BIND_HOST:-127.0.0.1}:11451:11451 # iFlow OAuth callback
+      # - ${GATEWAY_BIND_HOST:-127.0.0.1}:51121:51121 # Antigravity OAuth callback
     environment:
       - MANAGEMENT_PASSWORD=${GATEWAY_OAUTH_MANAGEMENT_PASSWORD:-password}
     volumes:

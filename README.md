@@ -418,19 +418,24 @@ make gateway-up          # on docker host
 
 Access LiteLLM UI at <http://localhost:4000>
 
+By default, gateway services bind to `127.0.0.1` only, which works for `max`/`tty` modes but not `sys`/`min`. Override `GATEWAY_BIND_HOST` in `.env` if you intentionally want LAN or wider access.
+
 ### Configuration
 
-| Variable                  | Description                                                    |
-| :------------------------ | :------------------------------------------------------------- |
-| `ENABLE_GATEWAY`          | Set to `1` to activate gateway routing in the container        |
-| `GATEWAY_MASTER_KEY`      | LiteLLM master key (used as default client auth)               |
-| `GATEWAY_PROXY_PORT`      | LiteLLM proxy port (default: `4000`)                           |
-| `GATEWAY_OAUTH_PORT`      | CLIProxyAPI OAuth port (default: `8317`)                       |
-| `GATEWAY_API_KEY_*`       | Provider API keys passed to LiteLLM                            |
-| `GATEWAY_CLIENT_BASE_URL` | Override gateway URL (default: `http://${XNDV_HOSTNAME}:PORT`) |
-| `GATEWAY_CLIENT_API_KEY`  | Override client auth key (default: `GATEWAY_MASTER_KEY`)       |
+| Variable                  | Description                                                       |
+| :------------------------ | :---------------------------------------------------------------- |
+| `ENABLE_GATEWAY`          | Set to `1` to activate gateway routing in the container           |
+| `GATEWAY_BIND_HOST`       | Host interface for published gateway ports (default: `127.0.0.1`) |
+| `GATEWAY_MASTER_KEY`      | LiteLLM master key (used as default client auth)                  |
+| `GATEWAY_PROXY_PORT`      | LiteLLM proxy port (default: `4000`)                              |
+| `GATEWAY_OAUTH_PORT`      | CLIProxyAPI OAuth port (default: `8317`)                          |
+| `GATEWAY_API_KEY_*`       | Provider API keys passed to LiteLLM                               |
+| `GATEWAY_CLIENT_BASE_URL` | Override gateway URL (default: `http://${XNDV_HOSTNAME}:PORT`)    |
+| `GATEWAY_CLIENT_API_KEY`  | Override client auth key (default: `GATEWAY_MASTER_KEY`)          |
 
 `XNDV_HOSTNAME` is injected by the launcher at runtime so containers can reach host-exposed services across modes. It defaults to `localhost` in host-networked modes and `host.docker.internal` in isolated modes such as `sys` and `min`.
+
+Set `GATEWAY_BIND_HOST=0.0.0.0` to listen on all interfaces, or set it to a specific LAN IP to expose the gateway only on that trusted network interface.
 
 ### OAuth Providers
 
